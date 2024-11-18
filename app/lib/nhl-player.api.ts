@@ -2,10 +2,6 @@ import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals } from "./nhl-playe
 
 class NHLPlayerAPIPrototype {
     private playerId = "8478402"; // Connor McDavid's hardcoded ID
-    private teamId = 5; // Pittsburgh Penguins' team ID
-    private season = '20232024'; // Current season
-    private gameType = '2'; // Regular season
-    private teamAbbrev = 'MIN'
 
     // Fetch Connor McDavid's season stats
     async fetchPlayerStats(): Promise<PlayerInfoFull> {

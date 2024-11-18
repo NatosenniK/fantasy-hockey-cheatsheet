@@ -6,12 +6,12 @@ interface CondensedStatsTableProps {
 }
 export default async function CondensedStatsTable({stats}: CondensedStatsTableProps) {
   return (
-    <div className="mt-6 flow-root">
-      <div className="inline-block min-w-full align-middle">
-        <div className="rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
-        <table className="min-w-full border-collapse border border-gray-200 dark:border-slate-700">
+    <div className="mt-3 flow-root ">
+      <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg p-3">
+        <div className="rounded-lg">
+        <table className="min-w-full border-collapse border bg-slate-700 border-gray-200 dark:border-slate-700">
           <thead>
-            <tr className="bg-gray-100 dark:bg-slate-800">
+            <tr className="bg-slate-800">
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                 GP
               </th>

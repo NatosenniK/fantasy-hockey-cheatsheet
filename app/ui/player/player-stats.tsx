@@ -8,7 +8,7 @@ import FullStatsTable from "./full-stats-table";
 import { PlayerHeadshot } from "./headshot";
 
 
-export default async function McDavidStatsTable() {
+export default async function PlayerStatsTable() {
     // Fetch McDavid's stats and matchup data
     const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats();
     const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats()
@@ -60,7 +60,6 @@ export default async function McDavidStatsTable() {
 
         return roundedExpPoints;
     }
-    
 
     if (!playerProfile) {
         return <div>No stats data available for Connor McDavid.</div>;
@@ -74,15 +73,16 @@ export default async function McDavidStatsTable() {
         return <div>No previous stats data available for Connor McDavid.</div>;
     }
     
-    console.log(playerProfile)
     return (
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
                 <div className="rounded-lg p-2 md:pt-0">
-                    <div className="bg-slate-700 rounded-lg p-3 mb-3">
-                        <h2 className="text-lg font-semibold mb-4 dark:text-white">Connor McDavid Stats</h2>
-                        <PlayerHeadshot width={150} height={150} imageUrl={playerProfile.headshot} />
-                        <div className="mb-6 flex items-center justify-between">
+                    <div className="flex items-stretch mb-6">
+                        <div className="bg-slate-700 rounded-lg p-3 mr-3">
+                            <PlayerHeadshot width={150} height={150} imageUrl={playerProfile.headshot} />
+                            <h2 className="text-lg font-semibold mt-4 dark:text-white">{playerProfile.firstName.default} {playerProfile.lastName.default}</h2>
+                        </div>
+                        <div className="rounded-lg bg-slate-700 p-3 w-full">
                             <h3 className="font-medium text-gray-900 dark:text-white">Career Regular Season Stats</h3>
                             <div className="flex items-center space-x-4">
                                 <FullStatsTable player={playerProfile} />
@@ -140,7 +140,11 @@ export default async function McDavidStatsTable() {
                         ))}
                     </div>
 
-                    <CondensedStatsTable stats={weekProjections} />
+                    <div className="rounded-lg bg-slate-700 mt-4">
+                        <h3 className="text-lg pl-4 pt-3">Projected Weekly Statline</h3>
+                        <CondensedStatsTable stats={weekProjections} />
+                    </div>
+                    
 
                     <div className="mt-3">Expected weekly points: {expectedWeeklyPointTotal.toFixed(2)}</div>
                 </div>
