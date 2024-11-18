@@ -1,13 +1,13 @@
 import { SeasonTotals } from "@/app/lib/nhl-player.types";
 
 
-interface CondensedStatsTableProps {
+interface ProjectedWeeklyTotalsProps {
     stats: SeasonTotals
 }
-export default async function CondensedStatsTable({stats}: CondensedStatsTableProps) {
+export default async function ProjectedWeeklyTotals({stats}: ProjectedWeeklyTotalsProps) {
   return (
-    <div className="mt-6 flow-root ">
-      <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg p-3">
+    <div className="mt-3 flow-root ">
+      <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
         <div className="rounded-lg">
         <table className="min-w-full border-collapse border bg-slate-700 border-gray-200 dark:border-slate-700">
           <thead>
@@ -29,6 +29,15 @@ export default async function CondensedStatsTable({stats}: CondensedStatsTablePr
               </th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                 PIM
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                PPP
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                SHG
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                SHA
               </th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                 Shots
@@ -54,6 +63,15 @@ export default async function CondensedStatsTable({stats}: CondensedStatsTablePr
               </td>
               <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                 {stats.pim}
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                {stats.powerPlayPoints}
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                {stats.shorthandedGoals}
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                {stats.shorthandedPoints}
               </td>
               <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                 {stats.shots}

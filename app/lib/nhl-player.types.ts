@@ -77,6 +77,10 @@ export interface SeasonTotals {
     pim: number
     plusMinus: number
     gamesPlayed: number
+    powerPlayPoints: number
+    shorthandedGoals: number
+    shorthandedPoints: number
+    shorthandedAssists: number
 }
 
 export type PrevStats = {

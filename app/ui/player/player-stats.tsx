@@ -6,72 +6,13 @@ import NHLTeamLogo from "../teams/team-logo";
 import CondensedStatsTable from "./condensed-stats-table";
 import FullStatsTable from "./full-stats-table";
 import { PlayerHeadshot } from "./headshot";
+import ProjectedWeeklyTotals from "./projected-weekly-totals";
+import { FetchPlayerStats } from "@/app/utils/fetch-player-stats";
 
 
 export default async function PlayerStatsTable() {
-    // Fetch McDavid's stats and matchup data
-    const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats();
-    const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats()
-    const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(8478402, 2)
-
-    // Fantasy values
-    const goalWeight = 3
-    const assistWeight = 2
-    const plusMinusWeight = 1
-    const penaltyMinuteWeight = .1
-    const shotsOnGoalWeight = .1
-
-    let expectedWeeklyPointTotal = 0
-
-    const weekProjections: SeasonTotals = {
-        goals: 0,
-        assists: 0,
-        plusMinus: 0,
-        pim: 0,
-        shots: 0,
-        points: 0,
-        gamesPlayed: 0
-    };
-
-    function calculateExpectedFantasyPoints(stats: SeasonTotals): number {
-        const expGoals = (stats.goals / stats.gamesPlayed) * goalWeight;
-        const expAssists = (stats.assists / stats.gamesPlayed) * assistWeight;
-        const expPlusMinus = (stats.plusMinus / stats.gamesPlayed) * plusMinusWeight;
-        const expPenaltyMinutes = (stats.pim / stats.gamesPlayed) * penaltyMinuteWeight;
-        const expectedShots = (stats.shots / stats.gamesPlayed) * shotsOnGoalWeight;
     
-        weekProjections.goals += parseFloat((stats.goals / stats.gamesPlayed).toFixed(2));
-        weekProjections.assists += parseFloat((stats.assists / stats.gamesPlayed).toFixed(2));
-    
-        const gamePlusMinus = stats.plusMinus / stats.gamesPlayed;
-        weekProjections.plusMinus = parseFloat((weekProjections.plusMinus + gamePlusMinus).toFixed(2));
-    
-        weekProjections.pim += parseFloat((stats.pim / stats.gamesPlayed).toFixed(2));
-        weekProjections.shots += parseFloat((stats.shots / stats.gamesPlayed).toFixed(2));
-        weekProjections.gamesPlayed += 1;
-    
-        const expectedMatchupPoints = expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expectedShots;
-        const roundedExpPoints = parseFloat(expectedMatchupPoints.toFixed(2));
-    
-        const totalPoints = (stats.goals / stats.gamesPlayed) + (stats.assists / stats.gamesPlayed);
-        weekProjections.points += parseFloat(totalPoints.toFixed(2));
-    
-        expectedWeeklyPointTotal += roundedExpPoints
-
-        return roundedExpPoints;
-    }
-
-    if (!playerProfile) {
-        return <div>No stats data available for Connor McDavid.</div>;
-    }
-    
-    if (!games) {
-        return <div>No upcoming games available.</div>;
-    }
-
-    if (!prevStats) {
-        return <div>No previous stats data available for Connor McDavid.</div>;
-    }
+    const { playerProfile, games, prevStats, expectedWeeklyPointTotal, weekProjections } = await FetchPlayerStats();
     
     return (
         <div className="mt-6 flow-root">
@@ -80,8 +21,15 @@ export default async function PlayerStatsTable() {
                     <div className="flex items-stretch mb-6">
                         <div className="bg-slate-700 rounded-lg p-3 mr-3">
                             <PlayerHeadshot width={150} height={150} imageUrl={playerProfile.headshot} />
-                            <h2 className="text-lg font-semibold mt-4 dark:text-white">{playerProfile.firstName.default} {playerProfile.lastName.default}</h2>
+                            <h2 className="text-lg font-semibold mt-4 text-white">{playerProfile.firstName.default} {playerProfile.lastName.default}</h2>
                         </div>
+                        <div className="bg-slate-700 rounded-lg p-3 mr-3 w-96 flex flex-col">
+                            <div className="flex-grow flex items-center justify-center">
+                                <div className="text-7xl">{expectedWeeklyPointTotal.toFixed(2)}</div>
+                            </div>
+                            <h3 className="font-medium text-gray-900 text-white flex justify-center">Expected Weekly Point Total</h3>
+                        </div>
+
                         <div className="rounded-lg bg-slate-700 p-3 w-full">
                             <h3 className="font-medium text-gray-900 dark:text-white">Career Regular Season Stats</h3>
                             <div className="flex items-center space-x-4">
@@ -118,7 +66,7 @@ export default async function PlayerStatsTable() {
                                                 <p>No stats available for {game.homeTeam.commonName.default}.</p>
                                             )}
                                         </div>
-                                        <div className="mt-3">Projected fantasy points: {calculateExpectedFantasyPoints(prevStats[game.homeTeam.abbrev])}</div>
+                                        {/* <div className="mt-3">Projected fantasy points: {prevStats[game.homeTeam.abbrev]}</div> */}
                                     </div>
                                 }
 
@@ -132,7 +80,7 @@ export default async function PlayerStatsTable() {
                                                 <p>No stats available for {game.awayTeam.commonName.default}.</p>
                                             )}
                                         </div>
-                                        <div className="mt-3">Projected fantasy points: {calculateExpectedFantasyPoints(prevStats[game.awayTeam.abbrev])}</div>
+                                        {/* <div className="mt-3">Projected fantasy points: {expectedWeeklyPointTotal.toFixed(2)}</div> */}
                                     </div>
                                 }
 
@@ -140,13 +88,10 @@ export default async function PlayerStatsTable() {
                         ))}
                     </div>
 
-                    <div className="rounded-lg bg-slate-700 mt-4">
+                    <div className="rounded-lg bg-slate-700 mt-4 p-3">
                         <h3 className="text-lg pl-4 pt-3">Projected Weekly Statline</h3>
-                        <CondensedStatsTable stats={weekProjections} />
+                        <ProjectedWeeklyTotals stats={weekProjections} />
                     </div>
-                    
-
-                    <div className="mt-3">Expected weekly points: {expectedWeeklyPointTotal.toFixed(2)}</div>
                 </div>
             </div>
         </div>

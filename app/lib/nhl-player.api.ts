@@ -64,7 +64,7 @@ class NHLPlayerAPIPrototype {
                 const opponentAbbrev = game.opponentAbbrev;
     
                 if (!statsByTeam[opponentAbbrev]) {
-                    statsByTeam[opponentAbbrev] = { gamesPlayed: 0, goals: 0, assists: 0, points: 0, shots: 0, pim: 0, plusMinus: 0 };
+                    statsByTeam[opponentAbbrev] = { gamesPlayed: 0, goals: 0, assists: 0, points: 0, shots: 0, pim: 0, plusMinus: 0, powerPlayPoints: 0, shorthandedGoals: 0, shorthandedPoints: 0, shorthandedAssists: 0 };
                 }
     
                 // Update stats for this team
@@ -75,6 +75,9 @@ class NHLPlayerAPIPrototype {
                 statsByTeam[opponentAbbrev].shots += game.shots || 0;
                 statsByTeam[opponentAbbrev].pim += game.pim || 0; // Penalty minutes
                 statsByTeam[opponentAbbrev].plusMinus += game.plusMinus || 0;
+                statsByTeam[opponentAbbrev].powerPlayPoints += game.powerPlayPoints || 0
+                statsByTeam[opponentAbbrev].shorthandedGoals += game.shorthandedGoals || 0
+                statsByTeam[opponentAbbrev].shorthandedPoints += game.shorthandedPoints || 0
             }
         }
     
