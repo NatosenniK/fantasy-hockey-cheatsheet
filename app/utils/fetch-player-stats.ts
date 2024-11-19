@@ -4,7 +4,7 @@ import { roundToDecimal } from "./rounding-util";
 
 export async function FetchPlayerStats() {
     const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats();
-    const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats();
+    const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats(playerProfile.currentTeamAbbrev);
     const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(8477492, 2);
 
     // Fantasy values

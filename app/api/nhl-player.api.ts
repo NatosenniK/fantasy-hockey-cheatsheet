@@ -11,7 +11,7 @@ class NHLPlayerAPIPrototype {
         return data;
     }
 
-    async fetchPlayerMatchupStats(): Promise<Games> {
+    async fetchPlayerMatchupStats(abbrev: string): Promise<Games> {
             // Get today's date
         const today = new Date();
 
@@ -34,7 +34,7 @@ class NHLPlayerAPIPrototype {
         console.log(`Fetching games from ${startDate} to ${endDate}`);
     
         // Fetch Teams's games for the season
-        const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/COL/now`);
+        const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/now`);
         if (!scheduleResponse.ok) throw new Error("Failed to fetch schedule");
         const scheduleData = await scheduleResponse.json();
 
