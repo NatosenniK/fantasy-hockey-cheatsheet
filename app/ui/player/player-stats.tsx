@@ -8,11 +8,19 @@ import FullStatsTable from "./full-stats-table";
 import { PlayerHeadshot } from "../visuals/headshot";
 import ProjectedWeeklyTotals from "./projected-weekly-totals";
 import { FetchPlayerStats } from "@/app/utils/fetch-player-stats";
+import { roundValue } from "@/app/utils/rounding-util";
 
 
 export default async function PlayerStatsTable() {
     
     const { playerProfile, games, prevStats, expectedWeeklyPointTotal, weekProjections } = await FetchPlayerStats();
+    
+    Object.keys(weekProjections).forEach((key) => {
+        const value = weekProjections[key as keyof typeof weekProjections];
+        if (typeof value === 'number') {
+            weekProjections[key as keyof typeof weekProjections] = roundValue(value);
+        }
+    });
     
     return (
         <div className="mt-6 flow-root">
@@ -39,7 +47,7 @@ export default async function PlayerStatsTable() {
                     </div>
 
                     <h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
-                    <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3">
+                    <div className={`grid gap-6 md:grid-cols-1 lg:grid-cols-${games.length}`}>
                         {games.map((game) => (
                             <div
                             key={game.id}
@@ -56,7 +64,7 @@ export default async function PlayerStatsTable() {
                                         <div>{game.awayTeam.commonName.default}</div>
                                     </div>
                                 </div>
-                                {game.homeTeam.abbrev !== "EDM" &&
+                                {game.homeTeam.abbrev !== playerProfile.currentTeamAbbrev &&
                                     <div>
                                         <h3 className="text-lg">Career vs {game.homeTeam.commonName.default}</h3>
                                         <div>
@@ -70,7 +78,7 @@ export default async function PlayerStatsTable() {
                                     </div>
                                 }
 
-                                {game.awayTeam.abbrev !== "EDM" &&
+                                {game.awayTeam.abbrev !== playerProfile.currentTeamAbbrev &&
                                     <div>
                                         <h3 className="text-lg">Career vs {game.awayTeam.commonName.default}</h3>
                                         <div>

@@ -80,50 +80,50 @@ export default async function CondensedStatsTable({stats}: CondensedStatsTablePr
           <table className="hidden md:table min-w-full border-collapse border bg-slate-700 border-gray-200 dark:border-slate-700">
             <thead>
               <tr className="bg-slate-800">
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   GP
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   G
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   A
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   P
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   +/- 
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   PIM
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-                  Shots
+                <th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                  S
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.gamesPlayed}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.goals}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.assists}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.points}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.plusMinus}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.pim}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+                <td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                   {stats.shots}
                 </td>
               </tr>

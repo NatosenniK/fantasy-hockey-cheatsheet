@@ -5,7 +5,7 @@ import { roundToDecimal } from "./rounding-util";
 export async function FetchPlayerStats() {
     const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats();
     const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats();
-    const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(8478402, 2);
+    const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(8477492, 2);
 
     // Fantasy values
     const goalWeight = 3;
@@ -46,16 +46,16 @@ export async function FetchPlayerStats() {
                 expectedWeeklyPointTotal += expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots + expPowerPlayPoints + expShorthandedGoals + expShorthandedAssists;
 
                 // Update weekProjections
-                weekProjections.goals += roundToDecimal((teamStats.goals / teamStats.gamesPlayed), 2);
-                weekProjections.assists += roundToDecimal((teamStats.assists / teamStats.gamesPlayed), 2)
-                weekProjections.plusMinus += roundToDecimal((teamStats.plusMinus / teamStats.gamesPlayed), 2)
-                weekProjections.pim += roundToDecimal((teamStats.pim / teamStats.gamesPlayed), 2)
-                weekProjections.shots += roundToDecimal((teamStats.shots / teamStats.gamesPlayed), 2)
-                weekProjections.points += roundToDecimal(((teamStats.goals / teamStats.gamesPlayed) + (teamStats.assists / teamStats.gamesPlayed)), 2)
+                weekProjections.goals += (teamStats.goals / teamStats.gamesPlayed);
+                weekProjections.assists += (teamStats.assists / teamStats.gamesPlayed)
+                weekProjections.plusMinus += (teamStats.plusMinus / teamStats.gamesPlayed)
+                weekProjections.pim += (teamStats.pim / teamStats.gamesPlayed)
+                weekProjections.shots += (teamStats.shots / teamStats.gamesPlayed)
+                weekProjections.points += ((teamStats.goals / teamStats.gamesPlayed) + (teamStats.assists / teamStats.gamesPlayed))
                 weekProjections.gamesPlayed += 1
-                weekProjections.powerPlayPoints += roundToDecimal((teamStats.powerPlayPoints / teamStats.gamesPlayed), 2)
-                weekProjections.shorthandedGoals += roundToDecimal((teamStats.shorthandedGoals / teamStats.gamesPlayed), 2)
-                weekProjections.shorthandedAssists += roundToDecimal((((teamStats.shorthandedPoints - teamStats.shorthandedGoals) / teamStats.gamesPlayed)), 2)
+                weekProjections.powerPlayPoints += (teamStats.powerPlayPoints / teamStats.gamesPlayed)
+                weekProjections.shorthandedGoals += (teamStats.shorthandedGoals / teamStats.gamesPlayed)
+                weekProjections.shorthandedAssists += (((teamStats.shorthandedPoints - teamStats.shorthandedGoals) / teamStats.gamesPlayed))
             }
         })
     }

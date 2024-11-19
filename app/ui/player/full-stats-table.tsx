@@ -1,4 +1,5 @@
 import { PlayerInfoFull } from "@/app/lib/nhl-player.types";
+import { roundToDecimal } from "@/app/utils/rounding-util";
 
 
 interface FullStatsTableProps {
@@ -194,7 +195,7 @@ export default async function FullStatsTable({player}: FullStatsTableProps) {
                                 {player.careerTotals.regularSeason.powerPlayPoints}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-                                {player.careerTotals.regularSeason.shootingPctg}
+                                {roundToDecimal(player.careerTotals.regularSeason.shootingPctg, 2)}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                                 {player.careerTotals.regularSeason.shorthandedGoals}

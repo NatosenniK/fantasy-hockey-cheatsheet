@@ -1,7 +1,7 @@
 import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals } from "../lib/nhl-player.types";
 
 class NHLPlayerAPIPrototype {
-    private playerId = "8478402"; // Connor McDavid's hardcoded ID
+    private playerId = "8477492"; // Player ID
 
     // Fetch Connor McDavid's season stats
     async fetchPlayerStats(): Promise<PlayerInfoFull> {
@@ -12,41 +12,55 @@ class NHLPlayerAPIPrototype {
     }
 
     async fetchPlayerMatchupStats(): Promise<Games> {
-        // Get today's date
+            // Get today's date
         const today = new Date();
-    
+
         // Calculate the start (Monday) and end (Sunday) of the current fantasy hockey week
         const monday = new Date(today);
-        monday.setDate(today.getDate() - today.getDay() + 1); // Adjust to Monday
+        const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+        const daysSinceMonday = (dayOfWeek === 0 ? 6 : dayOfWeek - 1); // Handle Sunday (0) as 6 days from Monday
+        monday.setDate(today.getDate() - daysSinceMonday);
+
         const sunday = new Date(monday);
         sunday.setDate(monday.getDate() + 6); // Add 6 days for Sunday
-    
+
         // Format dates as YYYY-MM-DD for the API or filtering
         const formatDate = (date: Date) =>
             date.toISOString().split('T')[0]; // Get the date in YYYY-MM-DD format
-    
+
         const startDate = formatDate(monday);
         const endDate = formatDate(sunday);
     
         console.log(`Fetching games from ${startDate} to ${endDate}`);
     
-        // Fetch EDM's games for the current month (API limitation)
-        const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule/EDM/month/now`);
+        // Fetch Teams's games for the season
+        const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/COL/now`);
         if (!scheduleResponse.ok) throw new Error("Failed to fetch schedule");
         const scheduleData = await scheduleResponse.json();
-    
+
+        // Filter games to include only those within the current week's date range
+        const normalizeDate = (date: Date) => {
+            const normalized = new Date(date);
+            normalized.setUTCHours(0, 0, 0, 0); // Set to midnight UTC
+            return normalized;
+        };
+        
         // Filter games to include only those within the current week's date range
         const games = scheduleData.games.filter((game: Game) => {
-            const gameDate = new Date(game.gameDate);
-            return gameDate >= monday && gameDate <= sunday;
+            const gameDate = normalizeDate(new Date(game.gameDate)); // Normalize gameDate
+            const mondayStart = normalizeDate(monday); // Normalize monday
+            const sundayEnd = normalizeDate(sunday); // Normalize sunday
+            return gameDate >= mondayStart && gameDate <= sundayEnd;
         });
+        
+        console.log('games: ', games)
     
         return games;
     }
 
     async fetchCareerStatsVsTeams(playerId: number, gameType: number): Promise<{ [teamAbbrev: string]: SeasonTotals }> {
         // Define the list of seasons (you might fetch this dynamically from an API if available)
-        const seasons = ["20152016", "20162017", "20172018", "20182019", "20192020", "20202021", "20212022", "20222023", "20232024"]; // Update as necessary
+        const seasons = ["20192020", "20202021", "20212022", "20222023", "20232024"]; // Update as necessary
     
         // Prepare an object to store stats against each team
         const statsByTeam: { [teamAbbrev: string]: SeasonTotals } = {};
