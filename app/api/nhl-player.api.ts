@@ -1,4 +1,4 @@
-import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals } from "./nhl-player.types";
+import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals } from "../lib/nhl-player.types";
 
 class NHLPlayerAPIPrototype {
     private playerId = "8478402"; // Connor McDavid's hardcoded ID

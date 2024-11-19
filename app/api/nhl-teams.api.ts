@@ -1,4 +1,4 @@
-import { NHLTeam } from './nhl-teams.types';
+import { NHLTeam } from '../lib/nhl-teams.types';
 
 class NHLTeamAPIPrototype {
     async fetchTeams(): Promise<NHLTeam[]> {

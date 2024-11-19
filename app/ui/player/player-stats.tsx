@@ -1,11 +1,11 @@
 // components/McDavidStatsTable.tsx
 
-import { NHLPlayerAPI } from "@/app/lib/nhl-player.api";
+import { NHLPlayerAPI } from "@/app/api/nhl-player.api";
 import { PlayerInfoFull, Games, PrevStats, SeasonTotals } from "@/app/lib/nhl-player.types";
-import NHLTeamLogo from "../teams/team-logo";
+import NHLTeamLogo from "../visuals/team-logo";
 import CondensedStatsTable from "./condensed-stats-table";
 import FullStatsTable from "./full-stats-table";
-import { PlayerHeadshot } from "./headshot";
+import { PlayerHeadshot } from "../visuals/headshot";
 import ProjectedWeeklyTotals from "./projected-weekly-totals";
 import { FetchPlayerStats } from "@/app/utils/fetch-player-stats";
 
@@ -18,32 +18,32 @@ export default async function PlayerStatsTable() {
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
                 <div className="rounded-lg p-2 md:pt-0">
-                    <div className="flex items-stretch mb-6">
-                        <div className="bg-slate-700 rounded-lg p-3 mr-3">
+                    <div className="flex items-stretch mb-6 flex-wrap">
+                        <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center">
                             <PlayerHeadshot width={150} height={150} imageUrl={playerProfile.headshot} />
                             <h2 className="text-lg font-semibold mt-4 text-white">{playerProfile.firstName.default} {playerProfile.lastName.default}</h2>
                         </div>
-                        <div className="bg-slate-700 rounded-lg p-3 mr-3 w-96 flex flex-col">
+                        <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto">
                             <div className="flex-grow flex items-center justify-center">
                                 <div className="text-7xl">{expectedWeeklyPointTotal.toFixed(2)}</div>
                             </div>
                             <h3 className="font-medium text-gray-900 text-white flex justify-center">Expected Weekly Point Total</h3>
                         </div>
 
-                        <div className="rounded-lg bg-slate-700 p-3 w-full">
+                        <div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center w-full md:w-full lg:w-auto">
                             <h3 className="font-medium text-gray-900 dark:text-white">Career Regular Season Stats</h3>
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center">
                                 <FullStatsTable player={playerProfile} />
                             </div>
                         </div>
                     </div>
 
                     <h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3">
                         {games.map((game) => (
                             <div
                             key={game.id}
-                            className="bg-slate-700 rounded-lg p-3 w-full py-3 text-sm [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                            className="bg-slate-700 rounded-lg p-3 text-sm"
                             >
                                 <div className="whitespace-nowrap px-3 py-3 flex justify-between">
                                     <div className="flex flex-col">

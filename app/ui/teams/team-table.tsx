@@ -1,16 +1,19 @@
 
 
-import { NHLTeamAPI } from '@/app/lib/nhl-teams.api';
-import NHLTeamLogo from './team-logo';
+import { NHLTeamAPI } from '@/app/api/nhl-teams.api';
+import NHLTeamLogo from '../visuals/team-logo';
+import { roundToDecimal } from '@/app/utils/rounding-util';
+import clsx from 'clsx';
 
 export default async function TeamTable() {
-    const teams = await NHLTeamAPI.fetchTeams();
+  const teams = await NHLTeamAPI.fetchTeams();
 
-    if (!Array.isArray(teams)) {
-        return <div>No standings data available.</div>;
-    }
+  if (!Array.isArray(teams)) {
+      return <div>No standings data available.</div>;
+  }
+  console.log(teams)
   return (
-    <div className="mt-6 flow-root">
+    <div className="mt-6 flow-root w-full">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0 dark:bg-slate-700">
           <div className="md:hidden">
@@ -34,14 +37,59 @@ export default async function TeamTable() {
               </div>
             ))}
           </div>
-          <table className="hidden min-w-full text-gray-900 dark:text-white md:table w-96">
+          <table className="hidden min-w-full text-gray-900 dark:text-white md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Rank
                 </th>
-                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                <th scope="col" className="px-3 py-5 font-medium">
                   Team 
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Wins 
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Losses 
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  OT Losses 
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Points
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Points %
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  RW
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  ROW
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  GF
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  GA
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  DIFF
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  HOME
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  AWAY
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  S/O
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  L10
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  STRK
                 </th>
               </tr>
             </thead>
@@ -59,6 +107,58 @@ export default async function TeamTable() {
                       <NHLTeamLogo imageUrl={team.teamLogo} width={50} height={50} alt={team.teamName.default} />
                       <div className='ml-3'>{team.teamName.default}</div>
                     </div>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.wins}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.losses}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.otLosses}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.points}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {roundToDecimal(team.pointPctg, 3)}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.regulationWins}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.regulationPlusOtWins}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {team.goalFor}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3" >
+                    {team.goalAgainst}
+                  </td>
+                  <td  className={clsx(
+                    'whitespace-nowrap px-3 py-3',
+                    {
+                      'text-green-600': team.goalDifferential > 0,
+                    },{
+                      'text-red-600': team.goalDifferential < 0,
+                    },
+                  )}>
+                    {team.goalDifferential > 0 ? `+${team.goalDifferential}` : team.goalDifferential}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3" >
+                    {team.homeWins}-{team.homeLosses}-{team.homeOtLosses}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3" >
+                    {team.roadWins}-{team.roadLosses}-{team.roadOtLosses}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3" >
+                    {team.shootoutWins}-{team.shootoutLosses}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3" >
+                    {team.l10Wins}-{team.l10Losses}-{team.l10OtLosses}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3" >
+                    {team.streakCode}{team.streakCount}
                   </td>
                 </tr>
               ))}

@@ -17,7 +17,7 @@ export default function NHLTeamLogo(props: NHLTeamLogoProps) {
           src={props.imageUrl}
           width={props.width}
           height={props.height}
-          className={`hidden md:block ${props.className ? props.className : ''}`}
+          className={`${props.className ? props.className : ''}`}
           alt={`${props.alt} logo`}
         />
       </div>
