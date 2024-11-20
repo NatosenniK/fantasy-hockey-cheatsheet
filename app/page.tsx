@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import PlayerStatSkeleton from "./ui/visuals/skeletons";
-import Search from "./ui/search";
 import SearchWithPlayer from "./ui/player/player";
 
 export default async function Home() { 

@@ -1,6 +1,5 @@
 'use client';
 
-import { PlayerSearch } from "@/app/lib/nhl-player.types";
 import { useState } from "react";
 import Search, { SelectedPlayerDetails } from "../search";
 import PlayerStatsTable from "./player-stats";

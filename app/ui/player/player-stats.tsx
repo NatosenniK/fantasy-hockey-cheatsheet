@@ -1,4 +1,3 @@
-import { PlayerSearch } from "@/app/lib/nhl-player.types";
 import NHLTeamLogo from "../visuals/team-logo";
 import CondensedStatsTable from "./condensed-stats-table";
 import FullStatsTable from "./full-stats-table";

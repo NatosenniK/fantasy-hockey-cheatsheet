@@ -13,7 +13,7 @@ export interface SelectedPlayerDetails {
     playerProfile: PlayerInfoFull
     games: Games
     prevStats: PrevStats
-    expectedWeeklyPointTotal: Number
+    expectedWeeklyPointTotal: number
     weekProjections: SeasonTotals
 }
 
@@ -42,6 +42,7 @@ export default function Search({ placeholder, onPlayerSelection }: { placeholder
       const playerData = await findPlayer(player.playerId); // Await the result
       onPlayerSelection(playerData); // Pass player data if needed
       setSelectedPlayer(player);
+      console.log(selectedPlayer)
       setShowDropdown(false);
   };
 
