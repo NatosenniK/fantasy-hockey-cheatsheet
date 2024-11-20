@@ -1,6 +1,6 @@
 # Fantasy Hockey Cheatsheet
 
-This project is a fantasy hockey cheatsheet application built using React and Next.js. It provides tools and resources to help users make informed decisions for their fantasy hockey drafts and roster management.
+This project is a fantasy hockey cheatsheet application built using React and Next.js. It provides tools and resources to help users make informed decisions for their fantasy hockey starting lineup and roster management.
 
 ## Table of Contents
 
