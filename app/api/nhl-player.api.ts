@@ -1,22 +1,26 @@
-import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals } from "../lib/nhl-player.types"
+import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals, PlayerSearchResults } from "../lib/nhl-player.types"
 import { DateService } from "../utils/date.util"
 
 class NHLPlayerAPIPrototype {
-    private playerId = "8478013" // Player ID
 
     // Fetch Connor McDavid's season stats
-    async fetchPlayerStats(): Promise<PlayerInfoFull> {
-        const response = await fetch(`https://api-web.nhle.com/v1/player/${this.playerId}/landing`)
+    async fetchPlayerStats(playerId: string): Promise<PlayerInfoFull> {
+        const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/landing`)
         if (!response.ok) throw new Error("Failed to fetch player stats")
         const data = await response.json()
         return data
     }
 
-    async searchForPlayer(query: string): Promise<any> {
+    async searchForPlayer(query: string): Promise<PlayerSearchResults> {
         const response = await fetch (`https://search.d3.nhle.com/api/v1/search/player?culture=en-us&limit=20&q=${query}`)
         if (!response.ok) throw new Error("Failed to search")
-        const data = await response.json()
-        return data
+
+        const searchObject = await response.json()
+
+        // Extract NHL seasons dynamically from the `seasonTotals` array
+        const filteredResults = searchObject
+            .filter((filteredResult: any) => filteredResult.teamAbbrev !== null)
+        return filteredResults
     }
 
     async fetchPlayerMatchupStats(abbrev: string): Promise<Games> {
@@ -68,7 +72,7 @@ class NHLPlayerAPIPrototype {
             .filter((season: any) => season.leagueAbbrev === leagueAbbrev && season.gameTypeId === gameTypeId)
             .map((season: any) => season.season);
 
-        console.log(seasons)
+        // console.log(seasons)
     
         // Prepare an object to store stats against each team
         const statsByTeam: { [teamAbbrev: string]: SeasonTotals } = {}

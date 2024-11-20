@@ -233,3 +233,26 @@ export interface PlayerInfoFull {
     }
    
 }
+
+export interface PlayerSearch {
+    playerId: string
+    name: string
+    positionCode: string
+    teamId: string
+    teamAbbrev: string
+    lastTeamId: string
+    lastTeamAbbrev: string
+    lastSeasonId: string
+    sweaterNumber: number
+    active: string
+    height: string
+    heightInInches: number
+    heightInCentimeters: number
+    weightInPounds: number
+    weightInKilograms: number
+    birthCity: string
+    birthStateProvince: string
+    birthCountry: string
+}
+
+export type PlayerSearchResults = PlayerSearch[]

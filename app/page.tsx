@@ -1,6 +1,7 @@
 import { Suspense } from "react";
-import PlayerStatsTable from "./ui/player/player-stats";
 import PlayerStatSkeleton from "./ui/visuals/skeletons";
+import Search from "./ui/search";
+import SearchWithPlayer from "./ui/player/player";
 
 export default async function Home() { 
 
@@ -9,7 +10,7 @@ export default async function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <div className="w-full">
           <Suspense fallback={<PlayerStatSkeleton />}>
-            <PlayerStatsTable />
+            <SearchWithPlayer />
           </Suspense>
         </div>
       </main>
