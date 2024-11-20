@@ -4,7 +4,7 @@ import { SeasonTotals } from "@/app/lib/nhl-player.types";
 interface CondensedStatsTableProps {
     stats: SeasonTotals
 }
-export default async function CondensedStatsTable({stats}: CondensedStatsTableProps) {
+export default function CondensedStatsTable({stats}: CondensedStatsTableProps) {
   return (
     <div className="mt-6 flow-root ">
       <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">

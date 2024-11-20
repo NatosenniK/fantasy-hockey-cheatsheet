@@ -2,10 +2,10 @@ import { NHLPlayerAPI } from "../api/nhl-player.api";
 import { PlayerInfoFull, Games, PrevStats, SeasonTotals } from "../lib/nhl-player.types";
 import { roundToDecimal } from "./rounding-util";
 
-export async function FetchPlayerStats(playerId: string) {
+export async function FetchPlayerStats(playerId: number) {
     const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats(playerId);
     const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats(playerProfile.currentTeamAbbrev);
-    const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(8478013, 2);
+    const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(playerId, 2);
 
     // Fantasy values
     const goalWeight = 3;

@@ -2,7 +2,7 @@
 
 import { FetchPlayerStats } from "../utils/fetch-player-stats";
 
-export async function findPlayer(playerId: string) {
+export async function findPlayer(playerId: number) {
     try {
         const { playerProfile, games, prevStats, expectedWeeklyPointTotal, weekProjections } = await FetchPlayerStats(playerId);
         return { playerProfile, games, prevStats, expectedWeeklyPointTotal, weekProjections };

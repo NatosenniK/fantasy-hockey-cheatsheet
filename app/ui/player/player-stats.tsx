@@ -9,7 +9,7 @@ import { roundValue } from "@/app/utils/rounding-util";
 import { SelectedPlayerDetails } from "../search";
 
 
-export default async function PlayerStatsTable({player}: {player: SelectedPlayerDetails}) {
+export default function PlayerStatsTable({player}: {player: SelectedPlayerDetails}) {
 
     if(!player) {
         return<div>Loading...</div>

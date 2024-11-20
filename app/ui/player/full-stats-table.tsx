@@ -5,7 +5,7 @@ import { roundToDecimal } from "@/app/utils/rounding-util";
 interface FullStatsTableProps {
     player: PlayerInfoFull
 }
-export default async function FullStatsTable({player}: FullStatsTableProps) {
+export default function FullStatsTable({player}: FullStatsTableProps) {
 
     if (!player || !player.careerTotals) {
         return <div>Loading...</div>;

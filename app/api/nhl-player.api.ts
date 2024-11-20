@@ -4,7 +4,7 @@ import { DateService } from "../utils/date.util"
 class NHLPlayerAPIPrototype {
 
     // Fetch Connor McDavid's season stats
-    async fetchPlayerStats(playerId: string): Promise<PlayerInfoFull> {
+    async fetchPlayerStats(playerId: number): Promise<PlayerInfoFull> {
         const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/landing`)
         if (!response.ok) throw new Error("Failed to fetch player stats")
         const data = await response.json()
