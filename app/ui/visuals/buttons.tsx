@@ -8,7 +8,6 @@ export function MobileMenuButton() {
     const [isOpen, setIsOpen] = useState(false);
   
     const toggleSideSheet = () => {
-      console.log('click')
       setIsOpen(!isOpen);
     };
     return (

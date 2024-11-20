@@ -22,9 +22,9 @@ export function HeaderElement() {
                     </div>
                     <div className="hidden justify-between items-center w-full xl:flex xl:w-auto lg:order-2" id="mobile-menu-2">
                         <NavLinks />
-                        <div className="pl-4">
-                            {/* <ThemeSwitch /> */}
-                        </div>
+                        {/* <div className="pl-4">
+                            <ThemeSwitch />
+                        </div> */}
                         
                     </div>
                 </div>

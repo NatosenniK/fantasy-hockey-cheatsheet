@@ -25,7 +25,7 @@ export default async function PlayerStatsTable() {
     return (
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
-                <div className="rounded-lg p-2 md:pt-0">
+                <div className="p-2 md:pt-0">
                     <div className="flex items-stretch mb-6 flex-wrap">
                         <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center">
                             <PlayerHeadshot width={150} height={150} imageUrl={playerProfile.headshot} />
@@ -38,7 +38,7 @@ export default async function PlayerStatsTable() {
                             <h3 className="font-medium text-gray-900 text-white flex justify-center">Expected Weekly Point Total</h3>
                         </div>
 
-                        <div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center w-full md:w-full lg:w-auto">
+                        <div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow">
                             <h3 className="font-medium text-gray-900 dark:text-white">Career Regular Season Stats</h3>
                             <div className="flex items-center">
                                 <FullStatsTable player={playerProfile} />
@@ -58,7 +58,10 @@ export default async function PlayerStatsTable() {
                                         <NHLTeamLogo imageUrl={game.homeTeam.logo} width={50} height={50} alt={game.homeTeam.commonName.default} className="mb-3" />
                                         <div>{game.homeTeam.commonName.default}</div>
                                     </div>
-                                    <div>at</div>
+                                    <div className="flex flex-col justify-center items-center">
+                                        <div>at</div>
+                                        <div>{game.gameDate}</div>
+                                    </div>
                                     <div className="flex flex-col items-end">
                                         <NHLTeamLogo imageUrl={game.awayTeam.logo} width={50} height={50} alt={game.awayTeam.commonName.default} className="mb-3" />
                                         <div>{game.awayTeam.commonName.default}</div>

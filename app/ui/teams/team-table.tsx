@@ -11,7 +11,7 @@ export default async function TeamTable() {
   if (!Array.isArray(teams)) {
       return <div>No standings data available.</div>;
   }
-  console.log(teams)
+
   return (
     <div className="mt-6 flow-root w-full">
       <div className="inline-block min-w-full align-middle">

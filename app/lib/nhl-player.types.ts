@@ -36,6 +36,8 @@ export interface Game {
         logo: string
     }
     gameDate: string
+    easternUTCOffset: string
+    startTimeUTC: string
 }
 
 export type Games = Game[]
