@@ -10,7 +10,6 @@ export default function SearchWithPlayer() {
   const [selectedPlayer, setSelectedPlayer] = useState<SelectedPlayerDetails | null>(null);
 
   const handlePlayerSelection = (player: SelectedPlayerDetails) => {
-    console.log("Selected player:", player);
     setSelectedPlayer(player);
   };
 

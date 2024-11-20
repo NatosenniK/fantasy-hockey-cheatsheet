@@ -4,8 +4,7 @@ import CondensedStatsTable from "./condensed-stats-table";
 import FullStatsTable from "./full-stats-table";
 import { PlayerHeadshot } from "../visuals/headshot";
 import ProjectedWeeklyTotals from "./projected-weekly-totals";
-import { FetchPlayerStats } from "@/app/utils/fetch-player-stats";
-import { roundValue } from "@/app/utils/rounding-util";
+import { RoundingService } from "@/app/utils/rounding-util";
 import { SelectedPlayerDetails } from "../search";
 
 
@@ -19,7 +18,7 @@ export default function PlayerStatsTable({player}: {player: SelectedPlayerDetail
     Object.keys(player.weekProjections).forEach((key) => {
         const value = player.weekProjections[key as keyof typeof player.weekProjections];
         if (typeof value === 'number') {
-            player.weekProjections[key as keyof typeof player.weekProjections] = roundValue(value);
+            player.weekProjections[key as keyof typeof player.weekProjections] = RoundingService.roundValue(value);
         }
     });
     

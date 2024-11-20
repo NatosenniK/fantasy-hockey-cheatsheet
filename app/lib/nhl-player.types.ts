@@ -235,7 +235,7 @@ export interface PlayerInfoFull {
 }
 
 export interface PlayerSearch {
-    playerId: string
+    playerId: number
     name: string
     positionCode: string
     teamId: string

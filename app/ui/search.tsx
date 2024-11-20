@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { NHLPlayerAPI } from '../api/nhl-player.api';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Games, PlayerInfoFull, PlayerSearch, PlayerSearchResults, PrevStats, SeasonTotals } from '../lib/nhl-player.types';
 import { findPlayer } from '../lib/actions';
 
@@ -39,17 +39,11 @@ export default function Search({ placeholder, onPlayerSelection }: { placeholder
   }, 300);
 
   const handleClick = async (player: PlayerSearch) => {
-    const playerData = await findPlayer(player.playerId); // Await the result
-    onPlayerSelection(playerData); // Pass player data if needed
-    console.log('CLICK');
-    console.log(playerData)
-    setSelectedPlayer(player);
-    setShowDropdown(false);
-};
-
-  useEffect(() => {
-    console.log(selectedPlayer)
-  }, [selectedPlayer])
+      const playerData = await findPlayer(player.playerId); // Await the result
+      onPlayerSelection(playerData); // Pass player data if needed
+      setSelectedPlayer(player);
+      setShowDropdown(false);
+  };
 
   return (
     <div className="relative flex flex-1 flex-shrink-0">

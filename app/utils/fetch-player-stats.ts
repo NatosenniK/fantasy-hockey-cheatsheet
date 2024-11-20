@@ -1,6 +1,6 @@
 import { NHLPlayerAPI } from "../api/nhl-player.api";
 import { PlayerInfoFull, Games, PrevStats, SeasonTotals } from "../lib/nhl-player.types";
-import { roundToDecimal } from "./rounding-util";
+import { RoundingService } from "./rounding-util";
 
 export async function FetchPlayerStats(playerId: number) {
     const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats(playerId);
@@ -33,7 +33,6 @@ export async function FetchPlayerStats(playerId: number) {
     if (games && prevStats) {
         games.forEach((game) => {
             const teamStats = prevStats[game.homeTeam.abbrev] || prevStats[game.awayTeam.abbrev];
-            console.log(teamStats)
             if (teamStats) {
                 const expGoals = (teamStats.goals / teamStats.gamesPlayed) * goalWeight;
                 const expAssists = (teamStats.assists / teamStats.gamesPlayed) * assistWeight;
@@ -65,7 +64,7 @@ export async function FetchPlayerStats(playerId: number) {
         playerProfile,
         games,
         prevStats,
-        expectedWeeklyPointTotal: roundToDecimal(expectedWeeklyPointTotal, 2),
+        expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
         weekProjections,
     };
 }

@@ -10,6 +10,8 @@ class DateServicePrototype {
         // Set the time to the end of the day
         endOfWeek.setHours(23, 59, 59, 999); 
 
+        startOfWeek.setHours(23, 59, 59, 999)
+
         return {
             startDate: startOfWeek,
             endDate: endOfWeek,

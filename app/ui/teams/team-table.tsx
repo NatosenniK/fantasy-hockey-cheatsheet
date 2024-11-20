@@ -2,7 +2,7 @@
 
 import { NHLTeamAPI } from '@/app/api/nhl-teams.api';
 import NHLTeamLogo from '../visuals/team-logo';
-import { roundToDecimal } from '@/app/utils/rounding-util';
+import { RoundingService } from '@/app/utils/rounding-util';
 import clsx from 'clsx';
 
 export default async function TeamTable() {
@@ -121,7 +121,7 @@ export default async function TeamTable() {
                     {team.points}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {roundToDecimal(team.pointPctg, 3)}
+                    {RoundingService.roundToDecimal(team.pointPctg, 3)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {team.regulationWins}

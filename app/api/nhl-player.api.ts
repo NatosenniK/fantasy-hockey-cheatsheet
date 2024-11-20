@@ -27,7 +27,7 @@ class NHLPlayerAPIPrototype {
     
         const { startDate, endDate } = DateService.getThisWeekRange();
 
-        // console.log(`Fetching games from ${startDate} to ${endDate}`);
+        console.log(`Fetching games from ${startDate} to ${endDate}`);
     
         // Fetch the team's games for the season
         const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/now`);
