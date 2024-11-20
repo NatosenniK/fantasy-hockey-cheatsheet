@@ -85,6 +85,12 @@ export interface SeasonTotals {
     shorthandedAssists: number
 }
 
+export interface NHLSeason {
+    season: string;
+    leagueAbbrev: string;
+    gameTypeId: number;
+}
+
 export type PrevStats = {
     [teamAbbrev: string]: SeasonTotals;
 };

@@ -83,7 +83,7 @@ export default function FullStatsTable({player}: FullStatsTableProps) {
                                         S%
                                     </div>
                                     <div>
-                                        {player.careerTotals.regularSeason.shootingPctg}
+                                        {RoundingService.roundToDecimal(player.careerTotals.regularSeason.shootingPctg, 3)}
                                     </div>
                                 </div>
                                 <div className='flex justify-between items-center'>
@@ -195,7 +195,7 @@ export default function FullStatsTable({player}: FullStatsTableProps) {
                                 {player.careerTotals.regularSeason.powerPlayPoints}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-                                {player.careerTotals.regularSeason.shootingPctg}
+                                {RoundingService.roundToDecimal(player.careerTotals.regularSeason.shootingPctg, 3)}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
                                 {player.careerTotals.regularSeason.shorthandedGoals}

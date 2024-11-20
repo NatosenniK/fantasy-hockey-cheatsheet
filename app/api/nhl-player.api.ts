@@ -1,4 +1,4 @@
-import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals, PlayerSearchResults } from "../lib/nhl-player.types"
+import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals, PlayerSearchResults, NHLSeason, PlayerSearch } from "../lib/nhl-player.types"
 import { DateService } from "../utils/date.util"
 
 class NHLPlayerAPIPrototype {
@@ -19,7 +19,7 @@ class NHLPlayerAPIPrototype {
 
         // Extract NHL seasons dynamically from the `seasonTotals` array
         const filteredResults = searchObject
-            .filter((filteredResult: any) => filteredResult.teamAbbrev !== null)
+            .filter((filteredResult: PlayerSearch) => filteredResult.teamAbbrev !== null)
         return filteredResults
     }
 
@@ -69,8 +69,8 @@ class NHLPlayerAPIPrototype {
 
         // Extract NHL seasons dynamically from the `seasonTotals` array
         const seasons = playerFullStats.seasonTotals
-            .filter((season: any) => season.leagueAbbrev === leagueAbbrev && season.gameTypeId === gameTypeId)
-            .map((season: any) => season.season);
+            .filter((season: NHLSeason) => season.leagueAbbrev === leagueAbbrev && season.gameTypeId === gameTypeId)
+            .map((season: NHLSeason) => season.season);
 
         // console.log(seasons)
     
