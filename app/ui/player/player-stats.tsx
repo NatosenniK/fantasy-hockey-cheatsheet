@@ -1,7 +1,4 @@
-// components/McDavidStatsTable.tsx
-
-import { NHLPlayerAPI } from "@/app/api/nhl-player.api";
-import { PlayerInfoFull, Games, PrevStats, SeasonTotals } from "@/app/lib/nhl-player.types";
+import { PlayerSearch } from "@/app/lib/nhl-player.types";
 import NHLTeamLogo from "../visuals/team-logo";
 import CondensedStatsTable from "./condensed-stats-table";
 import FullStatsTable from "./full-stats-table";
@@ -9,16 +6,20 @@ import { PlayerHeadshot } from "../visuals/headshot";
 import ProjectedWeeklyTotals from "./projected-weekly-totals";
 import { FetchPlayerStats } from "@/app/utils/fetch-player-stats";
 import { roundValue } from "@/app/utils/rounding-util";
+import { SelectedPlayerDetails } from "../search";
 
 
-export default async function PlayerStatsTable() {
+export default function PlayerStatsTable({player}: {player: SelectedPlayerDetails}) {
+
+    if(!player) {
+        return<div>Loading...</div>
+    }
+
     
-    const { playerProfile, games, prevStats, expectedWeeklyPointTotal, weekProjections } = await FetchPlayerStats();
-    
-    Object.keys(weekProjections).forEach((key) => {
-        const value = weekProjections[key as keyof typeof weekProjections];
+    Object.keys(player.weekProjections).forEach((key) => {
+        const value = player.weekProjections[key as keyof typeof player.weekProjections];
         if (typeof value === 'number') {
-            weekProjections[key as keyof typeof weekProjections] = roundValue(value);
+            player.weekProjections[key as keyof typeof player.weekProjections] = roundValue(value);
         }
     });
     
@@ -28,12 +29,12 @@ export default async function PlayerStatsTable() {
                 <div className="p-2 md:pt-0">
                     <div className="flex items-stretch mb-6 flex-wrap">
                         <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center">
-                            <PlayerHeadshot width={150} height={150} imageUrl={playerProfile.headshot} />
-                            <h2 className="text-lg font-semibold mt-4 text-white">{playerProfile.firstName.default} {playerProfile.lastName.default}</h2>
+                            <PlayerHeadshot width={150} height={150} imageUrl={player.playerProfile.headshot} />
+                            <h2 className="text-lg font-semibold mt-4 text-white">{player.playerProfile.firstName.default} {player.playerProfile.lastName.default}</h2>
                         </div>
                         <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto">
                             <div className="flex-grow flex items-center justify-center">
-                                <div className="text-7xl">{expectedWeeklyPointTotal.toFixed(2)}</div>
+                                <div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
                             </div>
                             <h3 className="font-medium text-gray-900 text-white flex justify-center">Expected Weekly Point Total</h3>
                         </div>
@@ -41,14 +42,14 @@ export default async function PlayerStatsTable() {
                         <div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow">
                             <h3 className="font-medium text-gray-900 dark:text-white">Career Regular Season Stats</h3>
                             <div className="flex items-center">
-                                <FullStatsTable player={playerProfile} />
+                                <FullStatsTable player={player.playerProfile} />
                             </div>
                         </div>
                     </div>
 
                     <h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
-                    <div className={`grid gap-6 md:grid-cols-1 lg:grid-cols-${games.length}`}>
-                        {games.map((game) => (
+                    <div className={`grid gap-6 md:grid-cols-1 lg:grid-cols-${player.games.length}`}>
+                        {player.games.map((game) => (
                             <div
                             key={game.id}
                             className="bg-slate-700 rounded-lg p-3 text-sm"
@@ -67,26 +68,26 @@ export default async function PlayerStatsTable() {
                                         <div>{game.awayTeam.commonName.default}</div>
                                     </div>
                                 </div>
-                                {game.homeTeam.abbrev !== playerProfile.currentTeamAbbrev &&
+                                {game.homeTeam.abbrev !== player.playerProfile.currentTeamAbbrev &&
                                     <div>
                                         <h3 className="text-lg">Career vs {game.homeTeam.commonName.default}</h3>
                                         <div>
-                                            {prevStats[game.homeTeam.abbrev] ? (
-                                                <CondensedStatsTable stats={prevStats[game.homeTeam.abbrev]} />
+                                            {player.prevStats[game.homeTeam.abbrev] ? (
+                                                <CondensedStatsTable stats={player.prevStats[game.homeTeam.abbrev]} />
                                             ) : (
                                                 <p>No stats available for {game.homeTeam.commonName.default}.</p>
                                             )}
                                         </div>
-                                        {/* <div className="mt-3">Projected fantasy points: {prevStats[game.homeTeam.abbrev]}</div> */}
+                                        {/* <div className="mt-3">Projected fantasy points: {player.prevStats[game.homeTeam.abbrev]}</div> */}
                                     </div>
                                 }
 
-                                {game.awayTeam.abbrev !== playerProfile.currentTeamAbbrev &&
+                                {game.awayTeam.abbrev !== player.playerProfile.currentTeamAbbrev &&
                                     <div>
                                         <h3 className="text-lg">Career vs {game.awayTeam.commonName.default}</h3>
                                         <div>
-                                            {prevStats[game.awayTeam.abbrev] ? (
-                                                <CondensedStatsTable stats={prevStats[game.awayTeam.abbrev]} />
+                                            {player.prevStats[game.awayTeam.abbrev] ? (
+                                                <CondensedStatsTable stats={player.prevStats[game.awayTeam.abbrev]} />
                                             ) : (
                                                 <p>No stats available for {game.awayTeam.commonName.default}.</p>
                                             )}
@@ -101,7 +102,7 @@ export default async function PlayerStatsTable() {
 
                     <div className="rounded-lg bg-slate-700 mt-4 p-3">
                         <h3 className="text-lg pl-4 pt-3">Projected Weekly Statline</h3>
-                        <ProjectedWeeklyTotals stats={weekProjections} />
+                        <ProjectedWeeklyTotals stats={player.weekProjections} />
                     </div>
                 </div>
             </div>

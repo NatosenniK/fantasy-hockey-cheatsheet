@@ -4,7 +4,7 @@ import { SeasonTotals } from "@/app/lib/nhl-player.types";
 interface ProjectedWeeklyTotalsProps {
     stats: SeasonTotals
 }
-export default async function ProjectedWeeklyTotals({stats}: ProjectedWeeklyTotalsProps) {
+export default function ProjectedWeeklyTotals({stats}: ProjectedWeeklyTotalsProps) {
   return (
     <div className="mt-3 flow-root ">
       <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
