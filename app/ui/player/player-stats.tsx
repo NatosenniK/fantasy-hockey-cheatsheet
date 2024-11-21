@@ -21,7 +21,7 @@ export default function PlayerStatsTable({player}: {player: SelectedPlayerDetail
             player.weekProjections[key as keyof typeof player.weekProjections] = RoundingService.roundValue(value);
         }
     });
-    
+
     return (
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
@@ -52,7 +52,15 @@ export default function PlayerStatsTable({player}: {player: SelectedPlayerDetail
                     </div>
 
                     <h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
-                    <div className={`grid gap-6 md:grid-cols-1 lg:grid-cols-${player.games.length}`}>
+                    <div className={`grid gap-6 md:grid-cols-1 ${
+                            player.games.length === 4
+                            ? "lg:grid-cols-4"
+                            : player.games.length === 3
+                            ? "lg:grid-cols-3"
+                            : player.games.length === 2
+                            ? "lg:grid-cols-2"
+                            : "lg:grid-cols-1"
+                        }`}>
                         {player.games.map((game) => (
                             <div
                             key={game.id}

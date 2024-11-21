@@ -1,20 +1,26 @@
 class DateServicePrototype {
     getThisWeekRange(): { startDate: Date; endDate: Date } {
-        const today = new Date();
-        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-        const endOfWeek = new Date(startOfWeek);
+        const todayUTC = new Date(); // Current time in UTC
+        const utcDay = todayUTC.getUTCDay(); // Get the day of the week (UTC)
+        const startOfWeekUTC = new Date(todayUTC); 
+        const endOfWeekUTC = new Date(todayUTC);
 
-        // Calculate Sunday by adding 7 days to the start of the week
-        endOfWeek.setDate(endOfWeek.getDate() + 7);  
+        // Calculate start of the week (Sunday at 23:59:59 UTC)
+        startOfWeekUTC.setUTCDate(todayUTC.getUTCDate() - utcDay);
+        startOfWeekUTC.setUTCHours(23, 59, 59, 999);
 
-        // Set the time to the end of the day
-        endOfWeek.setHours(23, 59, 59, 999); 
+        // Calculate end of the week (Sunday at 23:59:59 UTC)
+        endOfWeekUTC.setUTCDate(startOfWeekUTC.getUTCDate() + 6);
+        endOfWeekUTC.setUTCHours(23, 59, 59, 999);
 
-        startOfWeek.setHours(23, 59, 59, 999)
+        // Convert to Eastern Time (UTC-5)
+        const offsetHours = -5; // Eastern Standard Time
+        const startDate = new Date(startOfWeekUTC.getTime() + offsetHours * 60 * 60 * 1000);
+        const endDate = new Date(endOfWeekUTC.getTime() + offsetHours * 60 * 60 * 1000);
 
         return {
-            startDate: startOfWeek,
-            endDate: endOfWeek,
+            startDate,
+            endDate,
         };
     }
 }

@@ -42,11 +42,15 @@ class NHLPlayerAPIPrototype {
     
         // Filter games to include only those within the current week's date range
         const games = scheduleData.games.filter((game: Game) => {
+            
             const gameDate = normalizeDateWithOffset(game); // Adjusted gameDate
+            console.log('game date:', gameDate)
+
+
             return gameDate >= startDate && gameDate <= endDate; // Compare with fantasy week range
         });
     
-        // console.log("Filtered games: ", games);
+        console.log("Filtered games: ", games);
     
         return games;
     }

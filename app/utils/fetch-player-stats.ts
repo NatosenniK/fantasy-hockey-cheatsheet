@@ -43,7 +43,15 @@ export async function FetchPlayerStats(playerId: number) {
                 const expShorthandedGoals = (teamStats.shorthandedGoals / teamStats.gamesPlayed)
                 const expShorthandedAssists = ((teamStats.shorthandedPoints - teamStats.shorthandedGoals) / teamStats.gamesPlayed)
 
-                expectedWeeklyPointTotal += expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots + expPowerPlayPoints + expShorthandedGoals + expShorthandedAssists;
+                let basePoints = expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots;
+
+
+                if (playerProfile.position === "D") {
+                    const totalPoints = (teamStats.goals + teamStats.assists) / teamStats.gamesPlayed; // Calculate points per game
+                    basePoints += totalPoints; // Add +1 per point
+                }
+                
+                expectedWeeklyPointTotal += basePoints + expPowerPlayPoints + expShorthandedGoals + expShorthandedAssists;
 
                 // Update weekProjections
                 weekProjections.goals += (teamStats.goals / teamStats.gamesPlayed);
