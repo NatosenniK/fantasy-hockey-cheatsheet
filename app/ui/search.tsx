@@ -39,11 +39,12 @@ export default function Search({ placeholder, onPlayerSelection }: { placeholder
   }, 300);
 
   const handleClick = async (player: PlayerSearch) => {
+      setShowDropdown(false);
       const playerData = await findPlayer(player.playerId); // Await the result
       onPlayerSelection(playerData); // Pass player data if needed
       setSelectedPlayer(player);
       console.log(selectedPlayer)
-      setShowDropdown(false);
+      
   };
 
   return (

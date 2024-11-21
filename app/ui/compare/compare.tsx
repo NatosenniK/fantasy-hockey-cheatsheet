@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Search, { SelectedPlayerDetails } from "../search";
-import PlayerStatsTable from "./player-stats";
+import ComparePlayersTable from "./compare-players";
 
-export default function SearchWithPlayer() {
+
+export default function SearchCompare() {
   const [selectedPlayer, setSelectedPlayer] = useState<SelectedPlayerDetails | null>(null);
 
   const handlePlayerSelection = (player: SelectedPlayerDetails) => {
@@ -19,7 +20,7 @@ export default function SearchWithPlayer() {
           <h2 className="text-lg font-semibold">Player Stats</h2>
           {/* Pass the selected player to another component if needed */}
           {selectedPlayer &&
-            <PlayerStatsTable player={selectedPlayer} />
+            <ComparePlayersTable player={selectedPlayer} />
           }
           
         </div>
