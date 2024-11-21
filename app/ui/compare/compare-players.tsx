@@ -5,6 +5,7 @@ import { SelectedPlayerDetails } from "../search";
 import FullStatsTable from "../player/full-stats-table";
 import CondensedStatsTable from "../player/condensed-stats-table";
 import ProjectedWeeklyTotals from "../player/projected-weekly-totals";
+import { playerPosition } from "@/app/utils/position.utl";
 
 
 export default function ComparePlayersTable({player}: {player: SelectedPlayerDetails}) {
@@ -26,11 +27,16 @@ export default function ComparePlayersTable({player}: {player: SelectedPlayerDet
             <div className="inline-block max-w-full align-middle">
                 <div className="p-2 md:pt-0">
                     <div className="flex items-stretch mb-6 flex-wrap">
-                        <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center flex-grow">
+                        <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center">
                             <PlayerHeadshot width={150} height={150} imageUrl={player.playerProfile.headshot} />
                             <h2 className="text-lg font-semibold mt-4 text-white">{player.playerProfile.firstName.default} {player.playerProfile.lastName.default}</h2>
+                            <div className="flex items-center">
+                                <NHLTeamLogo imageUrl={player.playerProfile.teamLogo} width={30} height={30} alt={`${player.playerProfile.currentTeamAbbrev}`}  />
+                                <div className="text-md px-3 border-slate-500 border-l border-r ml-3">{player.playerProfile.sweaterNumber}</div>
+                                <div className="text-md px-3 border-slate-500">{playerPosition(player.playerProfile.position)}</div>
+                            </div>
                         </div>
-                        <div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto flex-grow">
+                        <div className="bg-slate-700 rounded-lg p-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto flex-grow">
                             <div className="flex-grow flex items-center justify-center">
                                 <div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
                             </div>

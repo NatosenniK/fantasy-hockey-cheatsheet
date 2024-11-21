@@ -237,6 +237,9 @@ export interface PlayerInfoFull {
         }
         
     }
+    teamLogo: string
+    sweaterNumber: number
+    position: string
    
 }
 
