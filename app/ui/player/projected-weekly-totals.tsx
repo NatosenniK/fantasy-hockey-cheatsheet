@@ -6,7 +6,7 @@ interface ProjectedWeeklyTotalsProps {
 }
 export default function ProjectedWeeklyTotals({stats}: ProjectedWeeklyTotalsProps) {
   return (
-    <div className="mt-3 flow-root overflow-hidden overflow-x-scroll">
+    <div className="mt-3 flow-root overflow-hidden overflow-x-auto">
       <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
         <div className="rounded-lg">
         <div className="md:hidden">

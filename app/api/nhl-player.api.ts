@@ -1,5 +1,6 @@
-import {  PlayerInfoFull, Games, Game, GameLog, SeasonTotals, PlayerSearchResults, NHLSeason, PlayerSearch } from "../lib/nhl-player.types"
+import {  PlayerInfoFull, Games, GameLog, SeasonTotals, PlayerSearchResults, NHLSeason, PlayerSearch } from "../lib/nhl-player.types"
 import { DateService } from "../utils/date.util"
+import { GameFilteringService } from "../utils/game-filtering.util"
 
 class NHLPlayerAPIPrototype {
 
@@ -34,25 +35,9 @@ class NHLPlayerAPIPrototype {
         if (!scheduleResponse.ok) throw new Error("Failed to fetch schedule");
         const scheduleData = await scheduleResponse.json();
     
-        // Normalize a date based on easternUTCOffset if required
-        const normalizeDateWithOffset = (game: Game) => {
-            const gameDateUtc = new Date(game.startTimeUTC);
-            return gameDateUtc;
-        };
+        const filteredGames = GameFilteringService.filterGamesForWeek(scheduleData.games);
     
-        // Filter games to include only those within the current week's date range
-        const games = scheduleData.games.filter((game: Game) => {
-            
-            const gameDate = normalizeDateWithOffset(game); // Adjusted gameDate
-            console.log('game date:', gameDate)
-
-
-            return gameDate >= startDate && gameDate <= endDate; // Compare with fantasy week range
-        });
-    
-        console.log("Filtered games: ", games);
-    
-        return games;
+        return filteredGames;
     }
     
     

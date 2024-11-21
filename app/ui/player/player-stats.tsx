@@ -6,6 +6,7 @@ import ProjectedWeeklyTotals from "./projected-weekly-totals";
 import { RoundingService } from "@/app/utils/rounding-util";
 import { SelectedPlayerDetails } from "../search";
 import { playerPosition } from "@/app/utils/position.utl";
+import { DateService } from "@/app/utils/date.util";
 
 
 export default function PlayerStatsTable({player}: {player: SelectedPlayerDetails}) {
@@ -66,14 +67,18 @@ export default function PlayerStatsTable({player}: {player: SelectedPlayerDetail
                             key={game.id}
                             className="bg-slate-700 rounded-lg p-3 text-sm"
                             >
+                                <div className="flex justify-between mb-3">
+                                    <div>Game Date:</div>
+                                    <div>{DateService.convertToReadableDateFromUTC(game.startTimeUTC, game.easternUTCOffset)}</div>
+                                </div>
                                 <div className="whitespace-nowrap px-3 py-3 flex justify-between">
+                                    
                                     <div className="flex flex-col">
                                         <NHLTeamLogo imageUrl={game.homeTeam.logo} width={50} height={50} alt={game.homeTeam.commonName.default} className="mb-3" />
                                         <div>{game.homeTeam.commonName.default}</div>
                                     </div>
                                     <div className="flex flex-col justify-center items-center">
                                         <div>at</div>
-                                        <div>{game.gameDate}</div>
                                     </div>
                                     <div className="flex flex-col items-end">
                                         <NHLTeamLogo imageUrl={game.awayTeam.logo} width={50} height={50} alt={game.awayTeam.commonName.default} className="mb-3" />

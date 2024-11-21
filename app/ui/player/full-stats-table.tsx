@@ -12,7 +12,7 @@ export default function FullStatsTable({player}: FullStatsTableProps) {
     }
 
     return (
-        <div className="mt-6 flow-root w-full overflow-hidden overflow-x-scroll">
+        <div className="mt-6 flow-root w-full overflow-hidden overflow-x-auto">
             <div className="inline-block min-w-full align-middle">
                 <div className="rounded-lg bg-slate-700">
                     <div className="md:hidden">
