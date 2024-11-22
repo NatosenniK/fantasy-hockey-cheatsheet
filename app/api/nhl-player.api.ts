@@ -65,6 +65,7 @@ class NHLPlayerAPIPrototype {
     
         // Prepare an object to store stats against each team
         const statsByTeam: { [teamAbbrev: string]: SeasonTotals } = {}
+
     
         for (const season of seasons) {
             // Fetch the player's game logs for this season
@@ -73,9 +74,11 @@ class NHLPlayerAPIPrototype {
             
             const data = await response.json()
             const gameLogs: GameLog[] = data.gameLog
-    
+
+            const filteredGameLogs = GameFilteringService.excludeGamesFromThisWeek(gameLogs)
+
             // Aggregate stats for each opponent
-            for (const game of gameLogs) {
+            for (const game of filteredGameLogs) {
                 const opponentAbbrev = game.opponentAbbrev
     
                 if (!statsByTeam[opponentAbbrev]) {
