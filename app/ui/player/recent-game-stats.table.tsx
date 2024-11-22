@@ -26,7 +26,7 @@ export default function RecentGameStatTable({ stats }: RecentGameStatTableProps)
 									</div>
 									<div className="flex justify-between items-center">
 										<div>+/-</div>
-										<div>{stats.plusMinus}</div>
+										<div>{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>PIM</div>
@@ -75,7 +75,7 @@ export default function RecentGameStatTable({ stats }: RecentGameStatTableProps)
 									{stats.points}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.plusMinus}
+									{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									{stats.pim}
