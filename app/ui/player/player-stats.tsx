@@ -113,9 +113,16 @@ export default function PlayerStatsTable({ player }: { player: SelectedPlayerDet
 								</div>
 								{game.homeTeam.abbrev !== player.playerProfile.currentTeamAbbrev && (
 									<div>
-										<h3 className="text-lg">Career vs {game.homeTeam.commonName.default}</h3>
+										<h3 className="text-lg">
+											Career vs {game.homeTeam.commonName.default}{' '}
+											{game.homeTeam.commonName.default === 'Utah Hockey Club'
+												? '/ Arizona Coyotes'
+												: ''}
+										</h3>
 										<div>
-											{player.prevStats[game.homeTeam.abbrev] ? (
+											{game.homeTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
+												<CondensedStatsTable stats={player.prevStats['ARI']} />
+											) : player.prevStats[game.homeTeam.abbrev] ? (
 												<CondensedStatsTable stats={player.prevStats[game.homeTeam.abbrev]} />
 											) : (
 												<p>No stats available for {game.homeTeam.commonName.default}.</p>
@@ -127,9 +134,16 @@ export default function PlayerStatsTable({ player }: { player: SelectedPlayerDet
 
 								{game.awayTeam.abbrev !== player.playerProfile.currentTeamAbbrev && (
 									<div>
-										<h3 className="text-lg">Career vs {game.awayTeam.commonName.default}</h3>
+										<h3 className="text-lg">
+											Career vs {game.awayTeam.commonName.default}{' '}
+											{game.awayTeam.commonName.default === 'Utah Hockey Club'
+												? '/ Arizona Coyotes'
+												: ''}
+										</h3>
 										<div>
-											{player.prevStats[game.awayTeam.abbrev] ? (
+											{game.awayTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
+												<CondensedStatsTable stats={player.prevStats['ARI']} />
+											) : player.prevStats[game.awayTeam.abbrev] ? (
 												<CondensedStatsTable stats={player.prevStats[game.awayTeam.abbrev]} />
 											) : (
 												<p>No stats available for {game.awayTeam.commonName.default}.</p>

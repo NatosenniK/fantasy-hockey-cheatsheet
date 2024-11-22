@@ -24,7 +24,6 @@ class NHLPlayerAPIPrototype {
     }
 
     async fetchPlayerMatchupStats(abbrev: string): Promise<Games> {
-    
         // Fetch the team's games for the season
         const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/now`);
         if (!scheduleResponse.ok) throw new Error("Failed to fetch schedule");
