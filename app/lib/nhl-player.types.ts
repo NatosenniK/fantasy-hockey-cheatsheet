@@ -240,8 +240,30 @@ export interface PlayerInfoFull {
     teamLogo: string
     sweaterNumber: number
     position: string
+    last5Games: Last5Games
    
 }
+
+export interface prevGame {
+    assists: number
+    gameDate: string,
+    gameId: number,
+    gameTypeId: number,
+    goals: number,
+    homeRoadFlag: string,
+    opponentAbbrev: string,
+    pim: number
+    plusMinus: number
+    points: number
+    powerPlayGoals: number
+    shifts: number
+    shorthandedGoals: number
+    shots: number
+    teamAbbrev: string
+    toi: string
+}
+
+export type Last5Games = prevGame[]
 
 export interface PlayerSearch {
     playerId: number

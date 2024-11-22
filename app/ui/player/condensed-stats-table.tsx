@@ -6,7 +6,7 @@ interface CondensedStatsTableProps {
 }
 export default function CondensedStatsTable({stats}: CondensedStatsTableProps) {
   return (
-    <div className="mt-6 flow-root ">
+    <div className="mt-3 flow-root ">
       <div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
         <div className="rounded-lg">
         <div className="md:hidden">

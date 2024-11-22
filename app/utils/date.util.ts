@@ -37,6 +37,22 @@ class DateServicePrototype {
         return readableDate;
     }
     
+    convertToReadableDate(dateStr: string): string {
+        // Split the input string to extract year, month, and day
+        const [year, month, day] = dateStr.split('-').map(Number);
+    
+        // Create a Date object explicitly in local time
+        const date = new Date(year, month - 1, day); // month is 0-indexed in Date
+    
+        // Format the date as a readable string
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    
+        return formattedDate;
+    }
     
 }
 
