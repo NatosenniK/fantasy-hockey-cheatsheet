@@ -53,7 +53,6 @@ export async function FetchPlayerStats(playerId: number) {
             weekProjections.pim += game.pim;
             weekProjections.shots += game.shots;
             weekProjections.points += game.points;
-            weekProjections.gamesPlayed += 1;
         });
 
         expectedWeeklyPointTotal += (last5GamesPointToal / 5)
