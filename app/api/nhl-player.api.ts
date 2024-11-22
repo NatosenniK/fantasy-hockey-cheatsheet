@@ -1,5 +1,4 @@
 import {  PlayerInfoFull, Games, GameLog, SeasonTotals, PlayerSearchResults, NHLSeason, PlayerSearch } from "../lib/nhl-player.types"
-import { DateService } from "../utils/date.util"
 import { GameFilteringService } from "../utils/game-filtering.util"
 
 class NHLPlayerAPIPrototype {
@@ -25,10 +24,6 @@ class NHLPlayerAPIPrototype {
     }
 
     async fetchPlayerMatchupStats(abbrev: string): Promise<Games> {
-    
-        const { startDate, endDate } = DateService.getThisWeekRange();
-
-        console.log(`Fetching games from ${startDate} to ${endDate}`);
     
         // Fetch the team's games for the season
         const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/now`);
@@ -60,8 +55,6 @@ class NHLPlayerAPIPrototype {
         const seasons = playerFullStats.seasonTotals
             .filter((season: NHLSeason) => season.leagueAbbrev === leagueAbbrev && season.gameTypeId === gameTypeId)
             .map((season: NHLSeason) => season.season);
-
-        // console.log(seasons)
     
         // Prepare an object to store stats against each team
         const statsByTeam: { [teamAbbrev: string]: SeasonTotals } = {}

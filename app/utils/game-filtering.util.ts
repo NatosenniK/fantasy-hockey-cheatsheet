@@ -29,7 +29,7 @@ class GameFilteringPrototype {
         };
     
         return gameLogs.filter((gameLog) => {
-            const easternGameDate = normalizeToEastern(gameLog.gameDate); // Use gameDate here
+            const easternGameDate = normalizeToEastern(gameLog.gameDate);
             return easternGameDate < startDate || easternGameDate > endDate;
         });
     }    

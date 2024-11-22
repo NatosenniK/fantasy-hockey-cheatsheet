@@ -58,7 +58,6 @@ export default function Search({
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-			console.log('Click outside detected')
 			setShowDropdown(false)
 		}
 	}
