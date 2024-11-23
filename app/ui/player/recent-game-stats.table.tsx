@@ -1,7 +1,7 @@
-import { prevGame } from '@/app/lib/nhl-player.types'
+import { GameLog } from '@/app/lib/nhl-player.types'
 
 interface RecentGameStatTableProps {
-	stats: prevGame
+	stats: GameLog
 }
 export default function RecentGameStatTable({ stats }: RecentGameStatTableProps) {
 	return (

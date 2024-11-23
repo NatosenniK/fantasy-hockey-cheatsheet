@@ -6,7 +6,7 @@ export async function FetchPlayerStats(playerId: number) {
 	const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats(playerId)
 	const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats(playerProfile.currentTeamAbbrev)
 	const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(playerId, 2)
-	const last5Games = playerProfile.last5Games
+	const last5Games = await NHLPlayerAPI.fetchRecentGames(playerId, 5)
 
 	// Fantasy values
 	const goalWeight = 3

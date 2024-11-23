@@ -7,8 +7,8 @@ import { useDebouncedCallback } from 'use-debounce'
 import { NHLPlayerAPI } from '../api/nhl-player.api'
 import { useEffect, useRef, useState } from 'react'
 import {
+	GameLogs,
 	Games,
-	Last5Games,
 	PlayerInfoFull,
 	PlayerSearch,
 	PlayerSearchResults,
@@ -23,7 +23,7 @@ export interface SelectedPlayerDetails {
 	prevStats: PrevStats
 	expectedWeeklyPointTotal: number
 	weekProjections: SeasonTotals
-	last5Games: Last5Games
+	last5Games: GameLogs
 }
 
 export default function Search({
