@@ -18,7 +18,7 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 
 	let expectedWeeklyPointTotal = 0
 	let expectedPointsPastPerformance = 0
-	let last5GamesPointToal = 0
+	let recentPerformanceTotal = 0
 
 	const weekProjections: SeasonTotals = {
 		goals: 0,
@@ -46,10 +46,20 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 			const basePoints =
 				(expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots) * recentPerformanceWeight
 
-			last5GamesPointToal += basePoints
+			recentPerformanceTotal += basePoints
+
+			weekProjections.goals += game.goals / gamesPlayed
+			weekProjections.assists += game.assists / gamesPlayed
+			weekProjections.plusMinus += game.plusMinus / gamesPlayed
+			weekProjections.pim += game.pim / gamesPlayed
+			weekProjections.shots += game.shots / gamesPlayed
+			weekProjections.points += (game.goals + game.assists) / gamesPlayed
+			weekProjections.powerPlayPoints += game.powerPlayPoints / gamesPlayed
+			weekProjections.shorthandedGoals += game.shorthandedGoals / gamesPlayed
+			weekProjections.shorthandedAssists += (game.shorthandedPoints - game.shorthandedGoals) / gamesPlayed
 		})
 
-		expectedWeeklyPointTotal += last5GamesPointToal / gamesPlayed
+		expectedWeeklyPointTotal += recentPerformanceTotal / gamesPlayed
 	}
 
 	if (games && prevStats) {
@@ -104,7 +114,7 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 		playerProfile,
 		games,
 		prevStats,
-		last5Games: recentPerformance,
+		recentPerformance: recentPerformance,
 		expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
 		weekProjections,
 	}

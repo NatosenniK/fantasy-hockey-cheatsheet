@@ -25,7 +25,7 @@ export interface SelectedPlayerDetails {
 	prevStats: PrevStats
 	expectedWeeklyPointTotal: number
 	weekProjections: SeasonTotals
-	last5Games: GameLogs
+	recentPerformance: GameLogs
 }
 
 export default function Search({

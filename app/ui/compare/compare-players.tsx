@@ -123,10 +123,10 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 					</div>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
-						Last {player.last5Games.length} games
+						Last {player.recentPerformance.length} games
 					</h2>
 					<div className={`grid gap-6 md:grid-cols-3 mb-6`}>
-						{player.last5Games.map((game) => (
+						{player.recentPerformance.map((game) => (
 							<div key={game.gameId} className="bg-slate-700 rounded-lg p-3 text-sm">
 								<div className="flex justify-between mb-3">
 									<div>Game Date:</div>
