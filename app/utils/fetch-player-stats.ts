@@ -108,7 +108,7 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 		})
 	}
 
-	expectedWeeklyPointTotal = (expectedWeeklyPointTotal / (games.length + 1)) * 3
+	expectedWeeklyPointTotal = (expectedWeeklyPointTotal / (games.length + 1)) * games.length
 
 	return {
 		playerProfile,
