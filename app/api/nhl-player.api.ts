@@ -11,7 +11,7 @@ import {
 import { GameFilteringService } from '../utils/game-filtering.util'
 
 class NHLPlayerAPIPrototype {
-	// Fetch Connor McDavid's season stats
+	// Fetch Player's career stats
 	async fetchPlayerStats(playerId: number): Promise<PlayerInfoFull> {
 		const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/landing`)
 		if (!response.ok) throw new Error('Failed to fetch player stats')
@@ -46,7 +46,7 @@ class NHLPlayerAPIPrototype {
 	}
 
 	async fetchCareerStatsVsTeams(playerId: number, gameType: number): Promise<{ [teamAbbrev: string]: SeasonTotals }> {
-		// Define the list of seasons (you might fetch this dynamically from an API if available)
+		// Define the list - league, game type (2 is regular season)
 		const leagueAbbrev = 'NHL'
 		const gameTypeId = 2
 		const playerStatsUrl = `https://api-web.nhle.com/v1/player/${playerId}/landing`
@@ -59,7 +59,7 @@ class NHLPlayerAPIPrototype {
 
 		const playerFullStats = await playerFullStatsResponse.json()
 
-		// Extract NHL seasons dynamically from the `seasonTotals` array
+		// Extract NHL seasons from the `seasonTotals` array
 		const seasons = playerFullStats.seasonTotals
 			.filter((season: NHLSeason) => season.leagueAbbrev === leagueAbbrev && season.gameTypeId === gameTypeId)
 			.map((season: NHLSeason) => season.season)
@@ -116,7 +116,7 @@ class NHLPlayerAPIPrototype {
 		return statsByTeam
 	}
 
-	async fetchRecentGames(playerId: number, numGames: number): Promise<GameLogs> {
+	async fetchRecentGames(playerId: number, numGames?: number): Promise<GameLogs> {
 		const gameType = 2
 		const season = '20242025'
 		const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/game-log/${season}/${gameType}`)
@@ -125,7 +125,11 @@ class NHLPlayerAPIPrototype {
 
 		const filteredGameLogs = GameFilteringService.excludeGamesFromThisWeek(gameLogs)
 
-		return filteredGameLogs.slice(0, numGames)
+		if (numGames !== null && numGames !== undefined) {
+			return filteredGameLogs.slice(0, numGames)
+		}
+
+		return filteredGameLogs
 	}
 }
 

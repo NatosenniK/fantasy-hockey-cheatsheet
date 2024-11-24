@@ -13,7 +13,7 @@ export default function SearchCompare() {
 
 	return (
 		<div>
-			<Search placeholder="Search players..." onPlayerSelection={handlePlayerSelection} />
+			<Search placeholder="Enter a player name..." onPlayerSelection={handlePlayerSelection} />
 			{selectedPlayer && (
 				<div className="mt-4">
 					<h2 className="text-lg font-semibold">Player Stats</h2>

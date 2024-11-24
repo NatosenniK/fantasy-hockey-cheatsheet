@@ -2,11 +2,11 @@ import { NHLPlayerAPI } from '../api/nhl-player.api'
 import { PlayerInfoFull, Games, PrevStats, SeasonTotals } from '../lib/nhl-player.types'
 import { RoundingService } from './rounding-util'
 
-export async function FetchPlayerStats(playerId: number) {
+export async function FetchPlayerStats(playerId: number, recentGames: number | null) {
 	const playerProfile: PlayerInfoFull = await NHLPlayerAPI.fetchPlayerStats(playerId)
 	const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats(playerProfile.currentTeamAbbrev)
 	const prevStats: PrevStats = await NHLPlayerAPI.fetchCareerStatsVsTeams(playerId, 2)
-	const last5Games = await NHLPlayerAPI.fetchRecentGames(playerId, 5)
+	const recentPerformance = await NHLPlayerAPI.fetchRecentGames(playerId, recentGames || undefined)
 
 	// Fantasy values
 	const goalWeight = 3
@@ -34,8 +34,9 @@ export async function FetchPlayerStats(playerId: number) {
 		shorthandedAssists: 0,
 	}
 
-	if (last5Games) {
-		last5Games.forEach((game) => {
+	if (recentPerformance) {
+		const gamesPlayed = recentPerformance.length
+		recentPerformance.forEach((game) => {
 			const expGoals = game.goals * goalWeight
 			const expAssists = game.assists * assistWeight
 			const expPlusMinus = game.plusMinus * plusMinusWeight
@@ -48,7 +49,7 @@ export async function FetchPlayerStats(playerId: number) {
 			last5GamesPointToal += basePoints
 		})
 
-		expectedWeeklyPointTotal += last5GamesPointToal / 5
+		expectedWeeklyPointTotal += last5GamesPointToal / gamesPlayed
 	}
 
 	if (games && prevStats) {
@@ -103,7 +104,7 @@ export async function FetchPlayerStats(playerId: number) {
 		playerProfile,
 		games,
 		prevStats,
-		last5Games,
+		last5Games: recentPerformance,
 		expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
 		weekProjections,
 	}
