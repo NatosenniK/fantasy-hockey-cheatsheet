@@ -34,8 +34,8 @@ export default function GoalieCondensedStatsTable({ stats }: GoalieCondensedStat
 										<div>{stats.saves + stats.goalsAgainst}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>GAA</div>
-										<div>{stats.saves / (stats.saves + stats.goalsAgainst)}</div>
+										<div>GA</div>
+										<div>{stats.goalsAgainst}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Save %</div>
@@ -64,7 +64,7 @@ export default function GoalieCondensedStatsTable({ stats }: GoalieCondensedStat
 									SA
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									GAA
+									GA
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									S%
@@ -89,10 +89,7 @@ export default function GoalieCondensedStatsTable({ stats }: GoalieCondensedStat
 									{stats.saves + stats.goalsAgainst}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{RoundingService.roundToDecimal(
-										stats.saves / (stats.saves + stats.goalsAgainst),
-										3,
-									)}
+									{stats.goalsAgainst}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									{RoundingService.roundToDecimal(stats.savePctg, 3)}

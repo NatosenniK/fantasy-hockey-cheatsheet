@@ -50,6 +50,10 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 										<div>GA</div>
 										<div>{stats.goalsAgainst}</div>
 									</div>
+									<div className="flex justify-between items-center">
+										<div>GAA</div>
+										<div>{stats.goalsAgainst / stats.gamesPlayed}</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -81,6 +85,9 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									GA
 								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									GAA
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -111,6 +118,9 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									{stats.goalsAgainst}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{stats.goalsAgainst / stats.gamesPlayed}
 								</td>
 							</tr>
 						</tbody>
