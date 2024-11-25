@@ -1,5 +1,4 @@
 import {
-	PlayerInfoFull,
 	Games,
 	GameLog,
 	SeasonTotals,
@@ -7,16 +6,24 @@ import {
 	NHLSeason,
 	PlayerSearch,
 	GameLogs,
+	PlayerProfile,
+	Goalie,
+	Skater,
 } from '../lib/nhl-player.types'
 import { GameFilteringService } from '../utils/game-filtering.util'
 
 class NHLPlayerAPIPrototype {
 	// Fetch Player's career stats
-	async fetchPlayerStats(playerId: number): Promise<PlayerInfoFull> {
+	async fetchPlayerStats(playerId: number): Promise<PlayerProfile> {
 		const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/landing`)
 		if (!response.ok) throw new Error('Failed to fetch player stats')
 		const data = await response.json()
-		return data
+
+		if (data.position === 'G') {
+			return data as Goalie
+		} else {
+			return data as Skater
+		}
 	}
 
 	async searchForPlayer(query: string): Promise<PlayerSearchResults> {

@@ -1,15 +1,16 @@
-import NHLTeamLogo from '../visuals/team-logo'
-import CondensedStatsTable from './condensed-stats-table'
-import FullStatsTable from './full-stats-table'
-import { PlayerHeadshot } from '../visuals/headshot'
-import ProjectedWeeklyTotals from './projected-weekly-totals'
+import NHLTeamLogo from '../../visuals/team-logo'
+import CondensedStatsTable from '../skater/condensed-stats-table'
+import FullStatsTable from '../skater/full-stats-table'
+import { PlayerHeadshot } from '../../visuals/headshot'
+import SkaterProjectedWeeklyTotals from '../skater/skater-projected-weekly-totals'
 import { RoundingService } from '@/app/utils/rounding-util'
-import { SelectedPlayerDetails } from '../search'
+import { SelectedPlayerDetails } from '../../search'
 import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
-import RecentGameStatTable from './recent-game-stats.table'
+import RecentGameStatTable from '../skater/recent-game-stats.table'
+import { Skater } from '@/app/lib/nhl-player.types'
 
-export default function PlayerStatsTable({ player }: { player: SelectedPlayerDetails }) {
+export default function FullGoalieProjection({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {
 		return <div>Loading...</div>
 	}
@@ -59,7 +60,7 @@ export default function PlayerStatsTable({ player }: { player: SelectedPlayerDet
 							<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
 								Projected Weekly Statline
 							</h2>
-							<ProjectedWeeklyTotals stats={player.weekProjections} />
+							<SkaterProjectedWeeklyTotals stats={player.weekProjections} />
 						</div>
 					</div>
 
@@ -184,7 +185,7 @@ export default function PlayerStatsTable({ player }: { player: SelectedPlayerDet
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
 					<div className="rounded-lg bg-slate-700 mt-4 p-3">
 						<div className="flex items-center">
-							<FullStatsTable player={player.playerProfile} />
+							<FullStatsTable player={player.playerProfile as Skater} />
 						</div>
 					</div>
 				</div>

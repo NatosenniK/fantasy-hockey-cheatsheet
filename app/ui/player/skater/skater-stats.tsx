@@ -1,16 +1,16 @@
-import NHLTeamLogo from '../visuals/team-logo'
-import { PlayerHeadshot } from '../visuals/headshot'
+import NHLTeamLogo from '../../visuals/team-logo'
+import CondensedStatsTable from './condensed-stats-table'
+import FullStatsTable from './full-stats-table'
+import { PlayerHeadshot } from '../../visuals/headshot'
+import SkaterProjectedWeeklyTotals from './skater-projected-weekly-totals'
 import { RoundingService } from '@/app/utils/rounding-util'
-import { SelectedPlayerDetails } from '../search'
-import FullStatsTable from '../player/skater/full-stats-table'
-import CondensedStatsTable from '../player/skater/condensed-stats-table'
-import SkaterProjectedWeeklyTotals from '../player/skater/skater-projected-weekly-totals'
+import { SelectedPlayerDetails } from '../../search'
 import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
-import RecentGameStatTable from '../player/skater/recent-game-stats.table'
+import RecentGameStatTable from './recent-game-stats.table'
 import { Skater } from '@/app/lib/nhl-player.types'
 
-export default function ComparePlayersTable({ player }: { player: SelectedPlayerDetails }) {
+export default function FullSkaterProjection({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {
 		return <div>Loading...</div>
 	}
@@ -24,7 +24,7 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 
 	return (
 		<div className="mt-6 flow-root">
-			<div className="inline-block max-w-full align-middle">
+			<div className="inline-block min-w-full align-middle">
 				<div className="p-2 md:pt-0">
 					<div className="flex items-stretch mb-6 flex-wrap">
 						<div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center">
@@ -47,7 +47,7 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 								</div>
 							</div>
 						</div>
-						<div className="bg-slate-700 rounded-lg p-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto flex-grow">
+						<div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto">
 							<div className="flex-grow flex items-center justify-center">
 								<div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
 							</div>
@@ -55,18 +55,39 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 								Expected Weekly Point Total
 							</h3>
 						</div>
-					</div>
 
-					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow mb-6">
-						<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Projected Weekly Statline</h2>
-						<SkaterProjectedWeeklyTotals stats={player.weekProjections} />
+						<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow">
+							<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
+								Projected Weekly Statline
+							</h2>
+							<SkaterProjectedWeeklyTotals stats={player.weekProjections} />
+						</div>
 					</div>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
-					<div className={`grid gap-6 md:grid-cols-1 mb-6`}>
+					<div
+						className={`grid gap-6 mb-6 md:grid-cols-1 ${
+							player.games.length === 4
+								? 'lg:grid-cols-4'
+								: player.games.length === 3
+									? 'lg:grid-cols-3'
+									: player.games.length === 2
+										? 'lg:grid-cols-2'
+										: 'lg:grid-cols-1'
+						}`}
+					>
 						{player.games.map((game) => (
 							<div key={game.id} className="bg-slate-700 rounded-lg p-3 text-sm">
-								<div className="whitespace-nowrap px-3 py-3 flex justify-between">
+								<div className="flex justify-between mb-3">
+									<div>Game Date:</div>
+									<div>
+										{DateService.convertToReadableDateFromUTC(
+											game.startTimeUTC,
+											game.easternUTCOffset,
+										)}
+									</div>
+								</div>
+								<div className="whitespace-nowrap px-3 py-3 mb-3 flex justify-between">
 									<div className="flex flex-col">
 										<NHLTeamLogo
 											imageUrl={game.homeTeam.logo}
@@ -79,7 +100,6 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 									</div>
 									<div className="flex flex-col justify-center items-center">
 										<div>at</div>
-										<div>{game.gameDate}</div>
 									</div>
 									<div className="flex flex-col items-end">
 										<NHLTeamLogo
@@ -94,9 +114,16 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 								</div>
 								{game.homeTeam.abbrev !== player.playerProfile.currentTeamAbbrev && (
 									<div>
-										<h3 className="text-lg">Career vs {game.homeTeam.commonName.default}</h3>
+										<h3 className="text-lg">
+											Career vs {game.homeTeam.commonName.default}{' '}
+											{game.homeTeam.commonName.default === 'Utah Hockey Club'
+												? '/ Arizona Coyotes'
+												: ''}
+										</h3>
 										<div>
-											{player.prevStats[game.homeTeam.abbrev] ? (
+											{game.homeTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
+												<CondensedStatsTable stats={player.prevStats['ARI']} />
+											) : player.prevStats[game.homeTeam.abbrev] ? (
 												<CondensedStatsTable stats={player.prevStats[game.homeTeam.abbrev]} />
 											) : (
 												<p>No stats available for {game.homeTeam.commonName.default}.</p>
@@ -108,9 +135,16 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 
 								{game.awayTeam.abbrev !== player.playerProfile.currentTeamAbbrev && (
 									<div>
-										<h3 className="text-lg">Career vs {game.awayTeam.commonName.default}</h3>
+										<h3 className="text-lg">
+											Career vs {game.awayTeam.commonName.default}{' '}
+											{game.awayTeam.commonName.default === 'Utah Hockey Club'
+												? '/ Arizona Coyotes'
+												: ''}
+										</h3>
 										<div>
-											{player.prevStats[game.awayTeam.abbrev] ? (
+											{game.awayTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
+												<CondensedStatsTable stats={player.prevStats['ARI']} />
+											) : player.prevStats[game.awayTeam.abbrev] ? (
 												<CondensedStatsTable stats={player.prevStats[game.awayTeam.abbrev]} />
 											) : (
 												<p>No stats available for {game.awayTeam.commonName.default}.</p>
@@ -122,11 +156,10 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 							</div>
 						))}
 					</div>
-
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
 						Last {player.recentPerformance.length} games
 					</h2>
-					<div className={`grid gap-6 md:grid-cols-3 mb-6`}>
+					<div className={`grid gap-6 md:grid-cols-5 mb-6`}>
 						{player.recentPerformance.map((game) => (
 							<div key={game.gameId} className="bg-slate-700 rounded-lg p-3 text-sm">
 								<div className="flex justify-between mb-3">

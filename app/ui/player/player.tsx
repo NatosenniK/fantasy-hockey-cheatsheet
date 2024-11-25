@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Search, { SelectedPlayerDetails } from '../search'
-import PlayerStatsTable from './player-stats'
+import FullSkaterProjection from './skater/skater-stats'
+import FullGoalieProjection from './goalie/goalie-stats'
 
 export default function SearchWithPlayer() {
 	const [selectedPlayer, setSelectedPlayer] = useState<SelectedPlayerDetails | null>(null)
@@ -19,7 +20,11 @@ export default function SearchWithPlayer() {
 					<div className="flex justify-between">
 						<h2 className="text-lg font-semibold">Player Stats</h2>
 					</div>
-					{selectedPlayer && <PlayerStatsTable player={selectedPlayer} />}
+					{selectedPlayer.playerProfile.position === 'G' ? (
+						<FullGoalieProjection player={selectedPlayer} />
+					) : (
+						<FullSkaterProjection player={selectedPlayer} />
+					)}
 				</div>
 			)}
 		</div>

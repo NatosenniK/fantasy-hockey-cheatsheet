@@ -3,7 +3,6 @@
 import { FetchPlayerStats } from '../utils/fetch-player-stats'
 
 export async function findPlayer(playerId: number, recentGames: number | null) {
-	console.log('recent Game: ', recentGames)
 	try {
 		const {
 			playerProfile,

@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import {
 	GameLogs,
 	Games,
-	PlayerInfoFull,
+	PlayerProfile,
 	PlayerSearch,
 	PlayerSearchResults,
 	PrevStats,
@@ -20,7 +20,7 @@ import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
 import Dropdown from './visuals/dropdown/dropdown'
 
 export interface SelectedPlayerDetails {
-	playerProfile: PlayerInfoFull
+	playerProfile: PlayerProfile
 	games: Games
 	prevStats: PrevStats
 	expectedWeeklyPointTotal: number
@@ -137,7 +137,7 @@ export default function Search({
 					label={'Projection Modifier'}
 					onSelect={handleSelect}
 					value={selectedDropdownValue}
-					className="w-56 ml-3"
+					className="w-40 md:w-48 ml-3"
 				/>
 			</div>
 			<FontAwesomeIcon

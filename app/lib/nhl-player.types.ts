@@ -184,11 +184,55 @@ export interface MatchupStat {
 	points: number
 }
 
+export type PlayerProfile = Goalie | Skater
+
 export interface PlayerInfoFull {
 	headshot: string
 	currentTeamAbbrev: string
 	firstName: { default: string }
 	lastName: { default: string }
+	teamLogo: string
+	sweaterNumber: number
+	position: string
+	last5Games: Last5Games
+}
+
+export interface Goalie extends PlayerInfoFull {
+	careerTotals: {
+		regularSeason: {
+			assists: number
+			gamesPlayed: number
+			gamesStarted: number
+			goals: number
+			goalsAgainst: number
+			goalsAgainstAvg: number
+			losses: number
+			otLosses: number
+			pim: number
+			savePctg: number
+			shotsAgainst: number
+			shutouts: number
+			ties: number
+			timeOnIce: number
+			wins: number
+		}
+	}
+	featuredStats: {
+		regularSeason: {
+			subSeason: {
+				gamesPlayed: number
+				goalsAgainstAvg: number
+				losses: number
+				otLosses: number
+				savePctg: number
+				shutouts: number
+				wins: number
+			}
+		}
+	}
+}
+
+export interface Skater extends PlayerInfoFull {
 	careerTotals: {
 		regularSeason: {
 			assists: number
@@ -219,10 +263,6 @@ export interface PlayerInfoFull {
 			shorthandedPoints: number
 		}
 	}
-	teamLogo: string
-	sweaterNumber: number
-	position: string
-	last5Games: Last5Games
 }
 
 export interface prevGame {
