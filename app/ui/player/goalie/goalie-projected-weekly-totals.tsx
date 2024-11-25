@@ -1,4 +1,5 @@
 import { GoalieSeasonTotals } from '@/app/lib/nhl-player.types'
+import { RoundingService } from '@/app/utils/rounding-util'
 
 interface GoalieProjectedWeeklyTotalsProps {
 	stats: GoalieSeasonTotals
@@ -38,7 +39,12 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Save %</div>
-										<div>{stats.savePctg}</div>
+										<div>
+											{RoundingService.roundToDecimal(
+												stats.saves / (stats.saves + stats.goalsAgainst),
+												3,
+											)}
+										</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>GA</div>
@@ -70,7 +76,7 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 									Saves
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									S%
+									Save %
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									GA
@@ -98,7 +104,10 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 									{stats.saves}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.savePctg}
+									{RoundingService.roundToDecimal(
+										stats.saves / (stats.saves + stats.goalsAgainst),
+										3,
+									)}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									{stats.goalsAgainst}

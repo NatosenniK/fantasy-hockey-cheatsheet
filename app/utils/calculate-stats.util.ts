@@ -166,14 +166,6 @@ class PlayerStatCalculationUtilityPrototype {
 					(expWins + expOtLosses + expGoalsAgainst + expSaves + expShutouts) * recentPerformanceWeight
 
 				recentPerformanceTotal += basePoints
-
-				weekProjections.wins += (game.decision === 'W' ? 1 : 0) / gamesPlayed
-				weekProjections.losses += (game.decision === 'L' ? 1 : 0) / gamesPlayed
-				weekProjections.otLosses += (game.decision === 'O' ? 1 : 0) / gamesPlayed
-				weekProjections.shutOuts += game.shutouts
-				weekProjections.goalsAgainst += game.goalsAgainst
-				weekProjections.saves += (game.shotsAgainst - game.goalsAgainst) / gamesPlayed
-				weekProjections.savePctg += game.savePctg / gamesPlayed
 			})
 
 			expectedWeeklyPointTotal += recentPerformanceTotal / gamesPlayed
