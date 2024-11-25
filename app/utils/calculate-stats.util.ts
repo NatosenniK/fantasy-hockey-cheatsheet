@@ -104,7 +104,7 @@ class PlayerStatCalculationUtilityPrototype {
 			})
 		}
 
-		expectedWeeklyPointTotal = (expectedWeeklyPointTotal / 4) * 3
+		expectedWeeklyPointTotal = (expectedWeeklyPointTotal / (games.length + 1)) * games.length
 
 		return {
 			recentPerformance: recentPerformance,

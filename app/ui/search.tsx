@@ -44,9 +44,9 @@ export default function Search({
 
 	function getRecentGameOptions(): DropdownOptionProps<number>[] {
 		return [
-			{ value: 0, label: 'Full Season' },
 			{ value: 5, label: 'Last 5 Games' },
 			{ value: 10, label: 'Last 10 Games' },
+			{ value: 0, label: 'Full Season' },
 		]
 	}
 
