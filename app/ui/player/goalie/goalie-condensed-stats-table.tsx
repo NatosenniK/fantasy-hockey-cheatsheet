@@ -1,9 +1,10 @@
-import { SeasonTotals, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { GoalieSeasonTotals, SeasonTotals } from '@/app/lib/nhl-player.types'
+import { RoundingService } from '@/app/utils/rounding-util'
 
-interface CondensedStatsTableProps {
-	stats: SkaterSeasonTotals
+interface GoalieCondensedStatsTableProps {
+	stats: GoalieSeasonTotals
 }
-export default function CondensedStatsTable({ stats }: CondensedStatsTableProps) {
+export default function GoalieCondensedStatsTable({ stats }: GoalieCondensedStatsTableProps) {
 	return (
 		<div className="mt-3 flow-root ">
 			<div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
@@ -17,28 +18,28 @@ export default function CondensedStatsTable({ stats }: CondensedStatsTableProps)
 										<div>{stats.gamesPlayed}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Goals</div>
-										<div>{stats.goals}</div>
+										<div>Wins</div>
+										<div>{stats.wins}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Assists</div>
-										<div>{stats.assists}</div>
+										<div>Losses</div>
+										<div>{stats.losses}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Points</div>
-										<div>{stats.points}</div>
+										<div>OT</div>
+										<div>{stats.otLosses}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>+/-</div>
-										<div>{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}</div>
+										<div>Shots Against</div>
+										<div>{stats.saves + stats.goalsAgainst}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>PIM</div>
-										<div>{stats.pim}</div>
+										<div>GAA</div>
+										<div>{stats.saves / (stats.saves + stats.goalsAgainst)}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Shots</div>
-										<div>{stats.shots}</div>
+										<div>Save %</div>
+										<div>{stats.savePctg}</div>
 									</div>
 								</div>
 							</div>
@@ -51,22 +52,22 @@ export default function CondensedStatsTable({ stats }: CondensedStatsTableProps)
 									GP
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									G
+									W
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									A
+									L
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									P
+									OT
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									+/-
+									SA
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PIM
+									GAA
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									S
+									S%
 								</th>
 							</tr>
 						</thead>
@@ -76,22 +77,25 @@ export default function CondensedStatsTable({ stats }: CondensedStatsTableProps)
 									{stats.gamesPlayed}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.goals}
+									{stats.wins}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.assists}
+									{stats.losses}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.points}
+									{stats.otLosses}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}
+									{stats.saves + stats.goalsAgainst}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.pim}
+									{RoundingService.roundToDecimal(
+										stats.saves / (stats.saves + stats.goalsAgainst),
+										3,
+									)}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.shots}
+									{RoundingService.roundToDecimal(stats.savePctg, 3)}
 								</td>
 							</tr>
 						</tbody>

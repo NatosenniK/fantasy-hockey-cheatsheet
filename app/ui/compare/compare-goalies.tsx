@@ -2,15 +2,15 @@ import NHLTeamLogo from '../visuals/team-logo'
 import { PlayerHeadshot } from '../visuals/headshot'
 import { RoundingService } from '@/app/utils/rounding-util'
 import { SelectedPlayerDetails } from '../search'
-import FullStatsTable from '../player/skater/full-stats-table'
-import CondensedStatsTable from '../player/skater/condensed-stats-table'
-import SkaterProjectedWeeklyTotals from '../player/skater/skater-projected-weekly-totals'
 import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
-import RecentGameStatTable from '../player/skater/recent-game-stats.table'
-import { Skater } from '@/app/lib/nhl-player.types'
+import { GoalieSeasonTotals, GoalieProfile } from '@/app/lib/nhl-player.types'
+import GoalieProjectedWeeklyTotals from '../player/goalie/goalie-projected-weekly-totals'
+import GoalieCondensedStatsTable from '../player/goalie/goalie-condensed-stats-table'
+import GoalieRecentGameStatTable from '../player/goalie/goalie-recent-game-stats-table'
+import GoalieCareerStatsTable from '../player/goalie/goalie-career-stats-table'
 
-export default function ComparePlayersTable({ player }: { player: SelectedPlayerDetails }) {
+export default function CompareGoaliesTable({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {
 		return <div>Loading...</div>
 	}
@@ -59,7 +59,7 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 
 					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow mb-6">
 						<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Projected Weekly Statline</h2>
-						<SkaterProjectedWeeklyTotals stats={player.weekProjections} />
+						<GoalieProjectedWeeklyTotals stats={player.weekProjections as GoalieSeasonTotals} />
 					</div>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
@@ -97,7 +97,9 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 										<h3 className="text-lg">Career vs {game.homeTeam.commonName.default}</h3>
 										<div>
 											{player.prevStats[game.homeTeam.abbrev] ? (
-												<CondensedStatsTable stats={player.prevStats[game.homeTeam.abbrev]} />
+												<GoalieCondensedStatsTable
+													stats={player.prevStats[game.homeTeam.abbrev] as GoalieSeasonTotals}
+												/>
 											) : (
 												<p>No stats available for {game.homeTeam.commonName.default}.</p>
 											)}
@@ -111,7 +113,9 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 										<h3 className="text-lg">Career vs {game.awayTeam.commonName.default}</h3>
 										<div>
 											{player.prevStats[game.awayTeam.abbrev] ? (
-												<CondensedStatsTable stats={player.prevStats[game.awayTeam.abbrev]} />
+												<GoalieCondensedStatsTable
+													stats={player.prevStats[game.awayTeam.abbrev] as GoalieSeasonTotals}
+												/>
 											) : (
 												<p>No stats available for {game.awayTeam.commonName.default}.</p>
 											)}
@@ -142,7 +146,7 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 								</div>
 								<div>
 									<div>
-										<RecentGameStatTable stats={game} />
+										<GoalieRecentGameStatTable stats={game} />
 									</div>
 								</div>
 							</div>
@@ -152,7 +156,7 @@ export default function ComparePlayersTable({ player }: { player: SelectedPlayer
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
 					<div className="rounded-lg bg-slate-700 mt-4 p-3">
 						<div className="flex items-center">
-							<FullStatsTable player={player.playerProfile as Skater} />
+							<GoalieCareerStatsTable player={player.playerProfile as GoalieProfile} />
 						</div>
 					</div>
 				</div>

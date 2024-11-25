@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Search, { SelectedPlayerDetails } from '../search'
-import ComparePlayersTable from './compare-players'
+import CompareGoaliesTable from './compare-goalies'
+import CompareSkatersTable from './compare-skaters'
 
 export default function SearchCompare() {
 	const [selectedPlayer, setSelectedPlayer] = useState<SelectedPlayerDetails | null>(null)
@@ -17,8 +18,12 @@ export default function SearchCompare() {
 			{selectedPlayer && (
 				<div className="mt-4">
 					<h2 className="text-lg font-semibold">Player Stats</h2>
-					{/* Pass the selected player to another component if needed */}
-					{selectedPlayer && <ComparePlayersTable player={selectedPlayer} />}
+
+					{selectedPlayer.playerProfile.position === 'G' ? (
+						<CompareGoaliesTable player={selectedPlayer} />
+					) : (
+						<CompareSkatersTable player={selectedPlayer} />
+					)}
 				</div>
 			)}
 		</div>

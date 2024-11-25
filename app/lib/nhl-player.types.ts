@@ -69,11 +69,16 @@ export interface GameLog {
 	toi: string
 	homeRoadFlag: string
 	gameTypeId: number
+	decision: string
+	shotsAgainst: number
+	goalsAgainst: number
+	savePctg: number
+	shutouts: number
 }
 
 export type GameLogs = GameLog[]
 
-export interface SeasonTotals {
+export interface SkaterSeasonTotals {
 	goals: number
 	assists: number
 	points: number
@@ -87,6 +92,19 @@ export interface SeasonTotals {
 	shorthandedAssists: number
 }
 
+export interface GoalieSeasonTotals {
+	gamesPlayed: number
+	wins: number
+	losses: number
+	otLosses: number
+	shutOuts: number
+	goalsAgainst: number
+	saves: number
+	savePctg: number
+}
+
+export type SeasonTotals = GoalieSeasonTotals | SkaterSeasonTotals
+
 export interface NHLSeason {
 	season: string
 	leagueAbbrev: string
@@ -95,6 +113,20 @@ export interface NHLSeason {
 
 export type PrevStats = {
 	[teamAbbrev: string]: SeasonTotals
+}
+
+export type FetchCareerStatsResult =
+	| { position: 'Skater'; stats: { [teamAbbrev: string]: SkaterSeasonTotals } }
+	| { position: 'Goalie'; stats: { [teamAbbrev: string]: GoalieSeasonTotals } }
+
+export type PlayerType = Goalie | Skater
+
+export type Goalie = {
+	position: 'G'
+}
+
+export type Skater = {
+	position: 'L' | 'R' | 'C' | 'D'
 }
 
 // Types for the schedule game
@@ -184,7 +216,7 @@ export interface MatchupStat {
 	points: number
 }
 
-export type PlayerProfile = Goalie | Skater
+export type PlayerProfile = GoalieProfile | SkaterProfile
 
 export interface PlayerInfoFull {
 	headshot: string
@@ -197,7 +229,7 @@ export interface PlayerInfoFull {
 	last5Games: Last5Games
 }
 
-export interface Goalie extends PlayerInfoFull {
+export interface GoalieProfile extends PlayerInfoFull {
 	careerTotals: {
 		regularSeason: {
 			assists: number
@@ -232,7 +264,7 @@ export interface Goalie extends PlayerInfoFull {
 	}
 }
 
-export interface Skater extends PlayerInfoFull {
+export interface SkaterProfile extends PlayerInfoFull {
 	careerTotals: {
 		regularSeason: {
 			assists: number

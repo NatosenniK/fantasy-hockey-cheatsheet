@@ -1,8 +1,21 @@
-import { GameLogs, Games, PlayerProfile, PrevStats, SeasonTotals } from '../lib/nhl-player.types'
+import {
+	FetchCareerStatsResult,
+	GameLogs,
+	Games,
+	GoalieSeasonTotals,
+	PlayerProfile,
+	SeasonTotals,
+	SkaterSeasonTotals,
+} from '../lib/nhl-player.types'
 import { RoundingService } from './rounding-util'
 
 class PlayerStatCalculationUtilityPrototype {
-	calculateSkater(playerProfile: PlayerProfile, games: Games, prevStats: PrevStats, recentPerformance: GameLogs) {
+	calculateSkater(
+		playerProfile: PlayerProfile,
+		games: Games,
+		prevStats: { [teamAbbrev: string]: SkaterSeasonTotals },
+		recentPerformance: GameLogs,
+	) {
 		// Fantasy values
 		const goalWeight = 3
 		const assistWeight = 2
@@ -58,7 +71,6 @@ class PlayerStatCalculationUtilityPrototype {
 		}
 
 		if (games && prevStats) {
-			console.log(games)
 			games.forEach((game) => {
 				const teamStats =
 					game.homeTeam.abbrev === 'UTA'
@@ -113,97 +125,99 @@ class PlayerStatCalculationUtilityPrototype {
 		}
 	}
 
-	// calculateGoalie(playerProfile: PlayerProfile, games: Games, prevStats: PrevStats, recentPerformance: GameLogs) {
-	// 	// Fantasy values
-	// 	const goalieWin = 5
-	// 	const goalsAgainst = -1
-	// 	const goalieSaves = 0.2
-	// 	const goalieShutout = 3
-	// 	const goalieOtLoss = 1
+	calculateGoalie(
+		games: Games,
+		prevStats: { [teamAbbrev: string]: GoalieSeasonTotals },
+		recentPerformance: GameLogs,
+	) {
+		// Fantasy values
+		const goalieWinWeight = 5
+		const goalsAgainstWeight = -1
+		const goalieSavesWeight = 0.2
+		const goalieShutoutWeight = 3
+		const goalieOtLossWeight = 1
 
-	// 	let expectedWeeklyPointTotal = 0
-	// 	let expectedPointsPastPerformance = 0
-	// 	let recentPerformanceTotal = 0
+		const recentPerformanceWeight = 1.2
 
-	// 	const weekProjections: GoalieSeasonTotals = {
-	// 		goalsAgainst: 0,
-	// 		shotsAgainst: 0,
-	// 		wins: 0,
-	// 		shutouts: 0,
-	// 		otLosses: 0,
-	// 	}
+		let expectedWeeklyPointTotal = 0
+		let expectedPointsPastPerformance = 0
+		let recentPerformanceTotal = 0
 
-	// 	if (recentPerformance) {
-	// 		const gamesPlayed = recentPerformance.length
-	// 		recentPerformance.forEach((game) => {
-	// 			const expGoalieWins = game.goals * goalWeight
-	// 			const expAssists = game.assists * assistWeight
-	// 			const expPlusMinus = game.plusMinus * plusMinusWeight
-	// 			const expPenaltyMinutes = game.pim * penaltyMinuteWeight
-	// 			const expShots = game.shots * shotsOnGoalWeight
+		const weekProjections: GoalieSeasonTotals = {
+			gamesPlayed: 0,
+			wins: 0,
+			losses: 0,
+			otLosses: 0,
+			shutOuts: 0,
+			goalsAgainst: 0,
+			saves: 0,
+			savePctg: 0,
+		}
 
-	// 			const basePoints =
-	// 				(expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots) * recentPerformanceWeight
+		if (recentPerformance) {
+			const gamesPlayed = recentPerformance.length
+			recentPerformance.forEach((game) => {
+				const expWins = game.decision === 'W' ? 1 : 0 * goalieWinWeight
+				const expOtLosses = game.decision === 'O' ? 1 : 0 * goalieOtLossWeight
+				const expGoalsAgainst = game.goalsAgainst * goalsAgainstWeight
+				const expSaves = (game.shotsAgainst - game.goalsAgainst) * goalieSavesWeight
+				const expShutouts = game.shutouts * goalieShutoutWeight
 
-	// 			recentPerformanceTotal += basePoints
+				const basePoints =
+					(expWins + expOtLosses + expGoalsAgainst + expSaves + expShutouts) * recentPerformanceWeight
 
-	// 			weekProjections.goals += game.goals / gamesPlayed
-	// 			weekProjections.assists += game.assists / gamesPlayed
-	// 			weekProjections.plusMinus += game.plusMinus / gamesPlayed
-	// 			weekProjections.pim += game.pim / gamesPlayed
-	// 			weekProjections.shots += game.shots / gamesPlayed
-	// 			weekProjections.points += (game.goals + game.assists) / gamesPlayed
-	// 			weekProjections.powerPlayPoints += game.powerPlayPoints / gamesPlayed
-	// 			weekProjections.shorthandedGoals += game.shorthandedGoals / gamesPlayed
-	// 			weekProjections.shorthandedAssists += (game.shorthandedPoints - game.shorthandedGoals) / gamesPlayed
-	// 		})
+				recentPerformanceTotal += basePoints
 
-	// 		expectedWeeklyPointTotal += recentPerformanceTotal / gamesPlayed
-	// 	}
+				weekProjections.wins += (game.decision === 'W' ? 1 : 0) / gamesPlayed
+				weekProjections.losses += (game.decision === 'L' ? 1 : 0) / gamesPlayed
+				weekProjections.otLosses += (game.decision === 'O' ? 1 : 0) / gamesPlayed
+				weekProjections.shutOuts += game.shutouts
+				weekProjections.goalsAgainst += game.goalsAgainst
+				weekProjections.saves += (game.shotsAgainst - game.goalsAgainst) / gamesPlayed
+				weekProjections.savePctg += game.savePctg / gamesPlayed
+			})
 
-	// 	if (games && prevStats) {
-	// 		games.forEach((game) => {
-	// 			const teamStats =
-	// 				game.homeTeam.abbrev === 'UTA'
-	// 					? prevStats['ARI']
-	// 					: prevStats[game.homeTeam.abbrev] ||
-	// 						(game.awayTeam.abbrev === 'UTA' ? prevStats['ARI'] : prevStats[game.awayTeam.abbrev])
+			expectedWeeklyPointTotal += recentPerformanceTotal / gamesPlayed
+		}
 
-	// 			if (teamStats) {
-	// 				const expGoalieWins = (teamStats.wins / teamStats.gamesPlayed) * goalieWin
-	// 				const expGoalsAgainst = (teamStats.goalsAgainst / teamStats.gamesPlayed) * goalsAgainst
-	// 				const expGoalieSaves =
-	// 					((teamStats.shotsAgainst - teamStats.goalsAgainst) / teamStats.gamesPlayed) * goalieSaves
-	// 				const expGoalieShutouts = (teamStats.shutouts / teamStats.gamesPlayed) * goalieShutout
-	// 				const expGoalieOtLosses = (teamStats.otLosses / teamStats.gamesPlayed) * goalieOtLoss
+		if (games && prevStats) {
+			games.forEach((game) => {
+				const teamStats =
+					game.homeTeam.abbrev === 'UTA'
+						? prevStats['ARI']
+						: prevStats[game.homeTeam.abbrev] ||
+							(game.awayTeam.abbrev === 'UTA' ? prevStats['ARI'] : prevStats[game.awayTeam.abbrev])
 
-	// 				expectedPointsPastPerformance =
-	// 					expGoalieWins + expGoalsAgainst + expGoalieSaves + expGoalieShutouts + expGoalieOtLosses
+				if (teamStats) {
+					const expWins = (teamStats.wins / teamStats.gamesPlayed) * goalieWinWeight
+					const expOtLosses = (teamStats.otLosses / teamStats.gamesPlayed) * goalieOtLossWeight
+					const expGoalsAgainst = (teamStats.goalsAgainst / teamStats.gamesPlayed) * goalsAgainstWeight
+					const expSaves = (teamStats.saves / teamStats.gamesPlayed) * goalieSavesWeight
+					const expShutouts = (teamStats.shutOuts / teamStats.gamesPlayed) * goalieShutoutWeight
 
-	// 				// Update weekProjections
-	// 				weekProjections.goals += teamStats.goals / teamStats.gamesPlayed
-	// 				weekProjections.assists += teamStats.assists / teamStats.gamesPlayed
-	// 				weekProjections.plusMinus += teamStats.plusMinus / teamStats.gamesPlayed
-	// 				weekProjections.pim += teamStats.pim / teamStats.gamesPlayed
-	// 				weekProjections.shots += teamStats.shots / teamStats.gamesPlayed
-	// 				weekProjections.points += (teamStats.goals + teamStats.assists) / teamStats.gamesPlayed
-	// 				weekProjections.gamesPlayed += 1
-	// 				weekProjections.powerPlayPoints += teamStats.powerPlayPoints / teamStats.gamesPlayed
-	// 				weekProjections.shorthandedGoals += teamStats.shorthandedGoals / teamStats.gamesPlayed
-	// 				weekProjections.shorthandedAssists +=
-	// 					(teamStats.shorthandedPoints - teamStats.shorthandedGoals) / teamStats.gamesPlayed
-	// 			}
-	// 		})
-	// 	}
+					expectedPointsPastPerformance = expWins + expOtLosses + expGoalsAgainst + expSaves + expShutouts
+					expectedWeeklyPointTotal += expectedPointsPastPerformance
 
-	// 	expectedWeeklyPointTotal = (expectedWeeklyPointTotal / 4) * 3
+					weekProjections.gamesPlayed += 1
+					weekProjections.wins += teamStats.wins / teamStats.gamesPlayed
+					weekProjections.losses += teamStats.losses / teamStats.gamesPlayed
+					weekProjections.otLosses += teamStats.otLosses / teamStats.gamesPlayed
+					weekProjections.shutOuts += teamStats.shutOuts / teamStats.gamesPlayed
+					weekProjections.goalsAgainst += teamStats.goalsAgainst / teamStats.gamesPlayed
+					weekProjections.saves += teamStats.saves / teamStats.gamesPlayed
+					weekProjections.savePctg += teamStats.savePctg / teamStats.gamesPlayed
+				}
+			})
+		}
 
-	// 	return {
-	// 		recentPerformance: recentPerformance,
-	// 		expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
-	// 		weekProjections,
-	// 	}
-	// }
+		expectedWeeklyPointTotal = (expectedWeeklyPointTotal / (games.length + 1)) * games.length
+
+		return {
+			recentPerformance: recentPerformance,
+			expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
+			weekProjections,
+		}
+	}
 }
 
 export const PlayerStatCalcUtil = new PlayerStatCalculationUtilityPrototype()

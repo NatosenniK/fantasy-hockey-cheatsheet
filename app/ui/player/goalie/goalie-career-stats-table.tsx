@@ -1,10 +1,10 @@
-import { Skater } from '@/app/lib/nhl-player.types'
+import { GoalieProfile, GoalieSeasonTotals, Skater } from '@/app/lib/nhl-player.types'
 import { RoundingService } from '@/app/utils/rounding-util'
 
-interface FullStatsTableProps {
-	player: Skater
+interface GoalieCareerStatsTableProps {
+	player: GoalieProfile
 }
-export default function FullStatsTable({ player }: FullStatsTableProps) {
+export default function GoalieCareerStatsTable({ player }: GoalieCareerStatsTableProps) {
 	if (!player || !player.careerTotals) {
 		return <div>Loading...</div>
 	}
@@ -22,57 +22,53 @@ export default function FullStatsTable({ player }: FullStatsTableProps) {
 										<div>{player.careerTotals.regularSeason.gamesPlayed}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Goals</div>
-										<div>{player.careerTotals.regularSeason.goals}</div>
+										<div>Wins</div>
+										<div>{player.careerTotals.regularSeason.wins}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Assists</div>
-										<div>{player.careerTotals.regularSeason.assists}</div>
+										<div>Losses</div>
+										<div>{player.careerTotals.regularSeason.losses}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Points</div>
-										<div>{player.careerTotals.regularSeason.points}</div>
+										<div>OT Losses</div>
+										<div>{player.careerTotals.regularSeason.otLosses}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>+/-</div>
+										<div>Saves</div>
 										<div>
-											{player.careerTotals.regularSeason.plusMinus > 0
-												? `+${player.careerTotals.regularSeason.plusMinus}`
-												: player.careerTotals.regularSeason.plusMinus}
+											{player.careerTotals.regularSeason.shotsAgainst -
+												player.careerTotals.regularSeason.goalsAgainst}
 										</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>PIM</div>
-										<div>{player.careerTotals.regularSeason.pim}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>Shots</div>
-										<div>{player.careerTotals.regularSeason.shots}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>S%</div>
+										<div>GAA</div>
 										<div>
 											{RoundingService.roundToDecimal(
-												player.careerTotals.regularSeason.shootingPctg,
+												player.careerTotals.regularSeason.goalsAgainstAvg,
 												3,
 											)}
 										</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>PPG</div>
-										<div>{player.careerTotals.regularSeason.powerPlayGoals}</div>
+										<div>SV%</div>
+										<div>
+											{RoundingService.roundToDecimal(
+												player.careerTotals.regularSeason.savePctg,
+												3,
+											)}
+										</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>PP Points</div>
-										<div>{player.careerTotals.regularSeason.powerPlayPoints}</div>
+										<div>SO</div>
+										<div>{player.careerTotals.regularSeason.shutouts}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>SHG</div>
-										<div>{player.careerTotals.regularSeason.shorthandedGoals}</div>
+										<div>G</div>
+										<div>{player.careerTotals.regularSeason.goals}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>SH Points</div>
-										<div>{player.careerTotals.regularSeason.shorthandedPoints}</div>
+										<div>A</div>
+										<div>{player.careerTotals.regularSeason.assists}</div>
 									</div>
 								</div>
 							</div>
@@ -85,37 +81,31 @@ export default function FullStatsTable({ player }: FullStatsTableProps) {
 									GP
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									W
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									L
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									OT
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									SA
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									GAA
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									SV%
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									SO
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									G
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									A
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									P
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									+/-
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PIM
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									Shots
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PPG
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PP Points
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									S%
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									SHG
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									SH Points
 								</th>
 							</tr>
 						</thead>
@@ -125,39 +115,35 @@ export default function FullStatsTable({ player }: FullStatsTableProps) {
 									{player.careerTotals.regularSeason.gamesPlayed}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{player.careerTotals.regularSeason.wins}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{player.careerTotals.regularSeason.losses}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{player.careerTotals.regularSeason.otLosses}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{player.careerTotals.regularSeason.shotsAgainst -
+										player.careerTotals.regularSeason.goalsAgainst}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{RoundingService.roundToDecimal(
+										player.careerTotals.regularSeason.goalsAgainstAvg,
+										3,
+									)}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{RoundingService.roundToDecimal(player.careerTotals.regularSeason.savePctg, 3)}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									{player.careerTotals.regularSeason.shutouts}
+								</td>
+								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									{player.careerTotals.regularSeason.goals}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									{player.careerTotals.regularSeason.assists}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.points}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.plusMinus > 0
-										? `+${player.careerTotals.regularSeason.plusMinus}`
-										: player.careerTotals.regularSeason.plusMinus}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.pim}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.shots}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.powerPlayGoals}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.powerPlayPoints}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{RoundingService.roundToDecimal(player.careerTotals.regularSeason.shootingPctg, 3)}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.shorthandedGoals}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.shorthandedPoints}
 								</td>
 							</tr>
 						</tbody>

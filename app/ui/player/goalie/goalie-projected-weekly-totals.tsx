@@ -1,9 +1,9 @@
-import { SeasonTotals } from '@/app/lib/nhl-player.types'
+import { GoalieSeasonTotals, SeasonTotals } from '@/app/lib/nhl-player.types'
 
-interface ProjectedWeeklyTotalsProps {
-	stats: SeasonTotals
+interface GoalieProjectedWeeklyTotalsProps {
+	stats: GoalieSeasonTotals
 }
-export default function GoalieProjectedWeeklyTotals({ stats }: ProjectedWeeklyTotalsProps) {
+export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWeeklyTotalsProps) {
 	return (
 		<div className="mt-3 flow-root overflow-hidden overflow-x-auto">
 			<div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
@@ -17,40 +17,32 @@ export default function GoalieProjectedWeeklyTotals({ stats }: ProjectedWeeklyTo
 										<div>{stats.gamesPlayed}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Goals</div>
-										<div>{stats.goals}</div>
+										<div>Wins</div>
+										<div>{stats.wins}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Assists</div>
-										<div>{stats.assists}</div>
+										<div>Losses</div>
+										<div>{stats.losses}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Points</div>
-										<div>{stats.points}</div>
+										<div>OT</div>
+										<div>{stats.otLosses}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>+/-</div>
-										<div>{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}</div>
+										<div>Shutouts</div>
+										<div>{stats.shutOuts}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>PIM</div>
-										<div>{stats.pim}</div>
+										<div>Saves</div>
+										<div>{stats.saves}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>PPP</div>
-										<div>{stats.powerPlayPoints}</div>
+										<div>Save %</div>
+										<div>{stats.savePctg}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>SHG</div>
-										<div>{stats.shorthandedGoals}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>SHA</div>
-										<div>{stats.shorthandedAssists}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>Shots</div>
-										<div>{stats.shots}</div>
+										<div>GA</div>
+										<div>{stats.goalsAgainst}</div>
 									</div>
 								</div>
 							</div>
@@ -63,31 +55,25 @@ export default function GoalieProjectedWeeklyTotals({ stats }: ProjectedWeeklyTo
 									GP
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									G
+									W
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									A
+									L
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									P
+									OT
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									+/-
+									SO
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PIM
+									Saves
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PPP
+									S%
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									SHG
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									SHA
-								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									Shots
+									GA
 								</th>
 							</tr>
 						</thead>
@@ -97,31 +83,25 @@ export default function GoalieProjectedWeeklyTotals({ stats }: ProjectedWeeklyTo
 									{stats.gamesPlayed}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.goals}
+									{stats.wins}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.assists}
+									{stats.losses}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.points}
+									{stats.otLosses}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}
+									{stats.shutOuts}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.pim}
+									{stats.saves}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.powerPlayPoints}
+									{stats.savePctg}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.shorthandedGoals}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.shorthandedPoints}
-								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.shots}
+									{stats.goalsAgainst}
 								</td>
 							</tr>
 						</tbody>

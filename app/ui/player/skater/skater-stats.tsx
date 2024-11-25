@@ -1,6 +1,6 @@
 import NHLTeamLogo from '../../visuals/team-logo'
 import CondensedStatsTable from './condensed-stats-table'
-import FullStatsTable from './full-stats-table'
+import SkaterCareerStatsTable from './skater-career-stats-table'
 import { PlayerHeadshot } from '../../visuals/headshot'
 import SkaterProjectedWeeklyTotals from './skater-projected-weekly-totals'
 import { RoundingService } from '@/app/utils/rounding-util'
@@ -8,7 +8,7 @@ import { SelectedPlayerDetails } from '../../search'
 import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from './recent-game-stats.table'
-import { Skater } from '@/app/lib/nhl-player.types'
+import { Skater, SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
 
 export default function FullSkaterProjection({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {
@@ -60,7 +60,7 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 							<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
 								Projected Weekly Statline
 							</h2>
-							<SkaterProjectedWeeklyTotals stats={player.weekProjections} />
+							<SkaterProjectedWeeklyTotals stats={player.weekProjections as SkaterSeasonTotals} />
 						</div>
 					</div>
 
@@ -122,9 +122,13 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 										</h3>
 										<div>
 											{game.homeTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
-												<CondensedStatsTable stats={player.prevStats['ARI']} />
+												<CondensedStatsTable
+													stats={player.prevStats['ARI'] as SkaterSeasonTotals}
+												/>
 											) : player.prevStats[game.homeTeam.abbrev] ? (
-												<CondensedStatsTable stats={player.prevStats[game.homeTeam.abbrev]} />
+												<CondensedStatsTable
+													stats={player.prevStats[game.homeTeam.abbrev] as SkaterSeasonTotals}
+												/>
 											) : (
 												<p>No stats available for {game.homeTeam.commonName.default}.</p>
 											)}
@@ -143,9 +147,13 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 										</h3>
 										<div>
 											{game.awayTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
-												<CondensedStatsTable stats={player.prevStats['ARI']} />
+												<CondensedStatsTable
+													stats={player.prevStats['ARI'] as SkaterSeasonTotals}
+												/>
 											) : player.prevStats[game.awayTeam.abbrev] ? (
-												<CondensedStatsTable stats={player.prevStats[game.awayTeam.abbrev]} />
+												<CondensedStatsTable
+													stats={player.prevStats[game.awayTeam.abbrev] as SkaterSeasonTotals}
+												/>
 											) : (
 												<p>No stats available for {game.awayTeam.commonName.default}.</p>
 											)}
@@ -185,7 +193,7 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
 					<div className="rounded-lg bg-slate-700 mt-4 p-3">
 						<div className="flex items-center">
-							<FullStatsTable player={player.playerProfile as Skater} />
+							<SkaterCareerStatsTable player={player.playerProfile as SkaterProfile} />
 						</div>
 					</div>
 				</div>

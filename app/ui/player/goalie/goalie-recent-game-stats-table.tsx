@@ -1,9 +1,10 @@
-import { SeasonTotals, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { GameLog } from '@/app/lib/nhl-player.types'
+import { RoundingService } from '@/app/utils/rounding-util'
 
-interface CondensedStatsTableProps {
-	stats: SkaterSeasonTotals
+interface GoalieRecentGameStatTableProps {
+	stats: GameLog
 }
-export default function CondensedStatsTable({ stats }: CondensedStatsTableProps) {
+export default function GoalieRecentGameStatTable({ stats }: GoalieRecentGameStatTableProps) {
 	return (
 		<div className="mt-3 flow-root ">
 			<div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
@@ -13,32 +14,20 @@ export default function CondensedStatsTable({ stats }: CondensedStatsTableProps)
 							<div className="flex items-center justify-between">
 								<div className="w-full">
 									<div className="flex justify-between items-center">
-										<div>Games Played</div>
-										<div>{stats.gamesPlayed}</div>
+										<div>Decision</div>
+										<div>{stats.decision}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Goals</div>
-										<div>{stats.goals}</div>
+										<div>Saves</div>
+										<div>{stats.shotsAgainst - stats.goalsAgainst}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Assists</div>
-										<div>{stats.assists}</div>
+										<div>Goals Against</div>
+										<div>{stats.goalsAgainst}</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div>Points</div>
-										<div>{stats.points}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>+/-</div>
-										<div>{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>PIM</div>
-										<div>{stats.pim}</div>
-									</div>
-									<div className="flex justify-between items-center">
-										<div>Shots</div>
-										<div>{stats.shots}</div>
+										<div>Save %</div>
+										<div>{RoundingService.roundToDecimal(stats.savePctg, 3)}</div>
 									</div>
 								</div>
 							</div>
@@ -48,50 +37,32 @@ export default function CondensedStatsTable({ stats }: CondensedStatsTableProps)
 						<thead>
 							<tr className="bg-slate-800">
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									GP
+									DEC
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									G
+									SA
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									A
+									GA
 								</th>
 								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									P
-								</th>
-								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									+/-
-								</th>
-								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									PIM
-								</th>
-								<th className="px-2 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									S
+									S%
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800">
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.gamesPlayed}
+									{stats.decision}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.goals}
+									{stats.shotsAgainst - stats.goalsAgainst}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.assists}
+									{stats.goalsAgainst}
 								</td>
 								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.points}
-								</td>
-								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}
-								</td>
-								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.pim}
-								</td>
-								<td className="px-2 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.shots}
+									{RoundingService.roundToDecimal(stats.savePctg, 3)}
 								</td>
 							</tr>
 						</tbody>

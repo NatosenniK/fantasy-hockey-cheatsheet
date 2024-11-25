@@ -7,8 +7,10 @@ import {
 	PlayerSearch,
 	GameLogs,
 	PlayerProfile,
-	Goalie,
-	Skater,
+	GoalieSeasonTotals,
+	SkaterSeasonTotals,
+	GoalieProfile,
+	SkaterProfile,
 } from '../lib/nhl-player.types'
 import { GameFilteringService } from '../utils/game-filtering.util'
 
@@ -20,9 +22,9 @@ class NHLPlayerAPIPrototype {
 		const data = await response.json()
 
 		if (data.position === 'G') {
-			return data as Goalie
+			return data as GoalieProfile
 		} else {
-			return data as Skater
+			return data as SkaterProfile
 		}
 	}
 
@@ -52,8 +54,13 @@ class NHLPlayerAPIPrototype {
 		return filteredGames
 	}
 
-	async fetchCareerStatsVsTeams(playerId: number, gameType: number): Promise<{ [teamAbbrev: string]: SeasonTotals }> {
-		// Define the list - league, game type (2 is regular season)
+	async fetchCareerStatsVsTeams(
+		playerId: number,
+		gameType: number,
+	): Promise<
+		| { position: 'Skater'; stats: { [teamAbbrev: string]: SkaterSeasonTotals } }
+		| { position: 'Goalie'; stats: { [teamAbbrev: string]: GoalieSeasonTotals } }
+	> {
 		const leagueAbbrev = 'NHL'
 		const gameTypeId = 2
 		const playerStatsUrl = `https://api-web.nhle.com/v1/player/${playerId}/landing`
@@ -66,16 +73,17 @@ class NHLPlayerAPIPrototype {
 
 		const playerFullStats = await playerFullStatsResponse.json()
 
+		// Determine player position type
+		const isGoalie = playerFullStats.position === 'G'
+
 		// Extract NHL seasons from the `seasonTotals` array
 		const seasons = playerFullStats.seasonTotals
 			.filter((season: NHLSeason) => season.leagueAbbrev === leagueAbbrev && season.gameTypeId === gameTypeId)
 			.map((season: NHLSeason) => season.season)
 
-		// Prepare an object to store stats against each team
-		const statsByTeam: { [teamAbbrev: string]: SeasonTotals } = {}
+		const statsByTeam: { [teamAbbrev: string]: SkaterSeasonTotals | GoalieSeasonTotals } = {}
 
 		for (const season of seasons) {
-			// Fetch the player's game logs for this season
 			const response = await fetch(
 				`https://api-web.nhle.com/v1/player/${playerId}/game-log/${season}/${gameType}`,
 			)
@@ -86,41 +94,76 @@ class NHLPlayerAPIPrototype {
 
 			const filteredGameLogs = GameFilteringService.excludeGamesFromThisWeek(gameLogs)
 
-			// Aggregate stats for each opponent
 			for (const game of filteredGameLogs) {
 				const opponentAbbrev = game.opponentAbbrev
 
 				if (!statsByTeam[opponentAbbrev]) {
-					statsByTeam[opponentAbbrev] = {
-						gamesPlayed: 0,
-						goals: 0,
-						assists: 0,
-						points: 0,
-						shots: 0,
-						pim: 0,
-						plusMinus: 0,
-						powerPlayPoints: 0,
-						shorthandedGoals: 0,
-						shorthandedPoints: 0,
-						shorthandedAssists: 0,
-					}
+					statsByTeam[opponentAbbrev] = isGoalie
+						? {
+								gamesPlayed: 0,
+								wins: 0,
+								losses: 0,
+								otLosses: 0,
+								shutOuts: 0,
+								goalsAgainst: 0,
+								saves: 0,
+								savePctg: 0,
+							}
+						: {
+								gamesPlayed: 0,
+								goals: 0,
+								assists: 0,
+								points: 0,
+								shots: 0,
+								pim: 0,
+								plusMinus: 0,
+								powerPlayPoints: 0,
+								shorthandedGoals: 0,
+								shorthandedPoints: 0,
+								shorthandedAssists: 0,
+							}
 				}
 
-				// Update stats for this team
-				statsByTeam[opponentAbbrev].gamesPlayed += 1
-				statsByTeam[opponentAbbrev].goals += game.goals || 0
-				statsByTeam[opponentAbbrev].assists += game.assists || 0
-				statsByTeam[opponentAbbrev].points += game.points || 0
-				statsByTeam[opponentAbbrev].shots += game.shots || 0
-				statsByTeam[opponentAbbrev].pim += game.pim || 0 // Penalty minutes
-				statsByTeam[opponentAbbrev].plusMinus += game.plusMinus || 0
-				statsByTeam[opponentAbbrev].powerPlayPoints += game.powerPlayPoints || 0
-				statsByTeam[opponentAbbrev].shorthandedGoals += game.shorthandedGoals || 0
-				statsByTeam[opponentAbbrev].shorthandedPoints += game.shorthandedPoints || 0
+				if (isGoalie) {
+					// Update stats for goalie
+					const goalieStats = statsByTeam[opponentAbbrev] as GoalieSeasonTotals
+					goalieStats.gamesPlayed += 1
+					goalieStats.wins += game.decision === 'W' ? 1 : 0
+					goalieStats.losses += game.decision === 'L' ? 1 : 0
+					goalieStats.otLosses += game.decision === 'O' ? 1 : 0
+					goalieStats.shutOuts += game.shutouts ? 1 : 0
+					goalieStats.goalsAgainst += game.goalsAgainst || 0
+					goalieStats.saves += game.shotsAgainst - game.goalsAgainst || 0
+
+					// Calculate save percentage
+					const totalShots = goalieStats.saves + goalieStats.goalsAgainst
+					goalieStats.savePctg = totalShots > 0 ? goalieStats.saves / totalShots : 0
+				} else {
+					// Update stats for skater
+					const skaterStats = statsByTeam[opponentAbbrev] as SkaterSeasonTotals
+					skaterStats.gamesPlayed += 1
+					skaterStats.goals += game.goals || 0
+					skaterStats.assists += game.assists || 0
+					skaterStats.points += game.points || 0
+					skaterStats.shots += game.shots || 0
+					skaterStats.pim += game.pim || 0
+					skaterStats.plusMinus += game.plusMinus || 0
+					skaterStats.powerPlayPoints += game.powerPlayPoints || 0
+					skaterStats.shorthandedGoals += game.shorthandedGoals || 0
+					skaterStats.shorthandedPoints += game.shorthandedPoints || 0
+				}
 			}
 		}
 
-		return statsByTeam
+		return isGoalie
+			? {
+					position: 'Goalie',
+					stats: statsByTeam as { [teamAbbrev: string]: GoalieSeasonTotals },
+				}
+			: {
+					position: 'Skater',
+					stats: statsByTeam as { [teamAbbrev: string]: SkaterSeasonTotals },
+				}
 	}
 
 	async fetchRecentGames(playerId: number, numGames?: number): Promise<GameLogs> {
