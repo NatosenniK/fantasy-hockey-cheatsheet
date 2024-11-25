@@ -8,7 +8,7 @@ import SkaterProjectedWeeklyTotals from '../player/skater/skater-projected-weekl
 import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from '../player/skater/recent-game-stats.table'
-import { Skater, SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
 
 export default function CompareSkatersTable({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {

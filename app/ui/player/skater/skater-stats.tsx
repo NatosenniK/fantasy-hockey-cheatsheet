@@ -8,7 +8,7 @@ import { SelectedPlayerDetails } from '../../search'
 import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from './recent-game-stats.table'
-import { Skater, SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
 
 export default function FullSkaterProjection({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {

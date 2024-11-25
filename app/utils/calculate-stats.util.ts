@@ -1,5 +1,4 @@
 import {
-	FetchCareerStatsResult,
 	GameLogs,
 	Games,
 	GoalieSeasonTotals,

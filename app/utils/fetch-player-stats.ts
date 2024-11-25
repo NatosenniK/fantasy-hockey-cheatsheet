@@ -1,12 +1,5 @@
 import { NHLPlayerAPI } from '../api/nhl-player.api'
-import {
-	Games,
-	PrevStats,
-	PlayerProfile,
-	FetchCareerStatsResult,
-	SkaterSeasonTotals,
-	GoalieSeasonTotals,
-} from '../lib/nhl-player.types'
+import { Games, PlayerProfile, SkaterSeasonTotals, GoalieSeasonTotals } from '../lib/nhl-player.types'
 import { PlayerStatCalcUtil } from './calculate-stats.util'
 import { RoundingService } from './rounding-util'
 

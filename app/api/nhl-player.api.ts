@@ -1,7 +1,6 @@
 import {
 	Games,
 	GameLog,
-	SeasonTotals,
 	PlayerSearchResults,
 	NHLSeason,
 	PlayerSearch,

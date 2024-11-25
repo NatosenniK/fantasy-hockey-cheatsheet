@@ -1,4 +1,4 @@
-import { GoalieSeasonTotals, SeasonTotals } from '@/app/lib/nhl-player.types'
+import { GoalieSeasonTotals } from '@/app/lib/nhl-player.types'
 
 interface GoalieProjectedWeeklyTotalsProps {
 	stats: GoalieSeasonTotals
