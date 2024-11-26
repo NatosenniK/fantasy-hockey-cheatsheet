@@ -1,6 +1,7 @@
 import { GeminiTypes } from '../lib/gemini.types'
 import { GameLogs } from '../lib/nhl-player.types'
 
+const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY
 class GeminiAPIPrototype {
 	async fetchAiSummary(playerName: string, gameLogs: GameLogs): Promise<GeminiTypes.Response> {
 		console.log('API KEY: ', API_KEY)
