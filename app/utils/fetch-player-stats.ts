@@ -1,3 +1,4 @@
+import { GeminiAPI } from '../api/gemeni-ai.api'
 import { NHLPlayerAPI } from '../api/nhl-player.api'
 import { Games, PlayerProfile, SkaterSeasonTotals, GoalieSeasonTotals } from '../lib/nhl-player.types'
 import { PlayerStatCalcUtil } from './calculate-stats.util'
@@ -8,7 +9,10 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 	const games: Games = await NHLPlayerAPI.fetchPlayerMatchupStats(playerProfile.currentTeamAbbrev)
 	const result = await NHLPlayerAPI.fetchCareerStatsVsTeams(playerId, 2)
 	const recentPerformance = await NHLPlayerAPI.fetchRecentGames(playerId, recentGames || undefined)
+	const playerName = playerProfile.firstName.default + ' ' + playerProfile.lastName.default
+	const fantasyOutlook = await GeminiAPI.fetchAiSummary(playerName, recentPerformance)
 
+	console.log(fantasyOutlook)
 	if (result.position === 'Skater') {
 		const prevStats: { [teamAbbrev: string]: SkaterSeasonTotals } = result.stats
 		const { weekProjections, expectedWeeklyPointTotal } = PlayerStatCalcUtil.calculateSkater(
@@ -25,6 +29,7 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 			recentPerformance: recentPerformance,
 			expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
 			weekProjections,
+			fantasyOutlook,
 		}
 	} else {
 		const prevStats: { [teamAbbrev: string]: GoalieSeasonTotals } = result.stats
@@ -41,6 +46,7 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 			recentPerformance: recentPerformance,
 			expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
 			weekProjections,
+			fantasyOutlook,
 		}
 	}
 }

@@ -18,6 +18,7 @@ import {
 import { findPlayer } from '../lib/actions'
 import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
 import Dropdown from './visuals/dropdown/dropdown'
+import { GeminiTypes } from '../lib/gemini.types'
 
 export interface SelectedPlayerDetails {
 	playerProfile: PlayerProfile
@@ -26,6 +27,7 @@ export interface SelectedPlayerDetails {
 	expectedWeeklyPointTotal: number
 	weekProjections: SeasonTotals
 	recentPerformance: GameLogs
+	fantasyOutlook: GeminiTypes.Response
 }
 
 export default function Search({
