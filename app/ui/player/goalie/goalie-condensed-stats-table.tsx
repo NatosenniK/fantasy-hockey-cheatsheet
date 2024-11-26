@@ -39,7 +39,7 @@ export default function GoalieCondensedStatsTable({ stats }: GoalieCondensedStat
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Save %</div>
-										<div>{stats.savePctg}</div>
+										<div>{RoundingService.roundToDecimal(stats.savePctg, 3)}</div>
 									</div>
 								</div>
 							</div>
