@@ -1,11 +1,52 @@
 import { GeminiTypes } from '../lib/gemini.types'
-import { GameLogs } from '../lib/nhl-player.types'
+import { GameLogs, PlayerProfile, SeasonTotals } from '../lib/nhl-player.types'
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY
 class GeminiAPIPrototype {
-	async fetchAiSummary(playerName: string, gameLogs: GameLogs): Promise<GeminiTypes.Response> {
-		console.log('API KEY: ', API_KEY)
+	async fetchAiSummary(
+		playerProfile: PlayerProfile,
+		gameLogs: GameLogs,
+		statsVsUpcomingOpp: { opponent: string; stats: SeasonTotals }[],
+	): Promise<GeminiTypes.Response> {
 		const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
+
+		const statsSummary = statsVsUpcomingOpp
+			.map(
+				({ opponent, stats }) =>
+					`${opponent}: ${Object.entries(stats)
+						.map(([key, value]) => `${key}: ${value}`)
+						.join(', ')}`,
+			)
+			.join('; ')
+
+		let position
+		switch (playerProfile.position) {
+			case 'L':
+				position = 'Left Wing'
+				break
+			case 'C':
+				position = 'Center'
+				break
+			case 'R':
+				position = 'Right Wing'
+				break
+			case 'D':
+				position = 'Defenseman'
+				break
+			case 'G':
+				position = 'Goalie'
+				break
+			default:
+				// Optionally handle unexpected cases
+				position = 'Unknown Position'
+		}
+
+		const positionInsights = {
+			Goalie: 'Focus on save percentage, goals against average, and recent win-loss record. Highlight strong upcoming matchups or trends in workload (e.g., consecutive starts).',
+			Skater: 'Focus on goals, assists, points, and power-play production. Highlight consistent scoring trends or favorable upcoming matchups.',
+		}
+
+		const positionSpecificInsights = position === 'Goalie' ? positionInsights['Goalie'] : positionInsights['Skater']
 
 		const requestBody = {
 			contents: [
@@ -13,13 +54,23 @@ class GeminiAPIPrototype {
 					parts: [
 						{
 							text:
-								'Analyze the performance of ' +
-								playerName +
+								'Analyze the fantasy hockey performance of ' +
+								playerProfile.firstName.default +
+								' ' +
+								playerProfile.lastName.default +
+								', a ' +
+								position +
+								' for the ' +
+								playerProfile.fullTeamName +
 								' over the last ' +
 								gameLogs.length +
-								' games based on the following game logs: ' +
+								' games. Use the following game logs: ' +
 								JSON.stringify(gameLogs) +
-								'. Provide 1-2 actionable insights tailored for fantasy hockey users a short prompt way .',
+								'. ' +
+								positionSpecificInsights +
+								' Avoid overly focusing on minor game-to-game variations if the player’s overall production remains strong. Here are their career stats vs their upcoming opponents: ' +
+								statsSummary +
+								'. Provide 1-2 actionable insights in a concise one paragraph format in less than 80 words.',
 						},
 					],
 				},

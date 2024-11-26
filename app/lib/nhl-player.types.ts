@@ -227,6 +227,9 @@ export interface PlayerInfoFull {
 	sweaterNumber: number
 	position: string
 	last5Games: Last5Games
+	fullTeamName: {
+		default: string
+	}
 }
 
 export interface GoalieProfile extends PlayerInfoFull {
