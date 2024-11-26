@@ -42,7 +42,7 @@ class NHLPlayerAPIPrototype {
 		return filteredResults
 	}
 
-	async fetchPlayerMatchupStats(abbrev: string): Promise<Games> {
+	async fetchWeekUpcomingGames(abbrev: string): Promise<Games> {
 		// Fetch the team's games for the season
 		const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/now`)
 		if (!scheduleResponse.ok) throw new Error('Failed to fetch schedule')
@@ -82,15 +82,19 @@ class NHLPlayerAPIPrototype {
 
 		const statsByTeam: { [teamAbbrev: string]: SkaterSeasonTotals | GoalieSeasonTotals } = {}
 
-		for (const season of seasons) {
-			const response = await fetch(
-				`https://api-web.nhle.com/v1/player/${playerId}/game-log/${season}/${gameType}`,
-			)
-			if (!response.ok) throw new Error(`Failed to fetch player game log for season ${season}`)
+		const fetchPromises = seasons.map((season: NHLSeason) =>
+			fetch(`https://api-web.nhle.com/v1/player/${playerId}/game-log/${season}/${gameType}`).then((response) => {
+				if (!response.ok) {
+					throw new Error(`Failed to fetch player game log for season ${season}`)
+				}
+				return response.json()
+			}),
+		)
 
-			const data = await response.json()
+		const gameLogData = await Promise.all(fetchPromises)
+
+		gameLogData.forEach((data) => {
 			const gameLogs: GameLog[] = data.gameLog
-
 			const filteredGameLogs = GameFilteringService.excludeGamesFromThisWeek(gameLogs)
 
 			for (const game of filteredGameLogs) {
@@ -124,7 +128,7 @@ class NHLPlayerAPIPrototype {
 				}
 
 				if (isGoalie) {
-					// Update stats for goalie
+					// Update goalie stats
 					const goalieStats = statsByTeam[opponentAbbrev] as GoalieSeasonTotals
 					goalieStats.gamesPlayed += 1
 					goalieStats.wins += game.decision === 'W' ? 1 : 0
@@ -134,11 +138,10 @@ class NHLPlayerAPIPrototype {
 					goalieStats.goalsAgainst += game.goalsAgainst || 0
 					goalieStats.saves += game.shotsAgainst - game.goalsAgainst || 0
 
-					// Calculate save percentage
 					const totalShots = goalieStats.saves + goalieStats.goalsAgainst
 					goalieStats.savePctg = totalShots > 0 ? goalieStats.saves / totalShots : 0
 				} else {
-					// Update stats for skater
+					// Update skater stats
 					const skaterStats = statsByTeam[opponentAbbrev] as SkaterSeasonTotals
 					skaterStats.gamesPlayed += 1
 					skaterStats.goals += game.goals || 0
@@ -152,7 +155,7 @@ class NHLPlayerAPIPrototype {
 					skaterStats.shorthandedPoints += game.shorthandedPoints || 0
 				}
 			}
-		}
+		})
 
 		return isGoalie
 			? {
