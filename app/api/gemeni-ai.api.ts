@@ -1,8 +1,6 @@
 import { GeminiTypes } from '../lib/gemini.types'
 import { GameLogs } from '../lib/nhl-player.types'
 
-const API_KEY = 'AIzaSyCQkW4vYq9JI8S_--DQLS41o2QdX3WbqVk'
-
 class GeminiAPIPrototype {
 	async fetchAiSummary(playerName: string, gameLogs: GameLogs): Promise<GeminiTypes.Response> {
 		console.log('API KEY: ', API_KEY)
