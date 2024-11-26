@@ -9,6 +9,7 @@ import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from './recent-game-stats.table'
 import { SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { marked } from 'marked'
 
 export default function FullSkaterProjection({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {
@@ -21,6 +22,8 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 			player.weekProjections[key as keyof typeof player.weekProjections] = RoundingService.roundValue(value)
 		}
 	})
+
+	const fantasyOutlookHtml = marked(player.fantasyOutlook)
 
 	return (
 		<div className="mt-6 flow-root">
@@ -47,7 +50,7 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 								</div>
 							</div>
 						</div>
-						<div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto">
+						<div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto flex-grow ">
 							<div className="flex-grow flex items-center justify-center">
 								<div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
 							</div>
@@ -56,12 +59,15 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 							</h3>
 						</div>
 
-						<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow">
-							<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
-								Projected Weekly Statline
-							</h2>
-							<SkaterProjectedWeeklyTotals stats={player.weekProjections as SkaterSeasonTotals} />
+						<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow lg:max-w-5xl">
+							<h2 className="text-xl font-semibold mb-4 dark:text-white">Fantasy Outlook</h2>
+							<div className="text-white" dangerouslySetInnerHTML={{ __html: fantasyOutlookHtml }} />
 						</div>
+					</div>
+
+					<div className="rounded-lg bg-slate-700 p-3 mb-6 flex flex-col justify-center flex-grow">
+						<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Projected Weekly Statline</h2>
+						<SkaterProjectedWeeklyTotals stats={player.weekProjections as SkaterSeasonTotals} />
 					</div>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>

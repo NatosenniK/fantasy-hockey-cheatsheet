@@ -9,6 +9,7 @@ import { playerPosition } from '@/app/utils/position.utl'
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from '../player/skater/recent-game-stats.table'
 import { SkaterProfile, SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { marked } from 'marked'
 
 export default function CompareSkatersTable({ player }: { player: SelectedPlayerDetails }) {
 	if (!player) {
@@ -21,6 +22,8 @@ export default function CompareSkatersTable({ player }: { player: SelectedPlayer
 			player.weekProjections[key as keyof typeof player.weekProjections] = RoundingService.roundValue(value)
 		}
 	})
+
+	const fantasyOutlookHtml = marked(player.fantasyOutlook)
 
 	return (
 		<div className="mt-6 flow-root">
@@ -55,6 +58,11 @@ export default function CompareSkatersTable({ player }: { player: SelectedPlayer
 								Expected Weekly Point Total
 							</h3>
 						</div>
+					</div>
+
+					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow lg:max-w-5xl mb-6">
+						<h2 className="text-xl font-semibold mb-4 dark:text-white">Fantasy Outlook</h2>
+						<div className="text-white" dangerouslySetInnerHTML={{ __html: fantasyOutlookHtml }} />
 					</div>
 
 					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow mb-6">
