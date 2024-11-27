@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
-import { getSession, login, logout } from '../lib/lib'
-import Link from 'next/link'
+import { login } from '../lib/lib'
 import { Button } from '@headlessui/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faKey, faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default async function Login() {
-	const session = await getSession()
 	return (
 		<>
 			<form
@@ -34,7 +34,10 @@ export default async function Login() {
 									placeholder="Enter your email address"
 									required
 								/>
-								{/* <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+								<FontAwesomeIcon
+									icon={faUser}
+									className="fa-fw pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+								/>
 							</div>
 						</div>
 						<div className="mt-4">
@@ -54,7 +57,10 @@ export default async function Login() {
 									required
 									minLength={6}
 								/>
-								{/* <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 " /> */}
+								<FontAwesomeIcon
+									icon={faKey}
+									className="fa-fw pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+								/>
 							</div>
 						</div>
 					</div>
@@ -71,22 +77,6 @@ export default async function Login() {
 					</div> */}
 				</div>
 			</form>
-			<form
-				action={async () => {
-					'use server'
-					await logout()
-					redirect('/')
-				}}
-			>
-				<button type="submit">Logout</button>
-			</form>
-			<pre>{JSON.stringify(session, null, 2)}</pre>
-			<Link
-				href="/"
-				className="flex items-center gap-5 self-start text-sm font-small text-blue-500 transition-colors hover:text-blue-400 md:text-base mr-3"
-			>
-				{/* <ArrowLeftIcon className="w-5 md:w-6" /> <span>Back to home</span> */}
-			</Link>
 		</>
 	)
 }

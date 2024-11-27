@@ -1,6 +1,7 @@
 import { MobileMenuButton } from '../visuals/buttons'
 import SiteLogo from '../visuals/site-logo'
 import NavLinks from './nav-links'
+import { SignInOutButton } from './sign-in-sign-out-button'
 
 export function HeaderElement() {
 	return (
@@ -19,6 +20,7 @@ export function HeaderElement() {
 						id="mobile-menu-2"
 					>
 						<NavLinks />
+						<SignInOutButton />
 						{/* <div className="pl-4">
                             <ThemeSwitch />
                         </div> */}
