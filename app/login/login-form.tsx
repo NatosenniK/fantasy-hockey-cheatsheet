@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getSession, login } from '../lib/lib'
+import { getSession, login, logout } from '../lib/lib'
 import Link from 'next/link'
 import { Button } from '@headlessui/react'
 
@@ -70,6 +70,15 @@ export default async function Login() {
 						)}
 					</div> */}
 				</div>
+			</form>
+			<form
+				action={async () => {
+					'use server'
+					await logout()
+					redirect('/')
+				}}
+			>
+				<button type="submit">Logout</button>
 			</form>
 			<pre>{JSON.stringify(session, null, 2)}</pre>
 			<Link

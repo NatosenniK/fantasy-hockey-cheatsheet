@@ -78,12 +78,7 @@ export async function login(formData: FormData) {
 
 		// Return a response with the cookie
 		const response = NextResponse.json({ success: true })
-		response.cookies.set('session', session, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			path: '/',
-			expires,
-		})
+
 		const cookiesObj = await cookies()
 		cookiesObj.set('session', session, { expires: expires })
 
