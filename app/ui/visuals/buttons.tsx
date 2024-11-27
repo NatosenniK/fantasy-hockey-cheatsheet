@@ -1,56 +1,45 @@
 'use client'
 
-import { useState } from 'react'
-import MobileMenuSideSheet from '../header/side-sheet/mobile-menu__side-sheet'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export function MobileMenuButton() {
-	const [isOpen, setIsOpen] = useState(false)
+export function LogoutButton({ onLogout }: { onLogout: () => void }) {
+	async function handleLogout(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+		const response = await fetch('/api/user/logout', {
+			method: 'POST',
+		})
 
-	const toggleSideSheet = () => {
-		setIsOpen(!isOpen)
+		if (response.ok) {
+			console.log('Logout successful')
+			onLogout()
+			redirect('/')
+		} else {
+			const errorData = await response.json()
+			console.error('Logout failed:', errorData.message || 'Unknown error')
+		}
 	}
+
 	return (
-		<>
-			<div className="flex items-center">
-				{/* <ThemeSwitch /> */}
-				<button
-					data-collapse-toggle="mobile-menu-2"
-					onClick={toggleSideSheet}
-					type="button"
-					className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg xl:hidden hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-					aria-controls="mobile-menu-2"
-					aria-expanded="false"
-				>
-					<span className="sr-only">Open main menu</span>
-					<div className="text-white">
-						<svg
-							className="w-8 h-8"
-							fill="currentColor"
-							viewBox="0 0 20 20"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								fillRule="evenodd"
-								d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-								clipRule="evenodd"
-							></path>
-						</svg>
-					</div>
-					<svg
-						className="hidden w-6 h-6"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							fillRule="evenodd"
-							d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-							clipRule="evenodd"
-						></path>
-					</svg>
-				</button>
-			</div>
-			<MobileMenuSideSheet isOpen={isOpen} onClose={() => setIsOpen(false)} />
-		</>
+		<form onSubmit={handleLogout}>
+			<button
+				type="submit"
+				className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3 mb-3 md:mb-0 dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500 dark:hover:text-white mr-2"
+			>
+				Logout
+			</button>
+		</form>
+	)
+}
+
+export function LoginButton() {
+	return (
+		<Link
+			key={'login'}
+			href={'/login'}
+			className={`flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3 mb-3 md:mb-0 dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500 dark:hover:text-white mr-2`}
+		>
+			<p className="">Login</p>
+		</Link>
 	)
 }

@@ -1,22 +1,45 @@
-import { redirect } from 'next/navigation'
-import { login } from '../lib/lib'
+'use client'
+
 import { Button } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKey, faUser } from '@fortawesome/free-solid-svg-icons'
+import { redirect } from 'next/navigation'
 
-export default async function Login() {
+export default function Login() {
+	async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+
+		const formData = new FormData(event.currentTarget)
+		const email = formData.get('email') as string
+		const password = formData.get('password') as string
+
+		// Validate email and password
+		if (!email || !password) {
+			console.error('Email and password are required.')
+			return
+		}
+
+		const response = await fetch('/api/user/login', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email, password }),
+		})
+
+		if (response.ok) {
+			const data = await response.json()
+			console.log('Login successful:', data)
+			redirect('/')
+		} else {
+			const errorData = await response.json()
+			console.error('Login failed:', errorData.message || 'Unknown error')
+		}
+	}
+
 	return (
 		<>
-			<form
-				action={async (formData) => {
-					'use server'
-					await login(formData)
-					redirect('/login')
-				}}
-				className="space-y-3"
-			>
+			<form onSubmit={handleLogin} className="space-y-3">
 				<div className="bg-white dark:bg-slate-700 flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-					<h1 className={`mb-3 text-2xl dark:text-white`}>Please log in to continue.</h1>
+					<h1 className={`mb-3 text-2xl dark:text-white`}>Please log in to continue</h1>
 					<div className="w-full">
 						<div>
 							<label
@@ -64,7 +87,7 @@ export default async function Login() {
 							</div>
 						</div>
 					</div>
-					<Button type="submit" className="mt-4 w-full">
+					<Button type="submit" className="mt-4 w-full rounded-md  bg-slate-800 py-3 hover:bg-slate-600">
 						Log in
 					</Button>
 					{/* <div className="flex h-8 items-end space-x-1" aria-live="polite" aria-atomic="true">

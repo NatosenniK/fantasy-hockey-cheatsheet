@@ -1,4 +1,4 @@
-import { GeminiTypes } from '../lib/gemini.types'
+import { GeminiResponse } from '../lib/gemini.types'
 import { GameLogs, PlayerProfile, SeasonTotals } from '../lib/nhl-player.types'
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY
@@ -7,7 +7,7 @@ class GeminiAPIPrototype {
 		playerProfile: PlayerProfile,
 		gameLogs: GameLogs,
 		statsVsUpcomingOpp: { opponent: string; stats: SeasonTotals }[],
-	): Promise<GeminiTypes.Response> {
+	): Promise<GeminiResponse> {
 		const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
 
 		const statsSummary = statsVsUpcomingOpp

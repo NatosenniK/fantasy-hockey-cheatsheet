@@ -5,6 +5,8 @@ import NavLinks from '../nav-links'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 
+import SignInSignOutSession from '../sign-in-sign-out-button'
+
 export default function MobileMenuSideSheet({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
 	return (
 		<Dialog open={isOpen} onClose={onClose} className="relative z-10">
@@ -39,6 +41,7 @@ export default function MobileMenuSideSheet({ isOpen, onClose }: { isOpen: boole
 										Fantasy Hockey Cheatsheet
 									</DialogTitle>
 									<NavLinks />
+									<SignInSignOutSession />
 								</div>
 								<div className="relative mt-6 flex-1 px-4 sm:px-6">{/* Your content */}</div>
 							</div>
