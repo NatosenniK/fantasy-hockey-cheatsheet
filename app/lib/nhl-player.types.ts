@@ -230,6 +230,7 @@ export interface PlayerInfoFull {
 	fullTeamName: {
 		default: string
 	}
+	playerId: number
 }
 
 export interface GoalieProfile extends PlayerInfoFull {
@@ -268,6 +269,24 @@ export interface GoalieProfile extends PlayerInfoFull {
 }
 
 export interface SkaterProfile extends PlayerInfoFull {
+	featuredStats: {
+		regularSeason: {
+			subSeason: {
+				assists: number
+				gamesPlayed: number
+				goals: number
+				points: number
+				plusMinus: number
+				pim: number
+				shots: number
+				powerPlayGoals: number
+				powerPlayPoints: number
+				shootingPctg: number
+				shorthandedGoals: number
+				shorthandedPoints: number
+			}
+		}
+	}
 	careerTotals: {
 		regularSeason: {
 			assists: number

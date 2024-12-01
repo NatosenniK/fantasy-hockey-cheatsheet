@@ -13,10 +13,12 @@ import {
 } from '../lib/nhl-player.types'
 import { GameFilteringService } from '../utils/game-filtering.util'
 
+const baseUrl = 'https://api-web.nhle.com/v1'
+
 class NHLPlayerAPIPrototype {
 	// Fetch Player's career stats
 	async fetchPlayerStats(playerId: number): Promise<PlayerProfile> {
-		const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/landing`)
+		const response = await fetch(`${baseUrl}/player/${playerId}/landing`)
 		if (!response.ok) throw new Error('Failed to fetch player stats')
 		const data = await response.json()
 
@@ -24,6 +26,19 @@ class NHLPlayerAPIPrototype {
 			return data as GoalieProfile
 		} else {
 			return data as SkaterProfile
+		}
+	}
+
+	async fetchMultiplePlayerStats(playerIds: number[]): Promise<SkaterProfile[]> {
+		const playerEndpoints = playerIds.map((id) => `${baseUrl}/player/${id}/landing`)
+
+		try {
+			const responses = await Promise.all(playerEndpoints.map((url) => fetch(url)))
+			const playerData = await Promise.all(responses.map((response) => response.json()))
+			return playerData
+		} catch (error) {
+			console.error('Error fetching player data:', error)
+			return []
 		}
 	}
 
@@ -44,7 +59,7 @@ class NHLPlayerAPIPrototype {
 
 	async fetchWeekUpcomingGames(abbrev: string): Promise<Games> {
 		// Fetch the team's games for the season
-		const scheduleResponse = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/now`)
+		const scheduleResponse = await fetch(`${baseUrl}/club-schedule-season/${abbrev}/now`)
 		if (!scheduleResponse.ok) throw new Error('Failed to fetch schedule')
 		const scheduleData = await scheduleResponse.json()
 
@@ -62,7 +77,7 @@ class NHLPlayerAPIPrototype {
 	> {
 		const leagueAbbrev = 'NHL'
 		const gameTypeId = 2
-		const playerStatsUrl = `https://api-web.nhle.com/v1/player/${playerId}/landing`
+		const playerStatsUrl = `${baseUrl}/player/${playerId}/landing`
 
 		// Fetch the player's full stats to determine NHL seasons dynamically
 		const playerFullStatsResponse = await fetch(playerStatsUrl)
@@ -83,7 +98,7 @@ class NHLPlayerAPIPrototype {
 		const statsByTeam: { [teamAbbrev: string]: SkaterSeasonTotals | GoalieSeasonTotals } = {}
 
 		const fetchPromises = seasons.map((season: NHLSeason) =>
-			fetch(`https://api-web.nhle.com/v1/player/${playerId}/game-log/${season}/${gameType}`).then((response) => {
+			fetch(`${baseUrl}/player/${playerId}/game-log/${season}/${gameType}`).then((response) => {
 				if (!response.ok) {
 					throw new Error(`Failed to fetch player game log for season ${season}`)
 				}
@@ -171,7 +186,7 @@ class NHLPlayerAPIPrototype {
 	async fetchRecentGames(playerId: number, numGames?: number): Promise<GameLogs> {
 		const gameType = 2
 		const season = '20242025'
-		const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/game-log/${season}/${gameType}`)
+		const response = await fetch(`${baseUrl}/player/${playerId}/game-log/${season}/${gameType}`)
 		const data = await response.json()
 		const gameLogs: GameLogs = data.gameLog
 

@@ -60,3 +60,54 @@ export function CardsSkeleton() {
 		</>
 	)
 }
+
+export function TableRowSkeleton() {
+	return (
+		<tr className={`${shimmer} odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800`}>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700 flex items-center">
+				<div className="h-6 w-5 rounded-md bg-gray-200 text-sm font-medium dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="flex items-center">
+					<div className="h-5 w-5 rounded-full bg-gray-200 dark:bg-slate-600" />
+					<div className="ml-2 h-6 w-24 rounded-md bg-gray-200 text-sm font-medium dark:bg-slate-600" />
+				</div>
+			</td>
+
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+			<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+				<div className="h-7 w-5 rounded-md bg-gray-200 dark:bg-slate-600" />
+			</td>
+		</tr>
+	)
+}
