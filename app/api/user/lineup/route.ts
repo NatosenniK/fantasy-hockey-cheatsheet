@@ -2,7 +2,7 @@ import { getSession } from '@/app/lib/auth'
 import { Lineup } from '@/app/lib/lineup.types'
 
 import { neon } from '@neondatabase/serverless'
-import { NHLPlayerAPI } from '../../nhl-player.api'
+import { NHLPlayerAPI } from '../../../lib/api/external/nhl/nhl-player.api'
 
 const sql = neon(`${process.env.DATABASE_URL}`)
 

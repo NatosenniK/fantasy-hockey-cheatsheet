@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless'
-import { User } from './user.types'
+import { User } from './api/user/user.types'
 
 const sql = neon(`${process.env.DATABASE_URL}`)
 

@@ -1,4 +1,4 @@
-import { GameLogs, Games } from '../lib/nhl-player.types'
+import { GameLogs, Games } from '../lib/api/external/nhl/nhl-player.types'
 import { DateService } from './date.util'
 
 class GameFilteringPrototype {

@@ -3,7 +3,7 @@
 import { JWTPayload, SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { SessionPayload } from './user.types'
+import { SessionPayload } from './api/user/user.types'
 
 const secretKey = 'secret'
 const key = new TextEncoder().encode(secretKey)

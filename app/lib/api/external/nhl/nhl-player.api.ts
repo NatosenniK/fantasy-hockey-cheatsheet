@@ -10,8 +10,8 @@ import {
 	SkaterSeasonTotals,
 	GoalieProfile,
 	SkaterProfile,
-} from '../lib/nhl-player.types'
-import { GameFilteringService } from '../utils/game-filtering.util'
+} from './nhl-player.types'
+import { GameFilteringService } from '../../../../utils/game-filtering.util'
 
 const baseUrl = 'https://api-web.nhle.com/v1'
 

@@ -1,5 +1,5 @@
-import { GeminiResponse } from '../lib/gemini.types'
-import { GameLogs, PlayerProfile, SeasonTotals } from '../lib/nhl-player.types'
+import { GeminiResponse } from './gemini.types'
+import { GameLogs, PlayerProfile, SeasonTotals } from '../nhl/nhl-player.types'
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY
 class GeminiAPIPrototype {

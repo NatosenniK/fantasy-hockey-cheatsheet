@@ -1,5 +1,5 @@
-import { GeminiAPI } from '../api/gemeni-ai.api'
-import { NHLPlayerAPI } from '../api/nhl-player.api'
+import { GeminiAPI } from '../lib/api/external/gemini/gemini-ai.api'
+import { NHLPlayerAPI } from '../lib/api/external/nhl/nhl-player.api'
 import {
 	Games,
 	PlayerProfile,
@@ -7,7 +7,7 @@ import {
 	GoalieSeasonTotals,
 	PrevStats,
 	SeasonTotals,
-} from '../lib/nhl-player.types'
+} from '../lib/api/external/nhl/nhl-player.types'
 import { PlayerStatCalcUtil } from './calculate-stats.util'
 import { RoundingService } from './rounding-util'
 

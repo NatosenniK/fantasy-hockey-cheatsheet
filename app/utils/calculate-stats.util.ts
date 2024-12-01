@@ -5,7 +5,7 @@ import {
 	PlayerProfile,
 	SeasonTotals,
 	SkaterSeasonTotals,
-} from '../lib/nhl-player.types'
+} from '../lib/api/external/nhl/nhl-player.types'
 import { RoundingService } from './rounding-util'
 
 class PlayerStatCalculationUtilityPrototype {

@@ -3,7 +3,7 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDebouncedCallback } from 'use-debounce'
-import { NHLPlayerAPI } from '../api/nhl-player.api'
+import { NHLPlayerAPI } from '../lib/api/external/nhl/nhl-player.api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
 	GameLogs,
@@ -13,11 +13,11 @@ import {
 	PlayerSearchResults,
 	PrevStats,
 	SeasonTotals,
-} from '../lib/nhl-player.types'
+} from '../lib/api/external/nhl/nhl-player.types'
 import { findPlayer } from '../lib/actions'
 import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
 import Dropdown from './visuals/dropdown/dropdown'
-import { GeminiResponse } from '../lib/gemini.types'
+import { GeminiResponse } from '../lib/api/external/gemini/gemini.types'
 
 export interface SelectedPlayerDetails {
 	playerProfile: PlayerProfile

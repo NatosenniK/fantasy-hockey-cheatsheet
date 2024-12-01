@@ -1,4 +1,4 @@
-import { SkaterProfile } from '@/app/lib/nhl-player.types'
+import { SkaterProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { RoundingService } from '@/app/utils/rounding-util'
 
 interface FullStatsTableProps {

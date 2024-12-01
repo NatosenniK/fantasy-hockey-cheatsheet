@@ -2,7 +2,7 @@ import { getUser } from '@/app/lib/db'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import { encrypt } from '@/app/lib/auth'
-import { SafeUser } from '@/app/lib/user.types'
+import { SafeUser } from '@/app/lib/api/user/user.types'
 
 export async function POST(request: Request) {
 	const { email, password } = await request.json()

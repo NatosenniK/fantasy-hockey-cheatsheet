@@ -2,7 +2,7 @@
 
 // import { NHLPlayerAPI } from '@/app/api/nhl-player.api'
 
-import { SkaterProfile } from '@/app/lib/nhl-player.types'
+import { SkaterProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { playerSlot } from '@/app/utils/position.utl'
 // import { PlayerProfile } from '@/app/lib/nhl-player.types'
 import { useEffect, useState } from 'react'
