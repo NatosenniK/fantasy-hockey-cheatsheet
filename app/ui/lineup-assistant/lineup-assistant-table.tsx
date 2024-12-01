@@ -7,10 +7,10 @@ import { playerSlot } from '@/app/utils/position.utl'
 // import { PlayerProfile } from '@/app/lib/nhl-player.types'
 import { useEffect, useState } from 'react'
 import { PlayerHeadshot } from '../visuals/headshot'
-import Search, { SelectedPlayerDetails } from '../search'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { TableRowSkeleton } from '../visuals/skeletons'
+import LineupSearch from '../lineup-search'
 
 export default function LineupAssistantTable() {
 	const [players, setPlayers] = useState<SkaterProfile[] | null>(null)
@@ -86,9 +86,9 @@ export default function LineupAssistantTable() {
 		}
 	}
 
-	const handlePlayerSelection = (player: SelectedPlayerDetails) => {
+	const handlePlayerSelection = (playerId: number) => {
 		setAdding(true)
-		addToLineUp(player.playerProfile.playerId)
+		addToLineUp(playerId)
 	}
 
 	const handlePlayerRemoval = (playerId: number) => {
@@ -102,11 +102,7 @@ export default function LineupAssistantTable() {
 	return (
 		<div className="mt-6 flow-root w-full">
 			<div className="mb-6">
-				<Search
-					onPlayerSelection={handlePlayerSelection}
-					placeholder={'Add players to your lineup...'}
-					displayProjectionModifier={false}
-				/>
+				<LineupSearch onPlayerSelection={handlePlayerSelection} placeholder={'Add players to your lineup...'} />
 			</div>
 
 			<div className="inline-block min-w-full align-middle">
