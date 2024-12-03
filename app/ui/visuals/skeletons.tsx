@@ -50,6 +50,16 @@ export function CardSkeleton() {
 	)
 }
 
+export function FantasyOutlookSkeleton() {
+	return (
+		<div className={`${shimmer} relative overflow-hidden rounded-xl shadow-sm bg-slate-700`}>
+			<div className="flex items-center justify-center truncate rounded-xl bg-white bg-slate-700">
+				<div className="h-20 w-full rounded-md bg-gray-200 bg-slate-600 flex-grow" />
+			</div>
+		</div>
+	)
+}
+
 export function CardsSkeleton() {
 	return (
 		<>

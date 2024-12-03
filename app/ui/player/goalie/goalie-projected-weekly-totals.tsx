@@ -120,7 +120,7 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 									{stats.goalsAgainst}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{stats.goalsAgainst / stats.gamesPlayed}
+									{RoundingService.roundToDecimal(stats.goalsAgainst / stats.gamesPlayed, 3)}
 								</td>
 							</tr>
 						</tbody>

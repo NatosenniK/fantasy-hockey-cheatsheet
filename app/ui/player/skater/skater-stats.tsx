@@ -1,17 +1,31 @@
+'use client'
+
 import NHLTeamLogo from '../../visuals/team-logo'
 import CondensedStatsTable from './condensed-stats-table'
 import SkaterCareerStatsTable from './skater-career-stats-table'
-import { PlayerHeadshot } from '../../visuals/headshot'
+
 import SkaterProjectedWeeklyTotals from './skater-projected-weekly-totals'
 import { RoundingService } from '@/app/utils/rounding-util'
 import { SelectedPlayerDetails } from '../../search'
-import { playerPosition } from '@/app/utils/position.utl'
+
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from './recent-game-stats.table'
 import { SkaterProfile, SkaterSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
-import { marked } from 'marked'
+// import { marked } from 'marked'
+import { useEffect, useState } from 'react'
+import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player-stats-vs-upcoming-opps'
+
+import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
+import { PlayerCard } from '../player-card'
 
 export default function FullSkaterProjection({ player }: { player: SelectedPlayerDetails }) {
+	const [fantasyOutlook, setFantasyOutlook] = useState<string>('')
+
+	useEffect(() => {
+		setFantasyOutlook('')
+		fetchFantasyOutlook()
+	}, [player.playerProfile])
+
 	if (!player) {
 		return <div>Loading...</div>
 	}
@@ -23,47 +37,30 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 		}
 	})
 
-	const fantasyOutlookHtml = marked(player.fantasyOutlook)
+	const statsVsUpcomingOpp = GetPlayerStatsAgainstUpcomingOpponents(
+		player.games,
+		player.prevStats,
+		player.playerProfile,
+	)
+
+	async function fetchFantasyOutlook() {
+		try {
+			const summary = await GeminiAPI.fetchFantasyOutlook(
+				player.playerProfile,
+				player.recentPerformance,
+				statsVsUpcomingOpp,
+			)
+			setFantasyOutlook(summary)
+		} catch (error) {
+			console.error('Error fetching fantasy outlook:', error)
+		}
+	}
 
 	return (
 		<div className="mt-6 flow-root">
 			<div className="inline-block min-w-full align-middle">
 				<div className="p-2 md:pt-0">
-					<div className="flex items-stretch mb-6 flex-wrap">
-						<div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 w-full md:w-full lg:w-auto flex flex-col items-center">
-							<PlayerHeadshot width={150} height={150} imageUrl={player.playerProfile.headshot} />
-							<h2 className="text-lg font-semibold mt-4 text-white">
-								{player.playerProfile.firstName.default} {player.playerProfile.lastName.default}
-							</h2>
-							<div className="flex items-center">
-								<NHLTeamLogo
-									imageUrl={player.playerProfile.teamLogo}
-									width={30}
-									height={30}
-									alt={`${player.playerProfile.currentTeamAbbrev}`}
-								/>
-								<div className="text-md px-3 border-slate-500 border-l border-r ml-3">
-									{player.playerProfile.sweaterNumber}
-								</div>
-								<div className="text-md px-3 border-slate-500">
-									{playerPosition(player.playerProfile.position)}
-								</div>
-							</div>
-						</div>
-						<div className="bg-slate-700 rounded-lg p-3 md:mr-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto flex-grow ">
-							<div className="flex-grow flex items-center justify-center">
-								<div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
-							</div>
-							<h3 className="font-medium text-gray-900 text-white flex justify-center">
-								Expected Weekly Point Total
-							</h3>
-						</div>
-
-						<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow lg:max-w-5xl">
-							<h2 className="text-xl font-semibold mb-4 dark:text-white">Fantasy Outlook</h2>
-							<div className="text-white" dangerouslySetInnerHTML={{ __html: fantasyOutlookHtml }} />
-						</div>
-					</div>
+					<PlayerCard player={player} fantasyOutlook={fantasyOutlook} />
 
 					<div className="rounded-lg bg-slate-700 p-3 mb-6 flex flex-col justify-center flex-grow">
 						<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Projected Weekly Statline</h2>

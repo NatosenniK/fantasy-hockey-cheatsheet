@@ -17,7 +17,6 @@ import {
 import { findPlayer } from '../lib/actions'
 import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
 import Dropdown from './visuals/dropdown/dropdown'
-import { GeminiResponse } from '../lib/api/external/gemini/gemini.types'
 
 export interface SelectedPlayerDetails {
 	playerProfile: PlayerProfile
@@ -26,7 +25,6 @@ export interface SelectedPlayerDetails {
 	expectedWeeklyPointTotal: number
 	weekProjections: SeasonTotals
 	recentPerformance: GameLogs
-	fantasyOutlook: GeminiResponse
 }
 
 export default function Search({
@@ -68,7 +66,7 @@ export default function Search({
 		async (player: PlayerSearch) => {
 			setShowDropdown(false)
 
-			const playerData = await findPlayer(player.playerId, selectedDropdownValue)
+			const playerData = await findPlayer(player.playerId, selectedDropdownValue, player.lastTeamAbbrev)
 
 			onPlayerSelection(playerData)
 		},
