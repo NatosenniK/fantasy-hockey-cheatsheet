@@ -2,9 +2,8 @@
 
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useSearchParams } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
-import { NHLPlayerAPI } from '../api/nhl-player.api'
+import { NHLPlayerAPI } from '../lib/api/external/nhl/nhl-player.api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
 	GameLogs,
@@ -14,11 +13,10 @@ import {
 	PlayerSearchResults,
 	PrevStats,
 	SeasonTotals,
-} from '../lib/nhl-player.types'
+} from '../lib/api/external/nhl/nhl-player.types'
 import { findPlayer } from '../lib/actions'
 import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
 import Dropdown from './visuals/dropdown/dropdown'
-import { GeminiTypes } from '../lib/gemini.types'
 
 export interface SelectedPlayerDetails {
 	playerProfile: PlayerProfile
@@ -27,17 +25,17 @@ export interface SelectedPlayerDetails {
 	expectedWeeklyPointTotal: number
 	weekProjections: SeasonTotals
 	recentPerformance: GameLogs
-	fantasyOutlook: GeminiTypes.Response
 }
 
 export default function Search({
 	placeholder,
 	onPlayerSelection,
+	displayProjectionModifier,
 }: {
 	placeholder: string
 	onPlayerSelection: (playerDetails: SelectedPlayerDetails) => void
+	displayProjectionModifier: boolean
 }) {
-	const searchParams = useSearchParams()
 	const [searchResults, setSearchResults] = useState<PlayerSearchResults>([])
 	const [showDropdown, setShowDropdown] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
@@ -68,7 +66,7 @@ export default function Search({
 		async (player: PlayerSearch) => {
 			setShowDropdown(false)
 
-			const playerData = await findPlayer(player.playerId, selectedDropdownValue)
+			const playerData = await findPlayer(player.playerId, selectedDropdownValue, player.lastTeamAbbrev)
 
 			onPlayerSelection(playerData)
 		},
@@ -112,7 +110,6 @@ export default function Search({
 						onChange={(e) => {
 							handleSearch(e.target.value)
 						}}
-						defaultValue={searchParams.get('query')?.toString()}
 						onFocus={() => setShowDropdown(true)}
 					/>
 				</div>
@@ -132,16 +129,20 @@ export default function Search({
 					</div>
 				)}
 			</div>
-			<div>
-				<div className="mb-1 pl-3">Projection Modifier</div>
-				<Dropdown
-					options={getRecentGameOptions()}
-					label={'Projection Modifier'}
-					onSelect={handleSelect}
-					value={selectedDropdownValue}
-					className="w-40 md:w-48 ml-3"
-				/>
-			</div>
+
+			{displayProjectionModifier && (
+				<div>
+					<div className="mb-1 pl-3">Projection Modifier</div>
+					<Dropdown
+						options={getRecentGameOptions()}
+						label={'Projection Modifier'}
+						onSelect={handleSelect}
+						value={selectedDropdownValue}
+						className="w-40 md:w-48 ml-3"
+					/>
+				</div>
+			)}
+
 			<FontAwesomeIcon
 				icon={faSearch}
 				className="fa-fw absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 pt-6"

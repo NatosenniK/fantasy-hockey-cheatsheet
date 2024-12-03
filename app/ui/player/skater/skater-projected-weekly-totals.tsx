@@ -1,4 +1,4 @@
-import { SkaterSeasonTotals } from '@/app/lib/nhl-player.types'
+import { SkaterSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
 
 interface SkaterProjectedWeeklyTotalsProps {
 	stats: SkaterSeasonTotals

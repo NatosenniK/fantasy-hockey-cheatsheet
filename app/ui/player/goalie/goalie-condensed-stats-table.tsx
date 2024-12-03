@@ -1,4 +1,4 @@
-import { GoalieSeasonTotals } from '@/app/lib/nhl-player.types'
+import { GoalieSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { RoundingService } from '@/app/utils/rounding-util'
 
 interface GoalieCondensedStatsTableProps {

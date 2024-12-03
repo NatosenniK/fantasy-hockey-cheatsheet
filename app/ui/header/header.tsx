@@ -1,8 +1,14 @@
-import { MobileMenuButton } from '../visuals/buttons'
+'use client'
+
+// import { useSession } from '@/app/context/session-context'
+import { MobileMenuButton } from '../visuals/mobile-menu-button'
 import SiteLogo from '../visuals/site-logo'
 import NavLinks from './nav-links'
 
+// import { LoginButton, LogoutButton } from '../visuals/buttons'
+
 export function HeaderElement() {
+	// const { session, updateSession } = useSession()
 	return (
 		<header>
 			<nav className="border-gray-200 px-4 lg:px-6 py-2.5 bg-gray-700">
@@ -19,9 +25,7 @@ export function HeaderElement() {
 						id="mobile-menu-2"
 					>
 						<NavLinks />
-						{/* <div className="pl-4">
-                            <ThemeSwitch />
-                        </div> */}
+						{/* {session ? <LogoutButton onLogout={updateSession} /> : <LoginButton />} */}
 					</div>
 				</div>
 			</nav>

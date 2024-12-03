@@ -1,4 +1,4 @@
-import { NHLTeamAPI } from '@/app/api/nhl-teams.api'
+import { NHLTeamAPI } from '@/app/lib/api/external/nhl/nhl-teams.api'
 import NHLTeamLogo from '../visuals/team-logo'
 import { RoundingService } from '@/app/utils/rounding-util'
 import clsx from 'clsx'

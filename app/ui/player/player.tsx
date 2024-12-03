@@ -14,7 +14,11 @@ export default function SearchWithPlayer() {
 
 	return (
 		<div>
-			<Search placeholder="Enter a player name..." onPlayerSelection={handlePlayerSelection} />
+			<Search
+				placeholder="Enter a player name..."
+				onPlayerSelection={handlePlayerSelection}
+				displayProjectionModifier={true}
+			/>
 			{selectedPlayer && (
 				<div className="mt-4">
 					<div className="flex justify-between">

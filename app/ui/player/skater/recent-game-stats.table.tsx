@@ -1,4 +1,4 @@
-import { GameLog } from '@/app/lib/nhl-player.types'
+import { GameLog } from '@/app/lib/api/external/nhl/nhl-player.types'
 
 interface RecentGameStatTableProps {
 	stats: GameLog
