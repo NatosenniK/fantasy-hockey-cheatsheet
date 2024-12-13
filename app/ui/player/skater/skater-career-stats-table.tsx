@@ -19,60 +19,60 @@ export default function SkaterCareerStatsTable({ player }: FullStatsTableProps) 
 								<div className="w-full">
 									<div className="flex justify-between items-center">
 										<div>Games Played</div>
-										<div>{player.careerTotals.regularSeason.gamesPlayed}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.gamesPlayed}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Goals</div>
-										<div>{player.careerTotals.regularSeason.goals}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.goals}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Assists</div>
-										<div>{player.careerTotals.regularSeason.assists}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.assists}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Points</div>
-										<div>{player.careerTotals.regularSeason.points}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.points}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>+/-</div>
 										<div>
-											{player.careerTotals.regularSeason.plusMinus > 0
-												? `+${player.careerTotals.regularSeason.plusMinus}`
-												: player.careerTotals.regularSeason.plusMinus}
+											{player.featuredStats.regularSeason.subSeason.plusMinus > 0
+												? `+${player.featuredStats.regularSeason.subSeason.plusMinus}`
+												: player.featuredStats.regularSeason.subSeason.plusMinus}
 										</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>PIM</div>
-										<div>{player.careerTotals.regularSeason.pim}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.pim}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Shots</div>
-										<div>{player.careerTotals.regularSeason.shots}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.shots}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>S%</div>
 										<div>
 											{RoundingService.roundToDecimal(
-												player.careerTotals.regularSeason.shootingPctg,
+												player.featuredStats.regularSeason.subSeason.shootingPctg,
 												3,
 											)}
 										</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>PPG</div>
-										<div>{player.careerTotals.regularSeason.powerPlayGoals}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.powerPlayGoals}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>PP Points</div>
-										<div>{player.careerTotals.regularSeason.powerPlayPoints}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.powerPlayPoints}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>SHG</div>
-										<div>{player.careerTotals.regularSeason.shorthandedGoals}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.shorthandedGoals}</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>SH Points</div>
-										<div>{player.careerTotals.regularSeason.shorthandedPoints}</div>
+										<div>{player.featuredStats.regularSeason.subSeason.shorthandedPoints}</div>
 									</div>
 								</div>
 							</div>
@@ -122,42 +122,45 @@ export default function SkaterCareerStatsTable({ player }: FullStatsTableProps) 
 						<tbody>
 							<tr className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800">
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.gamesPlayed}
+									{player.featuredStats.regularSeason.subSeason.gamesPlayed}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.goals}
+									{player.featuredStats.regularSeason.subSeason.goals}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.assists}
+									{player.featuredStats.regularSeason.subSeason.assists}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.points}
+									{player.featuredStats.regularSeason.subSeason.points}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.plusMinus > 0
-										? `+${player.careerTotals.regularSeason.plusMinus}`
-										: player.careerTotals.regularSeason.plusMinus}
+									{player.featuredStats.regularSeason.subSeason.plusMinus > 0
+										? `+${player.featuredStats.regularSeason.subSeason.plusMinus}`
+										: player.featuredStats.regularSeason.subSeason.plusMinus}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.pim}
+									{player.featuredStats.regularSeason.subSeason.pim}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.shots}
+									{player.featuredStats.regularSeason.subSeason.shots}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.powerPlayGoals}
+									{player.featuredStats.regularSeason.subSeason.powerPlayGoals}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.powerPlayPoints}
+									{player.featuredStats.regularSeason.subSeason.powerPlayPoints}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{RoundingService.roundToDecimal(player.careerTotals.regularSeason.shootingPctg, 3)}
+									{RoundingService.roundToDecimal(
+										player.featuredStats.regularSeason.subSeason.shootingPctg,
+										3,
+									)}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.shorthandedGoals}
+									{player.featuredStats.regularSeason.subSeason.shorthandedGoals}
 								</td>
 								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-									{player.careerTotals.regularSeason.shorthandedPoints}
+									{player.featuredStats.regularSeason.subSeason.shorthandedPoints}
 								</td>
 							</tr>
 						</tbody>

@@ -167,8 +167,18 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 							</div>
 						))}
 					</div>
+
+					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Current Season Stats</h2>
+					<div className="rounded-lg bg-slate-700 mt-4 p-3 mb-6">
+						<div className="flex items-center">
+							<SkaterCareerStatsTable player={player.playerProfile as SkaterProfile} />
+						</div>
+					</div>
+
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
-						Last {player.recentPerformance.length} games
+						{player.recentPerformance.length > 5
+							? `Season gamelog`
+							: `Last ${player.recentPerformance.length} games`}
 					</h2>
 					<div className={`grid gap-6 md:grid-cols-5 mb-6`}>
 						{player.recentPerformance.map((game) => (
@@ -191,13 +201,6 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 								</div>
 							</div>
 						))}
-					</div>
-
-					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
-					<div className="rounded-lg bg-slate-700 mt-4 p-3">
-						<div className="flex items-center">
-							<SkaterCareerStatsTable player={player.playerProfile as SkaterProfile} />
-						</div>
 					</div>
 				</div>
 			</div>

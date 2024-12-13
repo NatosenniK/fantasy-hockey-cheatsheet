@@ -57,7 +57,7 @@ export default function FullGoalieProjection({ player }: { player: SelectedPlaye
 				<div className="p-2 md:pt-0">
 					<PlayerCard player={player} fantasyOutlook={fantasyOutlook} />
 
-					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow">
+					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow mb-6">
 						<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Projected Weekly Statline</h2>
 						<GoalieProjectedWeeklyTotals stats={player.weekProjections as GoalieSeasonTotals} />
 					</div>
@@ -162,8 +162,18 @@ export default function FullGoalieProjection({ player }: { player: SelectedPlaye
 							</div>
 						))}
 					</div>
+
+					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
+					<div className="rounded-lg bg-slate-700 mt-4 p-3 mb-6">
+						<div className="flex items-center">
+							<GoalieCareerStatsTable player={player.playerProfile as GoalieProfile} />
+						</div>
+					</div>
+
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
-						Last {player.recentPerformance.length} games
+						{player.recentPerformance.length > 5
+							? `Season gamelog`
+							: `Last ${player.recentPerformance.length} games`}
 					</h2>
 					<div className={`grid gap-6 md:grid-cols-5 mb-6`}>
 						{player.recentPerformance.map((game) => (
@@ -186,13 +196,6 @@ export default function FullGoalieProjection({ player }: { player: SelectedPlaye
 								</div>
 							</div>
 						))}
-					</div>
-
-					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
-					<div className="rounded-lg bg-slate-700 mt-4 p-3">
-						<div className="flex items-center">
-							<GoalieCareerStatsTable player={player.playerProfile as GoalieProfile} />
-						</div>
 					</div>
 				</div>
 			</div>
