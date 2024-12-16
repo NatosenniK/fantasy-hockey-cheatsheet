@@ -71,11 +71,16 @@ class PlayerStatCalculationUtilityPrototype {
 
 		if (games && prevStats) {
 			games.forEach((game) => {
-				const teamStats =
-					game.homeTeam.abbrev === 'UTA'
-						? prevStats['ARI']
-						: prevStats[game.homeTeam.abbrev] ||
-							(game.awayTeam.abbrev === 'UTA' ? prevStats['ARI'] : prevStats[game.awayTeam.abbrev])
+				let teamStats = null
+				if (playerProfile.currentTeamAbbrev !== 'UTA') {
+					teamStats =
+						game.homeTeam.abbrev === 'UTA'
+							? prevStats['ARI']
+							: prevStats[game.homeTeam.abbrev] ||
+								(game.awayTeam.abbrev === 'UTA' ? prevStats['ARI'] : prevStats[game.awayTeam.abbrev])
+				} else {
+					teamStats = prevStats[game.homeTeam.abbrev] || prevStats[game.awayTeam.abbrev]
+				}
 
 				if (teamStats) {
 					const expGoals = (teamStats.goals / teamStats.gamesPlayed) * goalWeight
@@ -125,6 +130,7 @@ class PlayerStatCalculationUtilityPrototype {
 	}
 
 	calculateGoalie(
+		playerProfile: PlayerProfile,
 		games: Games,
 		prevStats: { [teamAbbrev: string]: GoalieSeasonTotals },
 		recentPerformance: GameLogs,
@@ -173,11 +179,16 @@ class PlayerStatCalculationUtilityPrototype {
 
 		if (games && prevStats) {
 			games.forEach((game) => {
-				const teamStats =
-					game.homeTeam.abbrev === 'UTA'
-						? prevStats['ARI']
-						: prevStats[game.homeTeam.abbrev] ||
-							(game.awayTeam.abbrev === 'UTA' ? prevStats['ARI'] : prevStats[game.awayTeam.abbrev])
+				let teamStats = null
+				if (playerProfile.currentTeamAbbrev !== 'UTA') {
+					teamStats =
+						game.homeTeam.abbrev === 'UTA'
+							? prevStats['ARI']
+							: prevStats[game.homeTeam.abbrev] ||
+								(game.awayTeam.abbrev === 'UTA' ? prevStats['ARI'] : prevStats[game.awayTeam.abbrev])
+				} else {
+					teamStats = prevStats[game.homeTeam.abbrev] || prevStats[game.awayTeam.abbrev]
+				}
 
 				if (teamStats) {
 					const expWins = (teamStats.wins / teamStats.gamesPlayed) * goalieWinWeight

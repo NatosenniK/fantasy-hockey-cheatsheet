@@ -47,7 +47,12 @@ export async function FetchPlayerStats(playerId: number, recentGames: number | n
 		}
 	} else {
 		const prevStats: { [teamAbbrev: string]: GoalieSeasonTotals } = careerStats.stats
-		const calcResult = PlayerStatCalcUtil.calculateGoalie(upcomingGames, prevStats, recentPerformance)
+		const calcResult = PlayerStatCalcUtil.calculateGoalie(
+			playerProfile,
+			upcomingGames,
+			prevStats,
+			recentPerformance,
+		)
 
 		if (!calcResult) {
 			throw new Error('Failed to calculate skater stats')
