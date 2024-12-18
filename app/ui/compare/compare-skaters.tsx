@@ -12,7 +12,13 @@ import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
 import { PlayerCard } from '../player/player-card'
 
-export default function CompareSkatersTable({ player }: { player: SelectedPlayerDetails }) {
+export default function CompareSkaters({
+	player,
+	suggestedStart,
+}: {
+	player: SelectedPlayerDetails
+	suggestedStart?: boolean
+}) {
 	const [fantasyOutlook, setFantasyOutlook] = useState<string>('')
 
 	useEffect(() => {
@@ -54,7 +60,12 @@ export default function CompareSkatersTable({ player }: { player: SelectedPlayer
 		<div className="mt-6 flow-root">
 			<div className="inline-block max-w-full align-middle">
 				<div className="p-2 md:pt-0">
-					<PlayerCard player={player} fantasyOutlook={fantasyOutlook} compare={true} />
+					<PlayerCard
+						player={player}
+						fantasyOutlook={fantasyOutlook}
+						compare={true}
+						suggestedStart={suggestedStart}
+					/>
 
 					<div className="rounded-lg bg-slate-700 p-3 flex flex-col justify-center flex-grow mb-6">
 						<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Projected Weekly Statline</h2>

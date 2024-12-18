@@ -362,3 +362,8 @@ export interface PlayerSearch {
 }
 
 export type PlayerSearchResults = PlayerSearch[]
+
+export interface PlayerStatsVsUpcoming {
+	opponent: string
+	stats: SeasonTotals
+}

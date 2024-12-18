@@ -3,15 +3,19 @@ import { PlayerHeadshot } from '../visuals/headshot'
 import { FantasyOutlookSkeleton } from '../visuals/skeletons'
 import NHLTeamLogo from '../visuals/team-logo'
 import { SelectedPlayerDetails } from '../search'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 export function PlayerCard({
 	player,
 	fantasyOutlook,
 	compare,
+	suggestedStart,
 }: {
 	player: SelectedPlayerDetails
 	fantasyOutlook: string
 	compare?: boolean
+	suggestedStart?: boolean
 }) {
 	return (
 		<>
@@ -37,8 +41,16 @@ export function PlayerCard({
 					</div>
 				</div>
 				<div
-					className={`bg-slate-700 rounded-lg p-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto w-56 items-center ${compare ? 'flex-grow mr-0' : ' md:mr-3 '}`}
+					className={`bg-slate-700 rounded-lg p-3 mb-3 md:mb-0 flex flex-col w-full md:w-full lg:w-auto w-56 items-center relative ${compare ? 'flex-grow mr-0' : ' md:mr-3 '}`}
 				>
+					{suggestedStart && (
+						<div className="absolute top-8 left-1/2">
+							<FontAwesomeIcon
+								icon={faCheckCircle}
+								className="fa-fw h-[32px] w-[32px] -translate-y-1/2 text-green-500 peer-focus:text-green-900"
+							/>
+						</div>
+					)}
 					<div className="flex-grow flex items-center justify-center w-56">
 						<div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
 					</div>

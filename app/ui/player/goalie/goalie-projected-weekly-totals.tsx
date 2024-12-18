@@ -52,7 +52,9 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 									</div>
 									<div className="flex justify-between items-center">
 										<div>GAA</div>
-										<div>{stats.goalsAgainst / stats.gamesPlayed}</div>
+										<div>
+											{RoundingService.roundToDecimal(stats.goalsAgainst / stats.gamesPlayed, 3)}
+										</div>
 									</div>
 								</div>
 							</div>
