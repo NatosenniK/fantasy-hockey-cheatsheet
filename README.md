@@ -17,6 +17,7 @@ This project is a fantasy hockey cheatsheet application built using React and Ne
 -   **Player Search:** Search for NHL players to view their stats and fantasy relevance.
 -   **Player Stats:** Display comprehensive player statistics, including points, goals, assists, and more.
 -   **Player Projections:** Calculate projected fantasy points based on a player's past performance and upcoming schedule.
+-   **AI Enhanced Outlooks:** Utilizng the Gemini API, return a fantasy outlook on a player or how they compare to another.
 -   **Responsive Design:** Ensure optimal viewing experience across various devices.
 
 ## Tech Stack
