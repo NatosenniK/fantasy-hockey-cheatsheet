@@ -17,6 +17,7 @@ import {
 import { findPlayer } from '../lib/actions'
 import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
 import Dropdown from './visuals/dropdown/dropdown'
+import PlayerStatSkeleton from './visuals/skeletons'
 
 export interface SelectedPlayerDetails {
 	playerProfile: PlayerProfile
@@ -31,16 +32,19 @@ export default function Search({
 	placeholder,
 	onPlayerSelection,
 	displayProjectionModifier,
+	hideLoading,
 }: {
 	placeholder: string
-	onPlayerSelection: (playerDetails: SelectedPlayerDetails) => void
+	onPlayerSelection: (playerDetails: SelectedPlayerDetails | null) => void
 	displayProjectionModifier: boolean
+	hideLoading?: boolean
 }) {
 	const [searchResults, setSearchResults] = useState<PlayerSearchResults>([])
 	const [showDropdown, setShowDropdown] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const [selectedDropdownValue, setSelectedDropdownValue] = useState<number>(5)
 	const [selectedPlayer, setSelectedPlayer] = useState<PlayerSearch | null>()
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	function getRecentGameOptions(): DropdownOptionProps<number>[] {
 		return [
@@ -65,10 +69,12 @@ export default function Search({
 	const handleClick = useCallback(
 		async (player: PlayerSearch) => {
 			setShowDropdown(false)
-
+			setIsLoading(true)
+			onPlayerSelection(null)
 			const playerData = await findPlayer(player.playerId, selectedDropdownValue, player.lastTeamAbbrev)
 
 			onPlayerSelection(playerData)
+			setIsLoading(false)
 		},
 		[selectedDropdownValue, onPlayerSelection],
 	)
@@ -97,56 +103,65 @@ export default function Search({
 	}, [selectedDropdownValue, selectedPlayer])
 
 	return (
-		<div className="relative flex flex-1 flex-shrink-0" ref={dropdownRef}>
-			<label htmlFor="search" className="sr-only">
-				Search
-			</label>
-			<div className="relative flex flex-grow items-end">
-				<div className="w-full">
-					<div className="mb-1">Player Search</div>
-					<input
-						className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 dark:bg-slate-700 dark:text-white"
-						placeholder={placeholder}
-						onChange={(e) => {
-							handleSearch(e.target.value)
-						}}
-						onFocus={() => setShowDropdown(true)}
+		<>
+			<div>
+				<div className="relative flex flex-1 flex-shrink-0" ref={dropdownRef}>
+					<label htmlFor="search" className="sr-only">
+						Search
+					</label>
+					<div className="relative flex flex-grow items-end">
+						<div className="w-full">
+							<div className="mb-1">Player Search</div>
+							<input
+								className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 dark:bg-slate-700 dark:text-white"
+								placeholder={placeholder}
+								onChange={(e) => {
+									handleSearch(e.target.value)
+								}}
+								onFocus={() => setShowDropdown(true)}
+							/>
+						</div>
+						{showDropdown && (
+							<div className="absolute top-full left-0 w-full border border-gray-200 rounded-md shadow-md z-10 bg-slate-700">
+								{searchResults.map((player) => (
+									<div
+										key={player.playerId}
+										className="py-2 px-4 hover:bg-gray-800 cursor-pointer"
+										onClick={() => {
+											setSelectedPlayer(player)
+										}}
+									>
+										{player.name} - {player.lastTeamAbbrev}
+									</div>
+								))}
+							</div>
+						)}
+					</div>
+
+					{displayProjectionModifier && (
+						<div>
+							<div className="mb-1 pl-3">Projection Modifier</div>
+							<Dropdown
+								options={getRecentGameOptions()}
+								label={'Projection Modifier'}
+								onSelect={handleSelect}
+								value={selectedDropdownValue}
+								className="w-40 md:w-48 ml-3"
+							/>
+						</div>
+					)}
+
+					<FontAwesomeIcon
+						icon={faSearch}
+						className="fa-fw absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 pt-6"
 					/>
 				</div>
-				{showDropdown && (
-					<div className="absolute top-full left-0 w-full border border-gray-200 rounded-md shadow-md z-10 bg-slate-700">
-						{searchResults.map((player) => (
-							<div
-								key={player.playerId}
-								className="py-2 px-4 hover:bg-gray-800 cursor-pointer"
-								onClick={() => {
-									setSelectedPlayer(player)
-								}}
-							>
-								{player.name} - {player.lastTeamAbbrev}
-							</div>
-						))}
+				{isLoading && !hideLoading && (
+					<div>
+						<PlayerStatSkeleton />
 					</div>
 				)}
 			</div>
-
-			{displayProjectionModifier && (
-				<div>
-					<div className="mb-1 pl-3">Projection Modifier</div>
-					<Dropdown
-						options={getRecentGameOptions()}
-						label={'Projection Modifier'}
-						onSelect={handleSelect}
-						value={selectedDropdownValue}
-						className="w-40 md:w-48 ml-3"
-					/>
-				</div>
-			)}
-
-			<FontAwesomeIcon
-				icon={faSearch}
-				className="fa-fw absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 pt-6"
-			/>
-		</div>
+		</>
 	)
 }

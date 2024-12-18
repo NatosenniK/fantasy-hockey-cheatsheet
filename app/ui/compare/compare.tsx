@@ -21,11 +21,11 @@ export default function SearchCompare() {
 	>(null)
 	const [fantasyComparison, setFantasyComparison] = useState<string>('')
 
-	const handleFirstPlayerSelection = (player: SelectedPlayerDetails) => {
+	const handleFirstPlayerSelection = (player: SelectedPlayerDetails | null) => {
 		setFirstPlayer(player)
 	}
 
-	const hanldeSecondPlayerSelection = (player: SelectedPlayerDetails) => {
+	const hanldeSecondPlayerSelection = (player: SelectedPlayerDetails | null) => {
 		setSecondPlayer(player)
 	}
 
@@ -96,11 +96,13 @@ export default function SearchCompare() {
 					placeholder="Enter a player name..."
 					onPlayerSelection={handleFirstPlayerSelection}
 					displayProjectionModifier={true}
+					hideLoading={true}
 				/>
 				<Search
 					placeholder="Enter a player name..."
 					onPlayerSelection={hanldeSecondPlayerSelection}
 					displayProjectionModifier={true}
+					hideLoading={true}
 				/>
 			</div>
 

@@ -8,7 +8,7 @@ import FullGoalieProjection from './goalie/goalie-stats'
 export default function SearchWithPlayer() {
 	const [selectedPlayer, setSelectedPlayer] = useState<SelectedPlayerDetails | null>(null)
 
-	const handlePlayerSelection = (player: SelectedPlayerDetails) => {
+	const handlePlayerSelection = (player: SelectedPlayerDetails | null) => {
 		setSelectedPlayer(player)
 	}
 
