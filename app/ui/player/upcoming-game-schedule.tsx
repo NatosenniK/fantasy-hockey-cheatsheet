@@ -1,26 +1,34 @@
 import { DateService } from '@/app/utils/date.util'
 import React from 'react'
-import { SelectedPlayerDetails } from '../search'
-import { SkaterSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
+
+import { Games, PlayerProfile, PrevStats, SkaterSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
 import NHLTeamLogo from '../visuals/team-logo'
 import CondensedStatsTable from './skater/condensed-stats-table'
 
-function UpcomingGameSchedule({ player }: { player: SelectedPlayerDetails }) {
+function UpcomingGameSchedule({
+	games,
+	prevStats,
+	playerProfile,
+}: {
+	games: Games
+	prevStats: PrevStats
+	playerProfile: PlayerProfile
+}) {
 	return (
 		<>
 			<h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
 			<div
 				className={`grid gap-6 mb-6 md:grid-cols-1 ${
-					player.games.length === 4
+					games.length === 4
 						? 'lg:grid-cols-4'
-						: player.games.length === 3
+						: games.length === 3
 							? 'lg:grid-cols-3'
-							: player.games.length === 2
+							: games.length === 2
 								? 'lg:grid-cols-2'
 								: 'lg:grid-cols-1'
 				}`}
 			>
-				{player.games.map((game) => (
+				{games.map((game) => (
 					<div key={game.id} className="bg-slate-700 rounded-lg p-3 text-sm">
 						<div className="flex justify-between mb-3">
 							<div>Game Date:</div>
@@ -53,39 +61,39 @@ function UpcomingGameSchedule({ player }: { player: SelectedPlayerDetails }) {
 								<div>{game.awayTeam.commonName.default}</div>
 							</div>
 						</div>
-						{game.homeTeam.abbrev !== player.playerProfile.currentTeamAbbrev && (
+						{game.homeTeam.abbrev !== playerProfile.currentTeamAbbrev && (
 							<div>
 								<h3 className="text-lg">
 									Career vs {game.homeTeam.commonName.default}{' '}
 									{game.homeTeam.commonName.default === 'Utah Hockey Club' ? '/ Arizona Coyotes' : ''}
 								</h3>
 								<div>
-									{game.homeTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
-										<CondensedStatsTable stats={player.prevStats['ARI'] as SkaterSeasonTotals} />
-									) : player.prevStats[game.homeTeam.abbrev] ? (
+									{game.homeTeam.abbrev === 'UTA' && prevStats['ARI'] ? (
+										<CondensedStatsTable stats={prevStats['ARI'] as SkaterSeasonTotals} />
+									) : prevStats[game.homeTeam.abbrev] ? (
 										<CondensedStatsTable
-											stats={player.prevStats[game.homeTeam.abbrev] as SkaterSeasonTotals}
+											stats={prevStats[game.homeTeam.abbrev] as SkaterSeasonTotals}
 										/>
 									) : (
 										<p>No stats available for {game.homeTeam.commonName.default}.</p>
 									)}
 								</div>
-								{/* <div className="mt-3">Projected fantasy points: {player.prevStats[game.homeTeam.abbrev]}</div> */}
+								{/* <div className="mt-3">Projected fantasy points: {prevStats[game.homeTeam.abbrev]}</div> */}
 							</div>
 						)}
 
-						{game.awayTeam.abbrev !== player.playerProfile.currentTeamAbbrev && (
+						{game.awayTeam.abbrev !== playerProfile.currentTeamAbbrev && (
 							<div>
 								<h3 className="text-lg">
 									Career vs {game.awayTeam.commonName.default}{' '}
 									{game.awayTeam.commonName.default === 'Utah Hockey Club' ? '/ Arizona Coyotes' : ''}
 								</h3>
 								<div>
-									{game.awayTeam.abbrev === 'UTA' && player.prevStats['ARI'] ? (
-										<CondensedStatsTable stats={player.prevStats['ARI'] as SkaterSeasonTotals} />
-									) : player.prevStats[game.awayTeam.abbrev] ? (
+									{game.awayTeam.abbrev === 'UTA' && prevStats['ARI'] ? (
+										<CondensedStatsTable stats={prevStats['ARI'] as SkaterSeasonTotals} />
+									) : prevStats[game.awayTeam.abbrev] ? (
 										<CondensedStatsTable
-											stats={player.prevStats[game.awayTeam.abbrev] as SkaterSeasonTotals}
+											stats={prevStats[game.awayTeam.abbrev] as SkaterSeasonTotals}
 										/>
 									) : (
 										<p>No stats available for {game.awayTeam.commonName.default}.</p>

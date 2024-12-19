@@ -66,7 +66,11 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 						<SkaterProjectedWeeklyTotals stats={player.weekProjections as SkaterSeasonTotals} />
 					</div>
 
-					<UpcomingGameSchedule player={player} />
+					<UpcomingGameSchedule
+						games={player.games}
+						prevStats={player.prevStats}
+						playerProfile={player.playerProfile}
+					/>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Current Season Stats</h2>
 					<div className="rounded-lg bg-slate-700 mt-4 p-3 mb-6">

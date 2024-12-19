@@ -62,7 +62,11 @@ export default function FullGoalieProjection({ player }: { player: SelectedPlaye
 						<GoalieProjectedWeeklyTotals stats={player.weekProjections as GoalieSeasonTotals} />
 					</div>
 
-					<UpcomingGameSchedule player={player} />
+					<UpcomingGameSchedule
+						games={player.games}
+						prevStats={player.prevStats}
+						playerProfile={player.playerProfile}
+					/>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">Career Regular Season Stats</h2>
 					<div className="rounded-lg bg-slate-700 mt-4 p-3 mb-6">
