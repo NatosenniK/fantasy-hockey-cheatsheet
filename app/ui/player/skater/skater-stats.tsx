@@ -80,7 +80,7 @@ export default function FullSkaterProjection({ player }: { player: SelectedPlaye
 					</div>
 
 					<h2 className="text-xl font-semibold mb-4 dark:text-white mb-3">
-						{player.recentPerformance.length > 5
+						{player.recentPerformance.length > 10
 							? `Season gamelog`
 							: `Last ${player.recentPerformance.length} games`}
 					</h2>
