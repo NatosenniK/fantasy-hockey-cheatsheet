@@ -1,4 +1,3 @@
-import NHLTeamLogo from '../../visuals/team-logo'
 import { RoundingService } from '@/app/utils/rounding-util'
 import { SelectedPlayerDetails } from '../../search'
 import { DateService } from '@/app/utils/date.util'
@@ -6,7 +5,7 @@ import { GoalieProfile, GoalieSeasonTotals } from '@/app/lib/api/external/nhl/nh
 import GoalieProjectedWeeklyTotals from './goalie-projected-weekly-totals'
 import GoalieCareerStatsTable from './goalie-career-stats-table'
 import GoalieRecentGameStatTable from './goalie-recent-game-stats-table'
-import GoalieCondensedStatsTable from './goalie-condensed-stats-table'
+
 import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player-stats-vs-upcoming-opps'
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
 import { useEffect, useState } from 'react'
