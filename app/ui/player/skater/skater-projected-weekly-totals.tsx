@@ -1,9 +1,10 @@
 import { SkaterSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
+import React from 'react'
 
 interface SkaterProjectedWeeklyTotalsProps {
 	stats: SkaterSeasonTotals
 }
-export default function SkaterProjectedWeeklyTotals({ stats }: SkaterProjectedWeeklyTotalsProps) {
+function SkaterProjectedWeeklyTotals({ stats }: SkaterProjectedWeeklyTotalsProps) {
 	return (
 		<div className="mt-3 flow-root overflow-hidden overflow-x-auto">
 			<div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
@@ -131,3 +132,5 @@ export default function SkaterProjectedWeeklyTotals({ stats }: SkaterProjectedWe
 		</div>
 	)
 }
+
+export default React.memo(SkaterProjectedWeeklyTotals)

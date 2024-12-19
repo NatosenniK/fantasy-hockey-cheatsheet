@@ -1,10 +1,11 @@
 import { GoalieSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { RoundingService } from '@/app/utils/rounding-util'
+import React from 'react'
 
 interface GoalieProjectedWeeklyTotalsProps {
 	stats: GoalieSeasonTotals
 }
-export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWeeklyTotalsProps) {
+function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWeeklyTotalsProps) {
 	return (
 		<div className="mt-3 flow-root overflow-hidden overflow-x-auto">
 			<div className="inline-block min-w-full align-middle bg-slate-700 rounded-lg">
@@ -132,3 +133,5 @@ export default function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWe
 		</div>
 	)
 }
+
+export default React.memo(GoalieProjectedWeeklyTotals)
