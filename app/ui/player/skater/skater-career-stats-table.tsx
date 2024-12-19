@@ -1,10 +1,11 @@
 import { SkaterProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { RoundingService } from '@/app/utils/rounding-util'
+import React from 'react'
 
 interface FullStatsTableProps {
 	player: SkaterProfile
 }
-export default function SkaterCareerStatsTable({ player }: FullStatsTableProps) {
+function SkaterCareerStatsTable({ player }: FullStatsTableProps) {
 	if (!player || !player.careerTotals) {
 		return <div>Loading...</div>
 	}
@@ -170,3 +171,5 @@ export default function SkaterCareerStatsTable({ player }: FullStatsTableProps) 
 		</div>
 	)
 }
+
+export default React.memo(SkaterCareerStatsTable)
