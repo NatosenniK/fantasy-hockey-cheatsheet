@@ -3,30 +3,15 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDebouncedCallback } from 'use-debounce'
-import { NHLPlayerAPI } from '../lib/api/external/nhl/nhl-player.api'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-	GameLogs,
-	Games,
-	PlayerProfile,
-	PlayerSearch,
-	PlayerSearchResults,
-	PrevStats,
-	SeasonTotals,
-} from '../lib/api/external/nhl/nhl-player.types'
-import { findPlayer } from '../lib/actions'
-import { DropdownOptionProps } from './visuals/dropdown/dropdown.types'
-import Dropdown from './visuals/dropdown/dropdown'
-import PlayerStatSkeleton from './visuals/skeletons'
-
-export interface SelectedPlayerDetails {
-	playerProfile: PlayerProfile
-	games: Games
-	prevStats: PrevStats
-	expectedWeeklyPointTotal: number
-	weekProjections: SeasonTotals
-	recentPerformance: GameLogs
-}
+import { NHLPlayerAPI } from '../../lib/api/external/nhl/nhl-player.api'
+import { useCallback, useEffect, useReducer, useRef } from 'react'
+import { PlayerSearch } from '../../lib/api/external/nhl/nhl-player.types'
+import { findPlayer } from '../../lib/actions'
+import Dropdown from '../visuals/dropdown/dropdown'
+import PlayerStatSkeleton from '../visuals/skeletons'
+import { searchInitialState, searchReducer } from './search-reducer'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
+import { getRecentGameOptions } from '@/app/utils/recent-game-dropdown-options.util'
 
 export default function Search({
 	placeholder,
@@ -39,26 +24,15 @@ export default function Search({
 	displayProjectionModifier: boolean
 	hideLoading?: boolean
 }) {
-	const [searchResults, setSearchResults] = useState<PlayerSearchResults>([])
-	const [showDropdown, setShowDropdown] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
-	const [selectedDropdownValue, setSelectedDropdownValue] = useState<number>(5)
-	const [selectedPlayer, setSelectedPlayer] = useState<PlayerSearch | null>()
-	const [isLoading, setIsLoading] = useState<boolean>(false)
 
-	function getRecentGameOptions(): DropdownOptionProps<number>[] {
-		return [
-			{ value: 5, label: 'Last 5 Games' },
-			{ value: 10, label: 'Last 10 Games' },
-			{ value: 0, label: 'Full Season' },
-		]
-	}
+	const [state, dispatch] = useReducer(searchReducer, searchInitialState())
 
 	const handleSearch = useDebouncedCallback((term: string) => {
 		if (term) {
 			NHLPlayerAPI.searchForPlayer(term)
 				.then((result) => {
-					setSearchResults(result)
+					dispatch({ type: 'SET_SEARCH_RESULTS', payload: result })
 				})
 				.catch((error) => {
 					console.error('Search failed:', error)
@@ -68,25 +42,24 @@ export default function Search({
 
 	const handleClick = useCallback(
 		async (player: PlayerSearch) => {
-			setShowDropdown(false)
-			setIsLoading(true)
+			dispatch({ type: 'SET_SHOW_DROPDOWN', payload: false })
+			dispatch({ type: 'SET_IS_LOADING', payload: true })
 			onPlayerSelection(null)
-			const playerData = await findPlayer(player.playerId, selectedDropdownValue, player.lastTeamAbbrev)
-
+			const playerData = await findPlayer(player.playerId, state.selectedDropdownValue, player.lastTeamAbbrev)
 			onPlayerSelection(playerData)
-			setIsLoading(false)
+			dispatch({ type: 'SET_IS_LOADING', payload: false })
 		},
-		[selectedDropdownValue, onPlayerSelection],
+		[state.selectedDropdownValue, onPlayerSelection],
 	)
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-			setShowDropdown(false)
+			dispatch({ type: 'SET_SHOW_DROPDOWN', payload: false })
 		}
 	}
 
 	const handleSelect = (newValues: number) => {
-		setSelectedDropdownValue(newValues)
+		dispatch({ type: 'SET_SELECTED_DROPDOWN_VALUE', payload: newValues })
 	}
 
 	useEffect(() => {
@@ -97,10 +70,10 @@ export default function Search({
 	}, [])
 
 	useEffect(() => {
-		if (selectedPlayer) {
-			handleClick(selectedPlayer) // Re-fetch data when dropdown changes
+		if (state.selectedPlayer) {
+			handleClick(state.selectedPlayer) // Re-fetch data when dropdown changes
 		}
-	}, [selectedDropdownValue, selectedPlayer])
+	}, [state.selectedDropdownValue, state.selectedPlayer])
 
 	return (
 		<>
@@ -118,17 +91,17 @@ export default function Search({
 								onChange={(e) => {
 									handleSearch(e.target.value)
 								}}
-								onFocus={() => setShowDropdown(true)}
+								onFocus={() => dispatch({ type: 'SET_SHOW_DROPDOWN', payload: true })}
 							/>
 						</div>
-						{showDropdown && (
+						{state.showDropdown && (
 							<div className="absolute top-full left-0 w-full border border-gray-200 rounded-md shadow-md z-10 bg-slate-700">
-								{searchResults.map((player) => (
+								{state.searchResults.map((player) => (
 									<div
 										key={player.playerId}
 										className="py-2 px-4 hover:bg-gray-800 cursor-pointer"
 										onClick={() => {
-											setSelectedPlayer(player)
+											dispatch({ type: 'SET_SELECTED_PLAYER', payload: player })
 										}}
 									>
 										{player.name} - {player.lastTeamAbbrev}
@@ -145,7 +118,7 @@ export default function Search({
 								options={getRecentGameOptions()}
 								label={'Projection Modifier'}
 								onSelect={handleSelect}
-								value={selectedDropdownValue}
+								value={state.selectedDropdownValue}
 								className="w-40 md:w-48 ml-3"
 							/>
 						</div>
@@ -156,7 +129,7 @@ export default function Search({
 						className="fa-fw absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 pt-6"
 					/>
 				</div>
-				{isLoading && !hideLoading && (
+				{state.isLoading && !hideLoading && (
 					<div>
 						<PlayerStatSkeleton />
 					</div>

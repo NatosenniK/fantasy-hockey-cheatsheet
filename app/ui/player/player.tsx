@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import Search, { SelectedPlayerDetails } from '../search'
+import Search from '../search/search'
 import FullSkaterProjection from './skater/skater-stats'
 import FullGoalieProjection from './goalie/goalie-stats'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export default function SearchWithPlayer() {
 	const [selectedPlayer, setSelectedPlayer] = useState<SelectedPlayerDetails | null>(null)

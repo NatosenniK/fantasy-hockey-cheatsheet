@@ -1,6 +1,5 @@
 import NHLTeamLogo from '../visuals/team-logo'
 import { RoundingService } from '@/app/utils/rounding-util'
-import { SelectedPlayerDetails } from '../search'
 import SkaterCareerStatsTable from '../player/skater/skater-career-stats-table'
 import CondensedStatsTable from '../player/skater/condensed-stats-table'
 import SkaterProjectedWeeklyTotals from '../player/skater/skater-projected-weekly-totals'
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player-stats-vs-upcoming-opps'
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
 import { PlayerCard } from '../player/player-card'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export default function CompareSkaters({
 	player,

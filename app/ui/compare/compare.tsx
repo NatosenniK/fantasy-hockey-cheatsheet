@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Search, { SelectedPlayerDetails } from '../search'
+import Search from '../search/search'
 import CompareGoalies from './compare-goalies'
 import CompareSkaters from './compare-skaters'
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
@@ -9,6 +9,7 @@ import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player
 import { PlayerStatsVsUpcoming } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { FantasyOutlookSkeleton } from '../visuals/skeletons'
 import { Button } from '@headlessui/react'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export default function SearchCompare() {
 	const [firstPlayer, setFirstPlayer] = useState<SelectedPlayerDetails | null>(null)

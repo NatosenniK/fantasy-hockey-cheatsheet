@@ -1,6 +1,5 @@
 import NHLTeamLogo from '../visuals/team-logo'
 import { RoundingService } from '@/app/utils/rounding-util'
-import { SelectedPlayerDetails } from '../search'
 import { DateService } from '@/app/utils/date.util'
 import { GoalieSeasonTotals, GoalieProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import GoalieProjectedWeeklyTotals from '../player/goalie/goalie-projected-weekly-totals'
@@ -11,6 +10,7 @@ import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
 import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player-stats-vs-upcoming-opps'
 import { useState, useEffect } from 'react'
 import { PlayerCard } from '../player/player-card'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export default function CompareGoalies({
 	player,

@@ -2,9 +2,9 @@ import { playerPosition } from '@/app/utils/position.utl'
 import { PlayerHeadshot } from '../visuals/headshot'
 import { FantasyOutlookSkeleton } from '../visuals/skeletons'
 import NHLTeamLogo from '../visuals/team-logo'
-import { SelectedPlayerDetails } from '../search'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export function PlayerCard({
 	player,

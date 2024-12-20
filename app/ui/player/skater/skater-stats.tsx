@@ -4,7 +4,6 @@ import SkaterCareerStatsTable from './skater-career-stats-table'
 
 import SkaterProjectedWeeklyTotals from './skater-projected-weekly-totals'
 import { RoundingService } from '@/app/utils/rounding-util'
-import { SelectedPlayerDetails } from '../../search'
 
 import { DateService } from '@/app/utils/date.util'
 import RecentGameStatTable from './recent-game-stats.table'
@@ -16,6 +15,7 @@ import { GetPlayerStatsAgainstUpcomingOpponents } from '@/app/utils/fetch-player
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
 import { PlayerCard } from '../player-card'
 import UpcomingGameSchedule from '../upcoming-game-schedule'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export default function FullSkaterProjection({ player }: { player: SelectedPlayerDetails }) {
 	const [fantasyOutlook, setFantasyOutlook] = useState<string>('')

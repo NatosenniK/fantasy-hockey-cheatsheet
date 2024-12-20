@@ -1,5 +1,5 @@
 import { RoundingService } from '@/app/utils/rounding-util'
-import { SelectedPlayerDetails } from '../../search'
+
 import { DateService } from '@/app/utils/date.util'
 import { GoalieProfile, GoalieSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
 import GoalieProjectedWeeklyTotals from './goalie-projected-weekly-totals'
@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 
 import { PlayerCard } from '../player-card'
 import UpcomingGameSchedule from '../upcoming-game-schedule'
+import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
 
 export default function FullGoalieProjection({ player }: { player: SelectedPlayerDetails }) {
 	const [fantasyOutlook, setFantasyOutlook] = useState<string>('')
