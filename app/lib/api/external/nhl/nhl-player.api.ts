@@ -52,7 +52,8 @@ class NHLPlayerAPIPrototype {
 
 		// Extract NHL seasons dynamically from the `seasonTotals` array
 		const filteredResults = searchObject.filter(
-			(filteredResult: PlayerSearch) => filteredResult.teamAbbrev !== null,
+			(filteredResult: PlayerSearch) =>
+				filteredResult.teamAbbrev !== null && filteredResult.sweaterNumber !== null,
 		)
 		return filteredResults
 	}
