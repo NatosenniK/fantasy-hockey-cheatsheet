@@ -51,7 +51,7 @@ export function PlayerCard({
 							/>
 						</div>
 					)}
-					<div className="flex-grow flex items-center justify-center w-56">
+					<div className="flex-grow flex items-center justify-center w-56 h-48">
 						<div className="text-7xl">{player.expectedWeeklyPointTotal.toFixed(2)}</div>
 					</div>
 					<h3 className="font-medium text-gray-900 text-white flex justify-center">
