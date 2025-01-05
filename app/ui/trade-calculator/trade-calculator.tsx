@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import TradeSearch from '../search/trade-search'
 import { PlayerProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
