@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TradeSearch from '../search/trade-search'
 import { PlayerProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
@@ -11,6 +11,8 @@ export default function TradeCalculator() {
 	const [tradeSideBeta, setTradeSideBeta] = useState<PlayerProfile[]>([])
 	const [tradeOutlook, setTradeOutlook] = useState<string>('')
 	const [isTradeAnalyzed, setIsTradeAnalyzed] = useState<boolean>(false)
+	const [searchKeyAlpha, setSearchKeyAlpha] = useState(0)
+	const [searchKeyBeta, setSearchKeyBeta] = useState(0)
 
 	const handleTradeSideAlphaSelection = (player: PlayerProfile) => {
 		setTradeSideAlpha([...tradeSideAlpha, player])
@@ -39,6 +41,9 @@ export default function TradeCalculator() {
 		setTradeOutlook('')
 		setTradeSideAlpha([])
 		setTradeSideBeta([])
+		setIsTradeAnalyzed(false)
+		setSearchKeyAlpha((prev) => prev + 1)
+		setSearchKeyBeta((prev) => prev + 1)
 	}
 
 	return (
@@ -53,6 +58,7 @@ export default function TradeCalculator() {
 					</h2>
 					<div>
 						<TradeSearch
+							key={searchKeyAlpha}
 							placeholder="Enter a player name..."
 							onPlayerSelection={(e) => {
 								if (!e) {
@@ -65,6 +71,7 @@ export default function TradeCalculator() {
 
 					<div className="mt-3">
 						<TradeSearch
+							key={searchKeyAlpha}
 							placeholder="Enter a player name..."
 							onPlayerSelection={(e) => {
 								if (!e) {
@@ -81,6 +88,7 @@ export default function TradeCalculator() {
 					</h2>
 					<div>
 						<TradeSearch
+							key={searchKeyBeta}
 							placeholder="Enter a player name..."
 							onPlayerSelection={(e) => {
 								if (!e) {
@@ -93,6 +101,7 @@ export default function TradeCalculator() {
 
 					<div className="mt-3">
 						<TradeSearch
+							key={searchKeyBeta}
 							placeholder="Enter a player name..."
 							onPlayerSelection={(e) => {
 								if (!e) {
