@@ -2,6 +2,7 @@ import { PlayerSearch, PlayerSearchResults } from '@/app/lib/api/external/nhl/nh
 
 export type SearchState = {
 	searchResults: PlayerSearchResults
+	searchTerm: string
 	showDropdown: boolean
 	selectedDropdownValue: number
 	selectedPlayer: PlayerSearch | null
@@ -10,6 +11,7 @@ export type SearchState = {
 
 export type SearchAction =
 	| { type: 'SET_SEARCH_RESULTS'; payload: PlayerSearchResults }
+	| { type: 'SET_SEARCH_TERM'; payload: string }
 	| { type: 'SET_SHOW_DROPDOWN'; payload: boolean }
 	| { type: 'SET_SELECTED_DROPDOWN_VALUE'; payload: number }
 	| { type: 'SET_SELECTED_PLAYER'; payload: PlayerSearch | null }
@@ -19,6 +21,8 @@ export function searchReducer(state: SearchState, action: SearchAction): SearchS
 	switch (action.type) {
 		case 'SET_SEARCH_RESULTS':
 			return { ...state, searchResults: action.payload }
+		case 'SET_SEARCH_TERM':
+			return { ...state, searchTerm: action.payload }
 		case 'SET_SHOW_DROPDOWN':
 			return { ...state, showDropdown: action.payload }
 		case 'SET_SELECTED_DROPDOWN_VALUE':
@@ -35,6 +39,7 @@ export function searchReducer(state: SearchState, action: SearchAction): SearchS
 export function searchInitialState() {
 	const initialState: SearchState = {
 		searchResults: [],
+		searchTerm: '',
 		showDropdown: false,
 		selectedDropdownValue: 5,
 		selectedPlayer: null,

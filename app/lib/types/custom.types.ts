@@ -8,3 +8,9 @@ export interface SelectedPlayerDetails {
 	weekProjections: SeasonTotals
 	recentPerformance: GameLogs
 }
+
+export interface TradeDetails {
+	playerProfile: PlayerProfile
+}
+
+export type TradeDetailsArray = TradeDetails[]

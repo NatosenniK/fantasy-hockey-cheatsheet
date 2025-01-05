@@ -62,6 +62,29 @@ class GeminiAPIPrototype {
 			throw error
 		}
 	}
+
+	async compareTrade(alphaTrade: PlayerProfile[], betaTrade: PlayerProfile[]): Promise<string> {
+		try {
+			const response = await fetch('/api/external/gemini/trade-analyzer', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					alphaTrade,
+					betaTrade,
+				}),
+			})
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`)
+			}
+
+			const data = await response.json()
+			return data.summary
+		} catch (error) {
+			console.error('Failed to fetch fantasy outlook:', error)
+			throw error
+		}
+	}
 }
 
 export const GeminiAPI = new GeminiAPIPrototype()

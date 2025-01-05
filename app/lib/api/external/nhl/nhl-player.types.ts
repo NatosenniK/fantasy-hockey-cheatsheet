@@ -230,6 +230,9 @@ export interface PlayerInfoFull {
 	fullTeamName: {
 		default: string
 	}
+	teamCommonName: {
+		default: string
+	}
 	playerId: number
 }
 

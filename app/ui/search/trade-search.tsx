@@ -5,24 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDebouncedCallback } from 'use-debounce'
 import { NHLPlayerAPI } from '../../lib/api/external/nhl/nhl-player.api'
 import { useCallback, useEffect, useReducer, useRef } from 'react'
-import { PlayerSearch } from '../../lib/api/external/nhl/nhl-player.types'
-import { findPlayer } from '../../lib/actions'
-import Dropdown from '../visuals/dropdown/dropdown'
-import PlayerStatSkeleton from '../visuals/skeletons'
+import { PlayerProfile, PlayerSearch } from '../../lib/api/external/nhl/nhl-player.types'
+import { TradeAnalyzer } from '../../lib/actions'
 import { searchInitialState, searchReducer } from './search-reducer'
-import { SelectedPlayerDetails } from '@/app/lib/types/custom.types'
-import { getRecentGameOptions } from '@/app/utils/recent-game-dropdown-options.util'
 
-export default function Search({
+export default function TradeSearch({
 	placeholder,
 	onPlayerSelection,
-	displayProjectionModifier,
-	hideLoading,
 }: {
 	placeholder: string
-	onPlayerSelection: (playerDetails: SelectedPlayerDetails | null) => void
-	displayProjectionModifier: boolean
-	hideLoading?: boolean
+	onPlayerSelection: (playerDetails: PlayerProfile | null) => void
 }) {
 	const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -46,7 +38,7 @@ export default function Search({
 			dispatch({ type: 'SET_SHOW_DROPDOWN', payload: false })
 			dispatch({ type: 'SET_IS_LOADING', payload: true })
 			onPlayerSelection(null)
-			const playerData = await findPlayer(player.playerId, state.selectedDropdownValue, player.lastTeamAbbrev)
+			const playerData = await TradeAnalyzer(player.playerId)
 			onPlayerSelection(playerData)
 			dispatch({ type: 'SET_IS_LOADING', payload: false })
 		},
@@ -57,10 +49,6 @@ export default function Search({
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
 			dispatch({ type: 'SET_SHOW_DROPDOWN', payload: false })
 		}
-	}
-
-	const handleSelect = (newValues: number) => {
-		dispatch({ type: 'SET_SELECTED_DROPDOWN_VALUE', payload: newValues })
 	}
 
 	useEffect(() => {
@@ -114,29 +102,11 @@ export default function Search({
 						)}
 					</div>
 
-					{displayProjectionModifier && (
-						<div>
-							<div className="mb-1 pl-3">Projection Modifier</div>
-							<Dropdown
-								options={getRecentGameOptions()}
-								label={'Projection Modifier'}
-								onSelect={handleSelect}
-								value={state.selectedDropdownValue}
-								className="w-40 md:w-48 ml-3"
-							/>
-						</div>
-					)}
-
 					<FontAwesomeIcon
 						icon={faSearch}
 						className="fa-fw absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 pt-6"
 					/>
 				</div>
-				{state.isLoading && !hideLoading && (
-					<div>
-						<PlayerStatSkeleton />
-					</div>
-				)}
 			</div>
 		</>
 	)

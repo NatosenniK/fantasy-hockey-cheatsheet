@@ -4,8 +4,9 @@ import React from 'react'
 
 interface FullStatsTableProps {
 	player: SkaterProfile
+	condense?: boolean
 }
-function SkaterCareerStatsTable({ player }: FullStatsTableProps) {
+function SkaterCareerStatsTable({ player, condense }: FullStatsTableProps) {
 	if (!player || !player.careerTotals) {
 		return <div>Loading...</div>
 	}
@@ -82,85 +83,133 @@ function SkaterCareerStatsTable({ player }: FullStatsTableProps) {
 					<table className="hidden md:table min-w-full border-collapse border border-gray-200 dark:border-slate-700">
 						<thead>
 							<tr className="bg-gray-100 dark:bg-slate-800">
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									GP
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									G
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									A
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									P
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									+/-
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									PIM
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									Shots
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									PPG
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									PP Points
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									S%
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									SHG
 								</th>
-								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<th
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-3 '} text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									SH Points
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '} text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.gamesPlayed}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.goals}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.assists}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.points}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.plusMinus > 0
 										? `+${player.featuredStats.regularSeason.subSeason.plusMinus}`
 										: player.featuredStats.regularSeason.subSeason.plusMinus}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.pim}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.shots}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.powerPlayGoals}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.powerPlayPoints}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{RoundingService.roundToDecimal(
 										player.featuredStats.regularSeason.subSeason.shootingPctg,
 										3,
 									)}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.shorthandedGoals}
 								</td>
-								<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+								<td
+									className={`${condense ? 'px-4 py-3' : 'px-6 py-4 '}text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700`}
+								>
 									{player.featuredStats.regularSeason.subSeason.shorthandedPoints}
 								</td>
 							</tr>
