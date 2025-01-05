@@ -1,7 +1,7 @@
 import { PlayerProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { TradePlayerCard } from './trade-player-card'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 interface TradeOverviewProps {
 	sideA: PlayerProfile[]
