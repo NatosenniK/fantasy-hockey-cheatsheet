@@ -6,8 +6,6 @@ import { PlayerProfile } from '@/app/lib/api/external/nhl/nhl-player.types'
 import { GeminiAPI } from '@/app/lib/api/external/gemini/gemini-ai.api'
 import TradeOverview from './trade-overview'
 
-type PreferredSide = 'outgoing' | 'incoming' | 'indeterminate'
-
 export default function TradeCalculator() {
 	const [tradeSideAlpha, setTradeSideAlpha] = useState<PlayerProfile[]>([])
 	const [tradeSideBeta, setTradeSideBeta] = useState<PlayerProfile[]>([])
