@@ -87,8 +87,8 @@ class GeminiAPIPrototype {
 
 			const summary = JSON.parse(summaryString)
 
-			let tradeAnalysis = summary.tradeAnalysis
-			let preferredSide = summary.preferredSide
+			const tradeAnalysis = summary.tradeAnalysis
+			const preferredSide = summary.preferredSide
 
 			return { tradeAnalysis, preferredSide }
 		} catch (error) {
