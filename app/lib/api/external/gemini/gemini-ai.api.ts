@@ -1,4 +1,5 @@
 import { GameLogs, PlayerProfile, PlayerStatsVsUpcoming, SeasonTotals } from '../nhl/nhl-player.types'
+import { TradeAnalysis } from './gemini.types'
 
 class GeminiAPIPrototype {
 	async fetchFantasyOutlook(
@@ -63,7 +64,7 @@ class GeminiAPIPrototype {
 		}
 	}
 
-	async compareTrade(alphaTrade: PlayerProfile[], betaTrade: PlayerProfile[]): Promise<string> {
+	async compareTrade(alphaTrade: PlayerProfile[], betaTrade: PlayerProfile[]): Promise<TradeAnalysis> {
 		try {
 			const response = await fetch('/api/external/gemini/trade-analyzer', {
 				method: 'POST',
@@ -79,7 +80,17 @@ class GeminiAPIPrototype {
 			}
 
 			const data = await response.json()
-			return data.summary
+
+			let summaryString = data.summary
+			summaryString = summaryString.replace('```json', '')
+			summaryString = summaryString.replace('```', '')
+
+			const summary = JSON.parse(summaryString)
+
+			let tradeAnalysis = summary.tradeAnalysis
+			let preferredSide = summary.preferredSide
+
+			return { tradeAnalysis, preferredSide }
 		} catch (error) {
 			console.error('Failed to fetch fantasy outlook:', error)
 			throw error

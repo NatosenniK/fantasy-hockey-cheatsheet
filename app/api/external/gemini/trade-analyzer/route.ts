@@ -80,7 +80,7 @@ export async function POST(request: Request) {
 											)}`,
 									)
 									.join('; ') +
-								'.\n\nProvide a concise, one-paragraph explanation of your choice, avoiding bold or italic formatting. Focus on readability and include reasoning for your preference.',
+								'.\n\nProvide a concise, one-paragraph explanation of your choice, avoiding bold or italic formatting. Focus on readability and include reasoning for your preference. **Output only the JSON object** with the explanation under the key `tradeAnalysis` and the preferred side (`outgoing`, `incoming`, or `indeterminate`) under the key `preferredSide`. Do not include any markdown formatting, code blocks, or additional text.',
 						},
 					],
 				},
