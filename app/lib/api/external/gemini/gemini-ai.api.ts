@@ -81,11 +81,7 @@ class GeminiAPIPrototype {
 
 			const data = await response.json()
 
-			let summaryString = data.summary
-			summaryString = summaryString.replace('```json', '')
-			summaryString = summaryString.replace('```', '')
-
-			const summary = JSON.parse(summaryString)
+			const summary = JSON.parse(data.summary)
 
 			const tradeAnalysis = summary.tradeAnalysis
 			const preferredSide = summary.preferredSide
