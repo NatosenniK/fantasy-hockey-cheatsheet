@@ -115,10 +115,7 @@ export default function SearchCompare() {
 						{fantasyComparison === '' ? (
 							<FantasyOutlookSkeleton />
 						) : (
-							<div
-								className="text-white md:h-20"
-								dangerouslySetInnerHTML={{ __html: fantasyComparison }}
-							/>
+							<div className="text-white" dangerouslySetInnerHTML={{ __html: fantasyComparison }} />
 						)}
 					</div>
 					<div className="flex justify-center">
