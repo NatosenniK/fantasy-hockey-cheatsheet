@@ -1,9 +1,16 @@
 import { DateService } from '@/app/utils/date.util'
 import React from 'react'
 
-import { Games, PlayerProfile, PrevStats, SkaterSeasonTotals } from '@/app/lib/api/external/nhl/nhl-player.types'
+import {
+	Games,
+	GoalieSeasonTotals,
+	PlayerProfile,
+	PrevStats,
+	SkaterSeasonTotals,
+} from '@/app/lib/api/external/nhl/nhl-player.types'
 import NHLTeamLogo from '../visuals/team-logo'
 import CondensedStatsTable from './skater/condensed-stats-table'
+import GoalieCondensedStatsTable from './goalie/goalie-condensed-stats-table'
 
 function UpcomingGameSchedule({
 	games,
@@ -14,6 +21,7 @@ function UpcomingGameSchedule({
 	prevStats: PrevStats
 	playerProfile: PlayerProfile
 }) {
+	console.log(games)
 	return (
 		<>
 			<h2 className="text-xl font-semibold mb-4 dark:text-white">Upcoming Schedule</h2>
@@ -69,11 +77,21 @@ function UpcomingGameSchedule({
 								</h3>
 								<div>
 									{game.homeTeam.abbrev === 'UTA' && prevStats['ARI'] ? (
-										<CondensedStatsTable stats={prevStats['ARI'] as SkaterSeasonTotals} />
+										playerProfile.position === 'G' ? (
+											<GoalieCondensedStatsTable stats={prevStats['ARI'] as GoalieSeasonTotals} />
+										) : (
+											<CondensedStatsTable stats={prevStats['ARI'] as SkaterSeasonTotals} />
+										)
 									) : prevStats[game.homeTeam.abbrev] ? (
-										<CondensedStatsTable
-											stats={prevStats[game.homeTeam.abbrev] as SkaterSeasonTotals}
-										/>
+										playerProfile.position === 'G' ? (
+											<GoalieCondensedStatsTable
+												stats={prevStats[game.homeTeam.abbrev] as GoalieSeasonTotals}
+											/>
+										) : (
+											<CondensedStatsTable
+												stats={prevStats[game.homeTeam.abbrev] as SkaterSeasonTotals}
+											/>
+										)
 									) : (
 										<p>No stats available for {game.homeTeam.commonName.default}.</p>
 									)}
@@ -90,11 +108,21 @@ function UpcomingGameSchedule({
 								</h3>
 								<div>
 									{game.awayTeam.abbrev === 'UTA' && prevStats['ARI'] ? (
-										<CondensedStatsTable stats={prevStats['ARI'] as SkaterSeasonTotals} />
+										playerProfile.position === 'G' ? (
+											<GoalieCondensedStatsTable stats={prevStats['ARI'] as GoalieSeasonTotals} />
+										) : (
+											<CondensedStatsTable stats={prevStats['ARI'] as SkaterSeasonTotals} />
+										)
 									) : prevStats[game.awayTeam.abbrev] ? (
-										<CondensedStatsTable
-											stats={prevStats[game.awayTeam.abbrev] as SkaterSeasonTotals}
-										/>
+										playerProfile.position === 'G' ? (
+											<GoalieCondensedStatsTable
+												stats={prevStats[game.awayTeam.abbrev] as GoalieSeasonTotals}
+											/>
+										) : (
+											<CondensedStatsTable
+												stats={prevStats[game.awayTeam.abbrev] as SkaterSeasonTotals}
+											/>
+										)
 									) : (
 										<p>No stats available for {game.awayTeam.commonName.default}.</p>
 									)}

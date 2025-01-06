@@ -9,7 +9,6 @@ export default function GoalieCareerStatsTable({ player }: GoalieCareerStatsTabl
 		return <div>Loading...</div>
 	}
 
-	console.log(player)
 	return (
 		<div className="mt-6 flow-root w-full overflow-hidden overflow-x-auto">
 			<div className="inline-block min-w-full align-middle">
