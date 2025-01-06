@@ -9,7 +9,7 @@ import clsx from 'clsx'
 const links = [
 	{ name: 'Home', href: '/' },
 	{ name: 'Compare Tool', href: '/compare' },
-	{ name: 'Trade Calculator', href: '/trade-calculator' },
+	{ name: 'Trade Analyzer', href: '/trade-analyzer' },
 	// { name: 'Lineup Assistant', href: '/lineup-assistant' },
 	{ name: 'Standings', href: '/standings' },
 ]

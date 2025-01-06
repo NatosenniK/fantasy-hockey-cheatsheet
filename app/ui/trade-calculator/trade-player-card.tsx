@@ -29,7 +29,7 @@ export function TradePlayerCard({ player }: { player: PlayerProfile }) {
 						</div>
 					</div>
 
-					<div className="flex">
+					<div className="flex w-full">
 						{player.position === 'G' ? (
 							<GoalieCareerStatsTable player={player as GoalieProfile} />
 						) : (
