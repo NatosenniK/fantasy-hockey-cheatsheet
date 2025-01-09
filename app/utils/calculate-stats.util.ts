@@ -21,13 +21,41 @@ class PlayerStatCalculationUtilityPrototype {
 		const plusMinusWeight = 1
 		const penaltyMinuteWeight = 0.1
 		const shotsOnGoalWeight = 0.1
-		const recentPerformanceWeight = 1.2
+		// const recentPerformanceWeight = 1.2
 
 		let expectedWeeklyPointTotal = 0
 		let expectedPointsPastPerformance = 0
 		let recentPerformanceTotal = 0
 
 		const weekProjections: SeasonTotals = {
+			goals: 0,
+			assists: 0,
+			plusMinus: 0,
+			pim: 0,
+			shots: 0,
+			points: 0,
+			gamesPlayed: 0,
+			powerPlayPoints: 0,
+			shorthandedGoals: 0,
+			shorthandedPoints: 0,
+			shorthandedAssists: 0,
+		}
+
+		const weekProjectionsBasedOnRecent: SeasonTotals = {
+			goals: 0,
+			assists: 0,
+			plusMinus: 0,
+			pim: 0,
+			shots: 0,
+			points: 0,
+			gamesPlayed: 0,
+			powerPlayPoints: 0,
+			shorthandedGoals: 0,
+			shorthandedPoints: 0,
+			shorthandedAssists: 0,
+		}
+
+		const weekProjectionsBasedOnHistory: SeasonTotals = {
 			goals: 0,
 			assists: 0,
 			plusMinus: 0,
@@ -50,23 +78,25 @@ class PlayerStatCalculationUtilityPrototype {
 				const expPenaltyMinutes = game.pim * penaltyMinuteWeight
 				const expShots = game.shots * shotsOnGoalWeight
 
-				const basePoints =
-					(expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots) * recentPerformanceWeight
+				const basePoints = expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots
 
 				recentPerformanceTotal += basePoints
 
-				weekProjections.goals += game.goals / gamesPlayed
-				weekProjections.assists += game.assists / gamesPlayed
-				weekProjections.plusMinus += game.plusMinus / gamesPlayed
-				weekProjections.pim += game.pim / gamesPlayed
-				weekProjections.shots += game.shots / gamesPlayed
-				weekProjections.points += (game.goals + game.assists) / gamesPlayed
-				weekProjections.powerPlayPoints += game.powerPlayPoints / gamesPlayed
-				weekProjections.shorthandedGoals += game.shorthandedGoals / gamesPlayed
-				weekProjections.shorthandedAssists += (game.shorthandedPoints - game.shorthandedGoals) / gamesPlayed
+				weekProjectionsBasedOnRecent.goals += game.goals / gamesPlayed
+				weekProjectionsBasedOnRecent.assists += game.assists / gamesPlayed
+				weekProjectionsBasedOnRecent.plusMinus += game.plusMinus / gamesPlayed
+				weekProjectionsBasedOnRecent.pim += game.pim / gamesPlayed
+				weekProjectionsBasedOnRecent.shots += game.shots / gamesPlayed
+				weekProjectionsBasedOnRecent.points += (game.goals + game.assists) / gamesPlayed
+				weekProjectionsBasedOnRecent.powerPlayPoints += game.powerPlayPoints / gamesPlayed
+				weekProjectionsBasedOnRecent.shorthandedGoals += game.shorthandedGoals / gamesPlayed
+				weekProjectionsBasedOnRecent.shorthandedAssists +=
+					(game.shorthandedPoints - game.shorthandedGoals) / gamesPlayed
 			})
 
-			expectedWeeklyPointTotal += recentPerformanceTotal / gamesPlayed
+			// expectedWeeklyPointTotal += recentPerformanceTotal / gamesPlayed
+
+			recentPerformanceTotal = recentPerformanceTotal / gamesPlayed
 		}
 
 		if (games && prevStats) {
@@ -105,22 +135,95 @@ class PlayerStatCalculationUtilityPrototype {
 					expectedWeeklyPointTotal += expectedPointsPastPerformance
 
 					// Update weekProjections
-					weekProjections.goals += teamStats.goals / teamStats.gamesPlayed
-					weekProjections.assists += teamStats.assists / teamStats.gamesPlayed
-					weekProjections.plusMinus += teamStats.plusMinus / teamStats.gamesPlayed
-					weekProjections.pim += teamStats.pim / teamStats.gamesPlayed
-					weekProjections.shots += teamStats.shots / teamStats.gamesPlayed
-					weekProjections.points += (teamStats.goals + teamStats.assists) / teamStats.gamesPlayed
-					weekProjections.gamesPlayed += 1
-					weekProjections.powerPlayPoints += teamStats.powerPlayPoints / teamStats.gamesPlayed
-					weekProjections.shorthandedGoals += teamStats.shorthandedGoals / teamStats.gamesPlayed
-					weekProjections.shorthandedAssists +=
-						(teamStats.shorthandedPoints - teamStats.shorthandedGoals) / teamStats.gamesPlayed
+					weekProjectionsBasedOnHistory.goals += teamStats.goals
+					weekProjectionsBasedOnHistory.assists += teamStats.assists
+					weekProjectionsBasedOnHistory.plusMinus += teamStats.plusMinus
+					weekProjectionsBasedOnHistory.pim += teamStats.pim
+					weekProjectionsBasedOnHistory.shots += teamStats.shots
+					weekProjectionsBasedOnHistory.points += teamStats.goals + teamStats.assists
+					weekProjectionsBasedOnHistory.gamesPlayed += teamStats.gamesPlayed
+					weekProjectionsBasedOnHistory.powerPlayPoints += teamStats.powerPlayPoints
+					weekProjectionsBasedOnHistory.shorthandedGoals += teamStats.shorthandedGoals
+					weekProjectionsBasedOnHistory.shorthandedAssists +=
+						teamStats.shorthandedPoints - teamStats.shorthandedGoals
 				}
 			})
 		}
 
-		expectedWeeklyPointTotal = (expectedWeeklyPointTotal / (games.length + 1)) * games.length
+		// expectedWeeklyPointTotal = (expectedWeeklyPointTotal / (games.length + 1)) * games.length
+
+		weekProjectionsBasedOnHistory.goals =
+			weekProjectionsBasedOnHistory.goals / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.assists =
+			weekProjectionsBasedOnHistory.assists / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.plusMinus =
+			weekProjectionsBasedOnHistory.plusMinus / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.pim =
+			weekProjectionsBasedOnHistory.pim / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.shots =
+			weekProjectionsBasedOnHistory.shots / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.points =
+			weekProjectionsBasedOnHistory.points / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.powerPlayPoints =
+			weekProjectionsBasedOnHistory.powerPlayPoints / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.shorthandedGoals =
+			weekProjectionsBasedOnHistory.shorthandedGoals / weekProjectionsBasedOnHistory.gamesPlayed
+		weekProjectionsBasedOnHistory.shorthandedAssists =
+			weekProjectionsBasedOnHistory.shorthandedAssists / weekProjectionsBasedOnHistory.gamesPlayed
+
+		const recentWeight = 0.7
+		const historicalWeight = 0.3
+
+		expectedWeeklyPointTotal =
+			((recentPerformanceTotal * recentWeight + expectedPointsPastPerformance * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+
+		weekProjections.goals +=
+			((weekProjectionsBasedOnRecent.goals * recentWeight +
+				weekProjectionsBasedOnHistory.goals * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.assists +=
+			((weekProjectionsBasedOnRecent.assists * recentWeight +
+				weekProjectionsBasedOnHistory.assists * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.plusMinus +=
+			((weekProjectionsBasedOnRecent.plusMinus * recentWeight +
+				weekProjectionsBasedOnHistory.plusMinus * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.pim +=
+			((weekProjectionsBasedOnRecent.pim * recentWeight + weekProjectionsBasedOnHistory.pim * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.shots +=
+			((weekProjectionsBasedOnRecent.shots * recentWeight +
+				weekProjectionsBasedOnHistory.shots * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.points +=
+			((weekProjectionsBasedOnRecent.points * recentWeight +
+				weekProjectionsBasedOnHistory.points * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.gamesPlayed = games.length
+		weekProjections.powerPlayPoints +=
+			((weekProjectionsBasedOnRecent.powerPlayPoints * recentWeight +
+				weekProjectionsBasedOnHistory.powerPlayPoints * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.shorthandedGoals +=
+			((weekProjectionsBasedOnRecent.shorthandedGoals * recentWeight +
+				weekProjectionsBasedOnHistory.shorthandedGoals * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
+		weekProjections.shorthandedAssists +=
+			((weekProjectionsBasedOnRecent.shorthandedAssists * recentWeight +
+				weekProjectionsBasedOnHistory.shorthandedAssists * historicalWeight) /
+				(recentWeight + historicalWeight)) *
+			games.length
 
 		return {
 			recentPerformance: recentPerformance,
