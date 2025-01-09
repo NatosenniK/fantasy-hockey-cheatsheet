@@ -138,7 +138,7 @@ export async function POST(request: Request) {
 		}
 
 		// Call the Gemini API
-		const url = `https://fantasy-hockey-proxy.mattkinne.workers.dev`
+		const url = `https://api.kinnesotan.com`
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
