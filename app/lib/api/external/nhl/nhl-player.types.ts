@@ -234,6 +234,7 @@ export interface PlayerInfoFull {
 		default: string
 	}
 	playerId: number
+	isStarting: boolean
 }
 
 export interface GoalieProfile extends PlayerInfoFull {

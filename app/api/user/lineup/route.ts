@@ -17,11 +17,20 @@ export async function GET() {
 
 	try {
 		const result = (await sql`SELECT * FROM "user_lineup" WHERE user_id=${userId}`) as Lineup[]
-		const playerIds = result.map((player) => player.player_id)
 
+		const playerIds = result.map((player) => String(player.player_id)) // Ensure IDs are strings
 		const playerStats = await NHLPlayerAPI.fetchMultiplePlayerStats(playerIds)
 
-		return new Response(JSON.stringify(playerStats), { status: 200 }) // Return the result as JSON
+		const mergedData = playerStats.map((player) => {
+			const dbEntry = result.find((entry) => String(entry.player_id) === String(player.playerId))
+
+			return {
+				...player,
+				isStarting: dbEntry?.is_starting ?? false, // Include `is_starting` value
+			}
+		})
+
+		return new Response(JSON.stringify(mergedData), { status: 200 }) // Return the result as JSON
 	} catch (error) {
 		console.error('Failed to fetch lineup:', error)
 		return new Response('Failed to fetch lineup.', { status: 500 })

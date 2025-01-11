@@ -29,7 +29,7 @@ class NHLPlayerAPIPrototype {
 		}
 	}
 
-	async fetchMultiplePlayerStats(playerIds: number[]): Promise<SkaterProfile[]> {
+	async fetchMultiplePlayerStats(playerIds: string[]): Promise<SkaterProfile[]> {
 		const playerEndpoints = playerIds.map((id) => `${baseUrl}/player/${id}/landing`)
 
 		try {

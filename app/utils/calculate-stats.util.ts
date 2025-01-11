@@ -4,6 +4,7 @@ import {
 	GoalieSeasonTotals,
 	PlayerProfile,
 	SeasonTotals,
+	SkaterProfile,
 	SkaterSeasonTotals,
 } from '../lib/api/external/nhl/nhl-player.types'
 import { RoundingService } from './rounding-util'
@@ -322,6 +323,44 @@ class PlayerStatCalculationUtilityPrototype {
 			expectedWeeklyPointTotal: RoundingService.roundToDecimal(expectedWeeklyPointTotal, 2),
 			weekProjections,
 		}
+	}
+
+	calculateSkaterAverage(player: SkaterProfile) {
+		const goalWeight = 3
+		const assistWeight = 2
+		const plusMinusWeight = 1
+		const penaltyMinuteWeight = 0.1
+		const shotsOnGoalWeight = 0.1
+		const shortHandedGoalWeight = 2
+
+		const gamesPlayed = player.featuredStats.regularSeason.subSeason.gamesPlayed
+
+		const expGoals = (player.featuredStats.regularSeason.subSeason.goals * goalWeight) / gamesPlayed
+		const expAssists = (player.featuredStats.regularSeason.subSeason.assists * assistWeight) / gamesPlayed
+		const expPlusMinus = (player.featuredStats.regularSeason.subSeason.plusMinus * plusMinusWeight) / gamesPlayed
+		const expPenaltyMinutes = (player.featuredStats.regularSeason.subSeason.pim * penaltyMinuteWeight) / gamesPlayed
+		const expShots = (player.featuredStats.regularSeason.subSeason.shots * shotsOnGoalWeight) / gamesPlayed
+		const powerPlayPoints = player.featuredStats.regularSeason.subSeason.powerPlayPoints / gamesPlayed
+		const shortHandedPoints =
+			(player.featuredStats.regularSeason.subSeason.shorthandedGoals * shortHandedGoalWeight) / gamesPlayed +
+			(player.featuredStats.regularSeason.subSeason.shorthandedPoints -
+				player.featuredStats.regularSeason.subSeason.shorthandedGoals) /
+				gamesPlayed
+
+		let basePoints =
+			expGoals + expAssists + expPlusMinus + expPenaltyMinutes + expShots + powerPlayPoints + shortHandedPoints
+
+		if (player.position === 'D') {
+			const totalPoints =
+				(player.featuredStats.regularSeason.subSeason.goals +
+					player.featuredStats.regularSeason.subSeason.assists) /
+				player.featuredStats.regularSeason.subSeason.gamesPlayed // Calculate points per game
+			basePoints += totalPoints // Add +1 per point
+		}
+
+		const averageScoring = RoundingService.roundValue(basePoints)
+
+		return averageScoring
 	}
 }
 

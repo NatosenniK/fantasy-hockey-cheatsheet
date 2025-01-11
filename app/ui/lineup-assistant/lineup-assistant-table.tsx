@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { TableRowSkeleton } from '../visuals/skeletons'
 import LineupSearch from '../lineup-search'
+import { PlayerStatCalcUtil } from '@/app/utils/calculate-stats.util'
 
 export default function LineupAssistantTable() {
 	const [players, setPlayers] = useState<SkaterProfile[] | null>(null)
@@ -136,6 +137,12 @@ export default function LineupAssistantTable() {
 									Player
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									Action
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+									AVG
+								</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
 									GP
 								</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
@@ -171,64 +178,161 @@ export default function LineupAssistantTable() {
 							</tr>
 						</thead>
 						<tbody>
-							{players?.map((player, index) => (
-								<tr
-									key={index}
-									className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800"
+							{players
+								?.filter((player) => player.isStarting) // Filter players where isStarting is true
+								.sort((a, b) => playerSlot(b.position).localeCompare(playerSlot(a.position))) // Sort the filtered players
+								.map((player, index) => (
+									<tr
+										key={index}
+										className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800"
+									>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{playerSlot(player.position)}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700 flex items-center">
+											<PlayerHeadshot
+												width={25}
+												height={25}
+												imageUrl={player.headshot}
+												className="mr-3"
+											/>{' '}
+											<div>
+												{player.firstName.default} {player.lastName.default}
+											</div>
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											<button
+												onClick={() => {
+													console.log(player.playerId)
+												}}
+											>
+												MOVE - {player.isStarting.toString()}
+											</button>
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{PlayerStatCalcUtil.calculateSkaterAverage(player)}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.gamesPlayed}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.goals}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.assists}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.points}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.plusMinus > 0
+												? `+${player.featuredStats.regularSeason.subSeason.plusMinus}`
+												: player.featuredStats.regularSeason.subSeason.plusMinus}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.pim}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.powerPlayPoints}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.shorthandedGoals}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.shorthandedPoints}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.shots}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											<div onClick={() => handlePlayerRemoval(player.playerId)}>
+												<FontAwesomeIcon icon={faTrash} className="fa-fw" />
+											</div>
+										</td>
+									</tr>
+								))}
+							{adding && <TableRowSkeleton />}
+							<tr>
+								<td
+									colSpan={15}
+									className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700"
 								>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{playerSlot(player.position)}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700 flex items-center">
-										<PlayerHeadshot
-											width={25}
-											height={25}
-											imageUrl={player.headshot}
-											className="mr-3"
-										/>{' '}
-										<div>
-											{player.firstName.default} {player.lastName.default}
-										</div>
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.gamesPlayed}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.goals}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.assists}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.points}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.plusMinus > 0
-											? `+${player.featuredStats.regularSeason.subSeason.plusMinus}`
-											: player.featuredStats.regularSeason.subSeason.plusMinus}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.pim}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.powerPlayPoints}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.shorthandedGoals}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.shorthandedPoints}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										{player.featuredStats.regularSeason.subSeason.shots}
-									</td>
-									<td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
-										<div onClick={() => handlePlayerRemoval(player.playerId)}>
-											<FontAwesomeIcon icon={faTrash} className="fa-fw" />
-										</div>
-									</td>
-								</tr>
-							))}
+									Bench
+								</td>
+							</tr>
+							{players
+								?.filter((player) => !player.isStarting) // Filter players where isStarting is true
+								.sort((a, b) => playerSlot(b.position).localeCompare(playerSlot(a.position))) // Sort the filtered players
+								.map((player, index) => (
+									<tr
+										key={index}
+										className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-700 dark:even:bg-slate-800"
+									>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{playerSlot(player.position)}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700 flex items-center">
+											<PlayerHeadshot
+												width={25}
+												height={25}
+												imageUrl={player.headshot}
+												className="mr-3"
+											/>{' '}
+											<div>
+												{player.firstName.default} {player.lastName.default}
+											</div>
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											<button
+												onClick={() => {
+													console.log(player.playerId)
+												}}
+											>
+												MOVE - {player.isStarting.toString()}
+											</button>
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{PlayerStatCalcUtil.calculateSkaterAverage(player)}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.gamesPlayed}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.goals}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.assists}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.points}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.plusMinus > 0
+												? `+${player.featuredStats.regularSeason.subSeason.plusMinus}`
+												: player.featuredStats.regularSeason.subSeason.plusMinus}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.pim}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.powerPlayPoints}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.shorthandedGoals}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.shorthandedPoints}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											{player.featuredStats.regularSeason.subSeason.shots}
+										</td>
+										<td className="px-6 py-2 text-sm text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-700">
+											<div onClick={() => handlePlayerRemoval(player.playerId)}>
+												<FontAwesomeIcon icon={faTrash} className="fa-fw" />
+											</div>
+										</td>
+									</tr>
+								))}
 							{adding && <TableRowSkeleton />}
 						</tbody>
 					</table>
