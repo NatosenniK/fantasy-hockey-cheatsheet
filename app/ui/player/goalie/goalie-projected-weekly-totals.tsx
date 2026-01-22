@@ -40,12 +40,12 @@ function GoalieProjectedWeeklyTotals({ stats }: GoalieProjectedWeeklyTotalsProps
 									</div>
 									<div className="flex justify-between items-center">
 										<div>Save %</div>
-										<div>
+										<>
 											{RoundingService.roundToDecimal(
 												stats.saves / (stats.saves + stats.goalsAgainst),
 												3,
 											)}
-										</div>
+										</>
 									</div>
 									<div className="flex justify-between items-center">
 										<div>GA</div>
