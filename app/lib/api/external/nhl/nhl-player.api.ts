@@ -186,7 +186,7 @@ class NHLPlayerAPIPrototype {
 
 	async fetchRecentGames(playerId: number, numGames?: number): Promise<GameLogs> {
 		const gameType = 2
-		const season = '20242025'
+		const season = '20252026'
 		const response = await fetch(`${baseUrl}/player/${playerId}/game-log/${season}/${gameType}`)
 		const data = await response.json()
 		const gameLogs: GameLogs = data.gameLog
